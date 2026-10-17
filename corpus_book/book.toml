@@ -1,0 +1,19 @@
+[book]
+title = "Corpus de invalidación de iteradores — casos y benchmark"
+authors = ["rodriguezwilbert613"]
+language = "es"
+src = "src"
+
+[build]
+build-dir = "book"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "ayu"
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.search]
+limit-results = 50
