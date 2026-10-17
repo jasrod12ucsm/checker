@@ -1,0 +1,52 @@
+# Uso:
+#   docker compose build                 construir la imagen (una vez)
+#   docker compose run --rm linter       compilar y correr el linter sobre los tests
+#   docker compose run --rm shell        shell interactiva dentro del entorno
+#   docker compose run --rm query        REPL de clang-query para descubrir matchers
+
+x-base: &base
+  build:
+    context: .
+    dockerfile: Dockerfile
+    args:
+      LLVM_VERSION: "21"
+  image: mi-linter:llvm21
+  working_dir: /work
+  volumes:
+    # El codigo se monta desde el host: editas fuera, compilas dentro.
+    - .:/work
+    # El build vive en un volumen: el binario enlaza contra /usr/lib/llvm-21
+    # del contenedor y no sirve en el host, ademas de evitar lios de permisos.
+    - build:/work/build
+  init: true
+
+services:
+  # Compila y ejecuta el linter contra la suite de tests.
+  linter:
+    <<: *base
+    command:
+      - bash
+      - -euo
+      - pipefail
+      - -c
+      - |
+        cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+        cmake --build build
+        ./build/mi-linter test/catch_by_value.cpp -- -std=c++17
+
+  # Shell interactiva con todo el toolchain en el PATH.
+  shell:
+    <<: *base
+    command: ["bash"]
+    stdin_open: true
+    tty: true
+
+  # REPL para descubrir matchers sin recompilar.
+  query:
+    <<: *base
+    command: ["clang-query", "test/catch_by_value.cpp", "--", "-std=c++17"]
+    stdin_open: true
+    tty: true
+
+volumes:
+  build:

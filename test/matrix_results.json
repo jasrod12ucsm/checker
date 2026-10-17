@@ -1,0 +1,1028 @@
+[
+ {
+  "fn": "it_vector_push_back",
+  "container": "vector",
+  "op": "push_back",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_vector_push_back",
+  "container": "vector",
+  "op": "push_back",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_vector_emplace_back",
+  "container": "vector",
+  "op": "emplace_back",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_vector_emplace_back",
+  "container": "vector",
+  "op": "emplace_back",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_vector_insert_begin",
+  "container": "vector",
+  "op": "insert_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_vector_insert_begin",
+  "container": "vector",
+  "op": "insert_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_vector_insert_end",
+  "container": "vector",
+  "op": "insert_end",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_vector_insert_end",
+  "container": "vector",
+  "op": "insert_end",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_vector_erase_begin",
+  "container": "vector",
+  "op": "erase_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_vector_erase_begin",
+  "container": "vector",
+  "op": "erase_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_vector_clear",
+  "container": "vector",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_vector_clear",
+  "container": "vector",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_vector_resize_grow",
+  "container": "vector",
+  "op": "resize_grow",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_vector_resize_grow",
+  "container": "vector",
+  "op": "resize_grow",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_vector_reserve",
+  "container": "vector",
+  "op": "reserve",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_vector_reserve",
+  "container": "vector",
+  "op": "reserve",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_vector_shrink_to_fit",
+  "container": "vector",
+  "op": "shrink_to_fit",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_vector_shrink_to_fit",
+  "container": "vector",
+  "op": "shrink_to_fit",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_vector_assign",
+  "container": "vector",
+  "op": "assign",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_vector_assign",
+  "container": "vector",
+  "op": "assign",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_vector_pop_back",
+  "container": "vector",
+  "op": "pop_back",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_vector_pop_back",
+  "container": "vector",
+  "op": "pop_back",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_deque_push_back",
+  "container": "deque",
+  "op": "push_back",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_deque_push_back",
+  "container": "deque",
+  "op": "push_back",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_deque_push_front",
+  "container": "deque",
+  "op": "push_front",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_deque_push_front",
+  "container": "deque",
+  "op": "push_front",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_deque_emplace_back",
+  "container": "deque",
+  "op": "emplace_back",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_deque_emplace_back",
+  "container": "deque",
+  "op": "emplace_back",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_deque_insert_middle",
+  "container": "deque",
+  "op": "insert_middle",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_deque_insert_middle",
+  "container": "deque",
+  "op": "insert_middle",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_deque_erase_begin",
+  "container": "deque",
+  "op": "erase_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_deque_erase_begin",
+  "container": "deque",
+  "op": "erase_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_deque_clear",
+  "container": "deque",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_deque_clear",
+  "container": "deque",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_deque_resize_grow",
+  "container": "deque",
+  "op": "resize_grow",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_deque_resize_grow",
+  "container": "deque",
+  "op": "resize_grow",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_deque_pop_front",
+  "container": "deque",
+  "op": "pop_front",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_deque_pop_front",
+  "container": "deque",
+  "op": "pop_front",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_list_push_back",
+  "container": "list",
+  "op": "push_back",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_list_push_back",
+  "container": "list",
+  "op": "push_back",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_list_push_front",
+  "container": "list",
+  "op": "push_front",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_list_push_front",
+  "container": "list",
+  "op": "push_front",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_list_insert",
+  "container": "list",
+  "op": "insert",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_list_insert",
+  "container": "list",
+  "op": "insert",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_list_erase_begin",
+  "container": "list",
+  "op": "erase_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_list_erase_begin",
+  "container": "list",
+  "op": "erase_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_list_clear",
+  "container": "list",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_list_clear",
+  "container": "list",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_list_resize_grow",
+  "container": "list",
+  "op": "resize_grow",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_list_resize_grow",
+  "container": "list",
+  "op": "resize_grow",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_list_pop_front",
+  "container": "list",
+  "op": "pop_front",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_list_pop_front",
+  "container": "list",
+  "op": "pop_front",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_list_reverse",
+  "container": "list",
+  "op": "reverse",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_list_reverse",
+  "container": "list",
+  "op": "reverse",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_flist_push_front",
+  "container": "flist",
+  "op": "push_front",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_flist_push_front",
+  "container": "flist",
+  "op": "push_front",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_flist_insert_after",
+  "container": "flist",
+  "op": "insert_after",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_flist_insert_after",
+  "container": "flist",
+  "op": "insert_after",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_flist_erase_after",
+  "container": "flist",
+  "op": "erase_after",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_flist_erase_after",
+  "container": "flist",
+  "op": "erase_after",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_flist_clear",
+  "container": "flist",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_flist_clear",
+  "container": "flist",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_set_insert",
+  "container": "set",
+  "op": "insert",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_set_insert",
+  "container": "set",
+  "op": "insert",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_set_emplace",
+  "container": "set",
+  "op": "emplace",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_set_emplace",
+  "container": "set",
+  "op": "emplace",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_set_erase_begin",
+  "container": "set",
+  "op": "erase_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_set_erase_begin",
+  "container": "set",
+  "op": "erase_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_set_clear",
+  "container": "set",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_set_clear",
+  "container": "set",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_map_insert",
+  "container": "map",
+  "op": "insert",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_map_insert",
+  "container": "map",
+  "op": "insert",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_map_emplace",
+  "container": "map",
+  "op": "emplace",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_map_emplace",
+  "container": "map",
+  "op": "emplace",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_map_subscript",
+  "container": "map",
+  "op": "subscript",
+  "domain": "iterador",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "rf_map_subscript",
+  "container": "map",
+  "op": "subscript",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_map_erase_begin",
+  "container": "map",
+  "op": "erase_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_map_erase_begin",
+  "container": "map",
+  "op": "erase_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_map_clear",
+  "container": "map",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_map_clear",
+  "container": "map",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_uset_insert",
+  "container": "uset",
+  "op": "insert",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_uset_insert",
+  "container": "uset",
+  "op": "insert",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_uset_erase_begin",
+  "container": "uset",
+  "op": "erase_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_uset_erase_begin",
+  "container": "uset",
+  "op": "erase_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_uset_clear",
+  "container": "uset",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_uset_clear",
+  "container": "uset",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_uset_rehash",
+  "container": "uset",
+  "op": "rehash",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_uset_rehash",
+  "container": "uset",
+  "op": "rehash",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_uset_reserve",
+  "container": "uset",
+  "op": "reserve",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_uset_reserve",
+  "container": "uset",
+  "op": "reserve",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_umap_insert",
+  "container": "umap",
+  "op": "insert",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_umap_insert",
+  "container": "umap",
+  "op": "insert",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_umap_subscript",
+  "container": "umap",
+  "op": "subscript",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_umap_subscript",
+  "container": "umap",
+  "op": "subscript",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_umap_erase_begin",
+  "container": "umap",
+  "op": "erase_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_umap_erase_begin",
+  "container": "umap",
+  "op": "erase_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_umap_clear",
+  "container": "umap",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_umap_clear",
+  "container": "umap",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_umap_rehash",
+  "container": "umap",
+  "op": "rehash",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_umap_rehash",
+  "container": "umap",
+  "op": "rehash",
+  "domain": "referencia",
+  "expected": "SAFE",
+  "warned": false,
+  "bucket": "correcto"
+ },
+ {
+  "fn": "it_string_push_back",
+  "container": "string",
+  "op": "push_back",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_string_push_back",
+  "container": "string",
+  "op": "push_back",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_string_append",
+  "container": "string",
+  "op": "append",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_string_append",
+  "container": "string",
+  "op": "append",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_string_insert_begin",
+  "container": "string",
+  "op": "insert_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_string_insert_begin",
+  "container": "string",
+  "op": "insert_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_string_erase_begin",
+  "container": "string",
+  "op": "erase_begin",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "rf_string_erase_begin",
+  "container": "string",
+  "op": "erase_begin",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_string_clear",
+  "container": "string",
+  "op": "clear",
+  "domain": "iterador",
+  "expected": "UB",
+  "warned": true,
+  "bucket": "detectado"
+ },
+ {
+  "fn": "rf_string_clear",
+  "container": "string",
+  "op": "clear",
+  "domain": "referencia",
+  "expected": "UB",
+  "warned": false,
+  "bucket": "FALSO NEGATIVO"
+ },
+ {
+  "fn": "it_string_reserve",
+  "container": "string",
+  "op": "reserve",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_string_reserve",
+  "container": "string",
+  "op": "reserve",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "it_string_resize_grow",
+  "container": "string",
+  "op": "resize_grow",
+  "domain": "iterador",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ },
+ {
+  "fn": "rf_string_resize_grow",
+  "container": "string",
+  "op": "resize_grow",
+  "domain": "referencia",
+  "expected": "POLICY",
+  "warned": false,
+  "bucket": "silencio (optimista)"
+ }
+]

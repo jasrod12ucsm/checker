@@ -1,0 +1,17 @@
+[book]
+title = "Tesis"
+authors = ["jasonrod12ucsm"]
+language = "es"
+
+[preprocessor]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
+
+[preprocessor.plantuml]
+plantuml-cmd = "/home/jason/.local/bin/plantuml"
+
+[output]
+
+[output.html]
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
