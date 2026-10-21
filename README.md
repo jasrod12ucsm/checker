@@ -1,46 +1,52 @@
-# mi-linter
+# checker — `ucsm.ContainerInvalidation`
 
-Linter de C++ construido sobre Clang LibTooling. Ejemplo minimo pero completo:
-detecta excepciones capturadas por valor (`catch (std::exception e)`), que
-provocan *object slicing*, y propone el fix-it `catch (const std::exception &e)`.
+Checker para Clang Static Analyzer (LLVM 21) que avisa del uso de un
+iterador, una referencia o un puntero a un elemento de un contenedor de la
+STL después de una operación que lo invalida según C++17. Las reglas de
+invalidación están escritas como datos en `norma/matriz.json`, cada una con
+su cláusula de la norma.
 
-## Dependencias (Arch Linux)
+## En dos minutos
 
-    sudo pacman -S llvm clang cmake ninja
+Solo hace falta Docker con `docker compose`:
 
-`clang` trae los headers de Clang y `ClangConfig.cmake`; `llvm` trae los headers
-de LLVM y `LLVMConfig.cmake`. Hacen falta los dos.
+```bash
+git clone https://github.com/jasrod12ucsm/checker.git
+cd checker
+docker compose build                 # una sola vez: descarga LLVM 21 (imagen de unos 2 GB)
+docker compose run --rm verificar    # construye el checker y verifica los requerimientos (~30 s)
+```
 
-En Debian/Ubuntu: `sudo apt install llvm-dev libclang-dev clang cmake ninja-build`
+Probarlo sobre un archivo:
 
-## Compilar
+```bash
+docker compose run --rm shell
+clang++ -std=c++17 --analyze -o /dev/null \
+  -Xclang -load -Xclang build/plugin/libContainerInvalidation.so \
+  -Xclang -analyzer-checker=ucsm.ContainerInvalidation \
+  -Xclang -analyzer-config -Xclang ucsm.ContainerInvalidation:PolicyMode=Possibly \
+  -Xclang -analyzer-output=text \
+  ejemplos/prueba.cpp
+```
 
-    cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-    cmake --build build
+## El libro del proyecto
 
-## Ejecutar
+Todo está documentado en el libro (mdbook): cómo usar el checker, correr los
+bench y el corpus, el diseño, los resultados y **en qué parte del código se
+valida cada requerimiento**, con los fragmentos de código.
 
-    ./build/mi-linter test/catch_by_value.cpp -- -std=c++17
+```bash
+python3 bench/gen_book.py
+mdbook serve corpus_book --open
+```
 
-Sobre un proyecto real con `compile_commands.json`:
+Las páginas escritas a mano están en `libro/`; empieza por
+`libro/uso/index.md`.
 
-    ./build/mi-linter -p /ruta/al/build $(find /ruta/src -name '*.cpp')
+## Resultado principal
 
-Codigo de salida 1 si hay hallazgos, para usarlo como gate en CI.
-
-## Explorar el AST
-
-    clang-query test/catch_by_value.cpp -- -std=c++17
-    > set traversal IgnoreUnlessSpelledInSource
-    > m varDecl(isExceptionVariable(), hasType(hasCanonicalType(recordType())))
-
-    clang++ -Xclang -ast-dump -fsyntax-only test/catch_by_value.cpp -std=c++17
-
-## Estructura
-
-    CMakeLists.txt              build contra el LLVM/Clang del sistema
-    src/MiLinter.cpp            driver: CLI, ClangTool, registro de reglas
-    src/CatchByValueCheck.h     declaracion de la regla
-    src/CatchByValueCheck.cpp   matcher + callback + diagnostico + fix-it
-    test/catch_by_value.cpp     casos positivos y negativos
-# checker
+En un banco de 750 casos etiquetados desde la norma y validados con libstdc++
+Debug Mode y ASan (852 ejecuciones, 0 contradicciones), CSA solo detecta 80
+de 342 usos inválidos y ninguno sobre referencias o punteros retenidos. Con el
+checker detecta los 342, sin falsos positivos en 306 casos seguros, con un
+sobrecosto mediano de tiempo de 0.3 %.

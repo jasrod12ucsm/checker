@@ -1,0 +1,34 @@
+@startuml
+!include _estilo.iuml
+skinparam sequenceMessageAlign center
+participant "ExprEngine" as eng
+participant "InvalidationChecker\n(cáscara)" as chk
+participant "ClangRecognizer\n(ACL)" as acl
+participant "Núcleo\n(dominio puro)" as dom
+participant "ProgramState" as st
+participant "BugReporter" as bug
+
+== Obtención: const auto& h = *it; ==
+eng -> chk : checkPostCall(operator*)
+chk -> acl : recognize(call)
+acl --> chk : Obtención{contenedor c, Referencia, posición Primero}
+chk -> dom : obtain(origen)
+dom --> chk : HandleState(Válido)
+chk -> st : set(regiónElemento ↦ HandleState)
+
+== Mutación: c.erase(c.begin()); ==
+eng -> chk : checkPostCall(vector::erase)
+chk -> acl : recognize(call)
+acl --> chk : Mutación{c, erase, punto Primero}
+chk -> st : handles de c
+chk -> dom : decide(mutación, handles, regla)
+dom --> chk : handles' + Nota("h quedó inválida por erase")
+chk -> st : addTransition(estado', NoteTag)
+
+== Uso: sink(h); ==
+eng -> chk : checkLocation(load, región de h)
+chk -> st : HandleState de la región base
+chk -> dom : onUse(estado)
+dom --> chk : Aviso{Confirmado, causa = erase en línea 4}
+chk -> bug : generateNonFatalErrorNode + emitReport
+@enduml

@@ -6,19 +6,23 @@ Mutación: `c.rehash(1024);`
 - Referencia/puntero retenido: 🟢 `SAFE`
 - Casos `UB` detectados estáticamente: 0/6
 
+**En palabras:** después de `c.rehash(1024);` sobre un `std::unordered_set`, un iterador guardado queda **inválido**: usarlo después es un bug (UB); una referencia o puntero guardado sigue siendo **válido**: usarlo después es correcto. Ojo: en forma `bucle` todos son UB, porque el iterador de control del `for` (`++it`) queda inválido aunque la referencia siga bien.
+
+Mapa de los 12 casos. Cada celda muestra la respuesta correcta (etiqueta) y, debajo, lo que hizo el analizador estático de Clang. Clic para ir al caso. Ver [Cómo leer este libro](../../guia.md).
+
 | | `recto` | `guarda` | `bucle` | `llamada` |
 |---|---|---|---|---|
-| **iterador** | [🔴 calla](#f_uset_rehash_it_recto) | [🔴 calla](#f_uset_rehash_it_guarda) | [🔴 calla](#f_uset_rehash_it_bucle) | [🔴 calla](#f_uset_rehash_it_llamada) |
-| **referencia** | [🟢 calla](#f_uset_rehash_ref_recto) | [🟢 calla](#f_uset_rehash_ref_guarda) | [🔴 calla](#f_uset_rehash_ref_bucle) | [🟢 calla](#f_uset_rehash_ref_llamada) |
-| **puntero** | [🟢 calla](#f_uset_rehash_ptr_recto) | [🟢 calla](#f_uset_rehash_ptr_guarda) | [🔴 calla](#f_uset_rehash_ptr_bucle) | [🟢 calla](#f_uset_rehash_ptr_llamada) |
+| **iterador** | [🔴 `UB`<br>❌ no detectado](#f_uset_rehash_it_recto) | [🔴 `UB`<br>❌ no detectado](#f_uset_rehash_it_guarda) | [🔴 `UB`<br>❌ no detectado](#f_uset_rehash_it_bucle) | [🔴 `UB`<br>❌ no detectado](#f_uset_rehash_it_llamada) |
+| **referencia** | [🟢 `SAFE`<br>✅ correcto, sin aviso](#f_uset_rehash_ref_recto) | [🟢 `SAFE`<br>✅ correcto, sin aviso](#f_uset_rehash_ref_guarda) | [🔴 `UB`<br>❌ no detectado](#f_uset_rehash_ref_bucle) | [🟢 `SAFE`<br>✅ correcto, sin aviso](#f_uset_rehash_ref_llamada) |
+| **puntero** | [🟢 `SAFE`<br>✅ correcto, sin aviso](#f_uset_rehash_ptr_recto) | [🟢 `SAFE`<br>✅ correcto, sin aviso](#f_uset_rehash_ptr_guarda) | [🔴 `UB`<br>❌ no detectado](#f_uset_rehash_ptr_bucle) | [🟢 `SAFE`<br>✅ correcto, sin aviso](#f_uset_rehash_ptr_llamada) |
 
 ## Handle: iterador
 
 ### f_uset_rehash_it_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `recto` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `recto` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_uset_rehash_it_recto(std::unordered_set<int>& c) {
@@ -32,13 +36,13 @@ void f_uset_rehash_it_recto(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_it_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `guarda` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `guarda` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_uset_rehash_it_guarda(std::unordered_set<int>& c) {
@@ -53,13 +57,13 @@ void f_uset_rehash_it_guarda(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_it_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `bucle` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `bucle` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_uset_rehash_it_bucle(std::unordered_set<int>& c) {
@@ -75,13 +79,13 @@ void f_uset_rehash_it_bucle(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_it_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `llamada` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `llamada` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_uset_rehash_it_llamada(std::unordered_set<int>& c) {
@@ -96,15 +100,15 @@ void f_uset_rehash_it_llamada(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ## Handle: referencia
 
 ### f_uset_rehash_ref_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `recto` | 🟢 `SAFE` | ✅ silencio correcto |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `recto` | 🟢 `SAFE` | ✅ correcto, sin aviso | ✅ correcto, sin aviso |
 
 ```cpp
 void f_uset_rehash_ref_recto(std::unordered_set<int>& c) {
@@ -117,13 +121,13 @@ void f_uset_rehash_ref_recto(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_ref_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `guarda` | 🟢 `SAFE` | ✅ silencio correcto |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `guarda` | 🟢 `SAFE` | ✅ correcto, sin aviso | ✅ correcto, sin aviso |
 
 ```cpp
 void f_uset_rehash_ref_guarda(std::unordered_set<int>& c) {
@@ -137,13 +141,13 @@ void f_uset_rehash_ref_guarda(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_ref_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `bucle` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `bucle` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_uset_rehash_ref_bucle(std::unordered_set<int>& c) {
@@ -160,13 +164,13 @@ void f_uset_rehash_ref_bucle(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_ref_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `llamada` | 🟢 `SAFE` | ✅ silencio correcto |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `llamada` | 🟢 `SAFE` | ✅ correcto, sin aviso | ✅ correcto, sin aviso |
 
 ```cpp
 void f_uset_rehash_ref_llamada(std::unordered_set<int>& c) {
@@ -180,15 +184,15 @@ void f_uset_rehash_ref_llamada(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ## Handle: puntero
 
 ### f_uset_rehash_ptr_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `recto` | 🟢 `SAFE` | ✅ silencio correcto |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `recto` | 🟢 `SAFE` | ✅ correcto, sin aviso | ✅ correcto, sin aviso |
 
 ```cpp
 void f_uset_rehash_ptr_recto(std::unordered_set<int>& c) {
@@ -201,13 +205,13 @@ void f_uset_rehash_ptr_recto(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_ptr_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `guarda` | 🟢 `SAFE` | ✅ silencio correcto |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `guarda` | 🟢 `SAFE` | ✅ correcto, sin aviso | ✅ correcto, sin aviso |
 
 ```cpp
 void f_uset_rehash_ptr_guarda(std::unordered_set<int>& c) {
@@ -221,13 +225,13 @@ void f_uset_rehash_ptr_guarda(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_ptr_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `bucle` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `bucle` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_uset_rehash_ptr_bucle(std::unordered_set<int>& c) {
@@ -244,13 +248,13 @@ void f_uset_rehash_ptr_bucle(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |
 
 ### f_uset_rehash_ptr_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `llamada` | 🟢 `SAFE` | ✅ silencio correcto |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `llamada` | 🟢 `SAFE` | ✅ correcto, sin aviso | ✅ correcto, sin aviso |
 
 ```cpp
 void f_uset_rehash_ptr_llamada(std::unordered_set<int>& c) {
@@ -264,4 +268,4 @@ void f_uset_rehash_ptr_llamada(std::unordered_set<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | — (código 0) |
+| `natural` | estado inicial ordinario | sin detección | sin detección |

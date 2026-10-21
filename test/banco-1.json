@@ -1,0 +1,8 @@
+{
+ "banco": "banco-1",
+ "fecha": "2026-10-20",
+ "casos": 750,
+ "corpus.cpp": "efe9a7f0c3d473fec4f54f633ed8c25ef119b1eb8224549b86dd4806ec9a2ef5",
+ "corpus_truth.json": "d0b680f1ab0e224441a0d0e7a79ae4fa94fdcc7d46af721251e6a6279500b9db",
+ "nota": "Congelado con D-18 y D-20 aplicadas. Cambiar el banco exige un banco-2 nuevo, no editar este."
+}

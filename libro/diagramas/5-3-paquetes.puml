@@ -1,0 +1,79 @@
+@startuml
+!include _estilo.iuml
+
+package "norma" as norma #FFF8E6 {
+  [matriz.json] as matriz
+  [gen_tabla.py] as gentab
+}
+
+package "plugin (C++ / CMake)" as plugin {
+  package "dominio\n<<sin #include de Clang>>" as dominio #E8F1FB {
+    [tipos del lenguaje ubicuo]
+    [regla y efecto]
+    [decisiones puras]
+  }
+  package "acl\n<<anticorrupción>>" as acl #F3ECFA {
+    [reconocer contenedor]
+    [reconocer operación]
+    [reconocer handle y posición]
+  }
+  package "checker\n<<cáscara CSA>>" as shell #FCEDEF {
+    [InvalidationChecker]
+    [rasgos de ProgramState]
+    [notas y avisos]
+  }
+  package "registro" as reg {
+    [clang_registerCheckers]
+  }
+}
+
+package "evaluacion (Python)" as eval #EDF7EE {
+  [banco: gen_corpus.py]
+  [ejecutor]
+  [normalizador]
+  [cotejo]
+  [métricas]
+}
+
+package "validacion_dinamica (Python)" as din #EDF7EE {
+  [gen_runtime_harness.py]
+  [run_runtime_validation.py]
+}
+
+package "libro (mdbook)" as libro {
+  [gen_book.py]
+}
+
+package "Clang/LLVM 21" as llvm #F5F5F5 {
+  [StaticAnalyzer Core]
+  [AST]
+}
+
+' apilar en columna para que quepa en una página vertical
+[tipos del lenguaje ubicuo] -[hidden]down- [regla y efecto]
+[regla y efecto] -[hidden]down- [decisiones puras]
+[reconocer contenedor] -[hidden]down- [reconocer operación]
+[reconocer operación] -[hidden]down- [reconocer handle y posición]
+[InvalidationChecker] -[hidden]down- [rasgos de ProgramState]
+[rasgos de ProgramState] -[hidden]down- [notas y avisos]
+[banco: gen_corpus.py] -[hidden]down- [ejecutor]
+[ejecutor] -[hidden]down- [normalizador]
+[normalizador] -[hidden]down- [cotejo]
+[cotejo] -[hidden]down- [métricas]
+[gen_runtime_harness.py] -[hidden]down- [run_runtime_validation.py]
+[StaticAnalyzer Core] -[hidden]down- [AST]
+
+gentab ..> matriz : lee
+dominio ..> norma : «tabla generada»
+acl ..> dominio : produce valores de
+acl ..> llvm : lee AST y SVal
+shell ..> acl : usa
+shell ..> dominio : decide con
+shell ..> llvm : implementa Checker<…>
+reg ..> shell : registra
+eval ..> norma : etiquetas
+eval ..> plugin : invoca clang -load\n(no ve ProgramState)
+din ..> norma : etiquetas
+libro ..> eval : resultados
+libro ..> din : resultados
+@enduml

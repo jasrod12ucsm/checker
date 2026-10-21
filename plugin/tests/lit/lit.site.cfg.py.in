@@ -1,0 +1,4 @@
+import os
+config.plugin = "@CMAKE_CURRENT_BINARY_DIR@/libContainerInvalidation.so"
+config.llvm_bin = "@LLVM_TOOLS_BINARY_DIR@"
+lit_config.load_config(config, "@CMAKE_CURRENT_SOURCE_DIR@/tests/lit/lit.cfg.py")

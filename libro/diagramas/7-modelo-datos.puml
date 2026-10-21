@@ -1,0 +1,74 @@
+@startuml
+!include _estilo.iuml
+hide circle
+skinparam linetype ortho
+
+entity "Mutacion\n(norma/matriz.json)" as mut {
+  * id : «vector.push_back.back»
+  --
+  contenedor, operacion
+  punto : front | back | anchor | range…
+  crecimiento
+}
+entity "Regla" as regla {
+  * (mutacion, categoria, relacion)
+  --
+  categoria : iterator | reference
+  relacion : before | at | after | end…
+  efecto : preserves | invalidates | depends
+  condicion : texto (si depends)
+  clausula : [vector.modifiers]…
+}
+entity "Caso\n(test/corpus_truth.json)" as caso {
+  * case : «f_vector_push_back_it_recto»
+  --
+  contenedor, op, sostiene, forma
+  garantia : ninguna | reserva…
+  esperado : UB | SAFE | POLICY
+  handles : {sostenido, control}
+}
+entity "Condicion\n(metricas.json · meta)" as conf {
+  * nombre : Reference | Experimental-Silent
+    | Experimental-Possibly | Plugin-Possibly
+  --
+  orden clang (lista)
+  clang, libstdcxx, plugin_sha256, banco_sha256
+}
+entity "Ejecucion\n(ejecucion.json · runs)" as eje {
+  * (case, condicion)
+  --
+  outcome : Completed | CompileError
+    | Crash | Timeout | Unreadable
+  segundos, max_rss_kb, detalle
+}
+entity "Aviso\n(dentro de la ejecución)" as diag {
+  line, column, checker
+  clase : Confirmed | Possible | Other
+  message
+}
+entity "Cotejo\n(cotejo.json · matches)" as cot {
+  * (case, condicion)
+  --
+  verdict : TP | FP | FN | TN | PolicyWarned
+    | PolicySilent | Incident
+  sitios : sostenido | control | otro
+  en_sostenido, fuera_de_sitio, posibles
+}
+entity "Metrica\n(metricas.json · metricas)" as met {
+  * (condicion, grupo, valor)
+  --
+  tp, fp, fn, tn, policy…, incidents
+  ubEnSostenido, ubSostenidoTotal
+  precision, recall, f1 : real | null
+}
+
+mut ||--|{ regla
+regla ||--o{ caso : etiqueta
+caso ||--o{ eje
+conf ||--o{ eje
+eje ||--o{ diag
+caso ||--o{ cot
+conf ||--o{ cot
+cot }o--o{ diag : atribuye
+met }o--|| conf
+@enduml

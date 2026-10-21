@@ -4,4787 +4,8999 @@
   "op": "push_back",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_it_recto_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_it_guarda": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_it_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_it_bucle": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_it_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_it_llamada": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_it_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_ref_recto": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_ref_recto_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "ref",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_ref_guarda": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_ref_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "ref",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_ref_bucle": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
+ },
+ "f_vector_push_back_ref_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "ref",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_vector_push_back_ref_llamada": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_ref_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "ref",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_ptr_recto": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_ptr_recto_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "ptr",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_ptr_guarda": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_ptr_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "ptr",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_push_back_ptr_bucle": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
+ },
+ "f_vector_push_back_ptr_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "ptr",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_vector_push_back_ptr_llamada": {
   "contenedor": "vector",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_push_back_ptr_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "push_back",
+  "sostiene": "ptr",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_it_recto": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_it_recto_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_it_guarda": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_it_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_it_bucle": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_it_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_it_llamada": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_it_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_ref_recto": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_ref_recto_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "ref",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_ref_guarda": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_ref_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "ref",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_ref_bucle": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
+ },
+ "f_vector_emplace_back_ref_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "ref",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_vector_emplace_back_ref_llamada": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_ref_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "ref",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_ptr_recto": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_ptr_recto_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "ptr",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_ptr_guarda": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_ptr_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "ptr",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_emplace_back_ptr_bucle": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
+ },
+ "f_vector_emplace_back_ptr_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "ptr",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_vector_emplace_back_ptr_llamada": {
   "contenedor": "vector",
   "op": "emplace_back",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_emplace_back_ptr_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "emplace_back",
+  "sostiene": "ptr",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_begin_it_recto": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_it_guarda": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_it_bucle": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_it_llamada": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_ref_recto": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_ref_guarda": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_ref_bucle": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_vector_insert_begin_ref_llamada": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_ptr_recto": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_ptr_guarda": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_begin_ptr_bucle": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_vector_insert_begin_ptr_llamada": {
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_insert_end_it_recto": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_it_recto_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_it_guarda": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_it_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_it_bucle": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_it_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_it_llamada": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_it_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_ref_recto": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_ref_recto_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "ref",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_ref_guarda": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_ref_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "ref",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_ref_bucle": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
+ },
+ "f_vector_insert_end_ref_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "ref",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_vector_insert_end_ref_llamada": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_ref_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "ref",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_ptr_recto": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_ptr_recto_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "ptr",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_ptr_guarda": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_ptr_guarda_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "ptr",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_insert_end_ptr_bucle": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
+ },
+ "f_vector_insert_end_ptr_bucle_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "ptr",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_vector_insert_end_ptr_llamada": {
   "contenedor": "vector",
   "op": "insert_end",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_vector_insert_end_ptr_llamada_reserva": {
+  "contenedor": "vector",
+  "op": "insert_end",
+  "sostiene": "ptr",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_vector_erase_begin_it_recto": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_it_guarda": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_it_bucle": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_it_llamada": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_ref_recto": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_ref_guarda": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_ref_bucle": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_vector_erase_begin_ref_llamada": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_ptr_recto": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_ptr_guarda": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_erase_begin_ptr_bucle": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_vector_erase_begin_ptr_llamada": {
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_it_recto": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_it_guarda": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_it_bucle": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_it_llamada": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_ref_recto": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_ref_guarda": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_ref_bucle": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_vector_clear_ref_llamada": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_ptr_recto": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_ptr_guarda": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_clear_ptr_bucle": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_vector_clear_ptr_llamada": {
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_resize_grow_it_recto": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_it_guarda": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_it_bucle": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_it_llamada": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_ref_recto": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_ref_guarda": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_ref_bucle": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
  },
  "f_vector_resize_grow_ref_llamada": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_ptr_recto": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_ptr_guarda": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_resize_grow_ptr_bucle": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
  },
  "f_vector_resize_grow_ptr_llamada": {
   "contenedor": "vector",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_it_recto": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_it_guarda": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_it_bucle": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_it_llamada": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_ref_recto": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_ref_guarda": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_ref_bucle": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
  },
  "f_vector_reserve_ref_llamada": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_ptr_recto": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_ptr_guarda": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_reserve_ptr_bucle": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
  },
  "f_vector_reserve_ptr_llamada": {
   "contenedor": "vector",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_it_recto": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_it_guarda": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_it_bucle": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_it_llamada": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_ref_recto": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_ref_guarda": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_ref_bucle": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
  },
  "f_vector_shrink_to_fit_ref_llamada": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_ptr_recto": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_ptr_guarda": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_shrink_to_fit_ptr_bucle": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
  },
  "f_vector_shrink_to_fit_ptr_llamada": {
   "contenedor": "vector",
   "op": "shrink_to_fit",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_assign_it_recto": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_it_guarda": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_it_bucle": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_it_llamada": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_ref_recto": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_ref_guarda": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_ref_bucle": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_vector_assign_ref_llamada": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_ptr_recto": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_ptr_guarda": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_assign_ptr_bucle": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_vector_assign_ptr_llamada": {
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_vector_pop_back_it_recto": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_it_guarda": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_it_bucle": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_it_llamada": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_ref_recto": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_ref_guarda": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_ref_bucle": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
  },
  "f_vector_pop_back_ref_llamada": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_ptr_recto": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_ptr_guarda": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_vector_pop_back_ptr_bucle": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": "POLICY"
+  }
  },
  "f_vector_pop_back_ptr_llamada": {
   "contenedor": "vector",
   "op": "pop_back",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
  },
  "f_deque_push_back_it_recto": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_push_back_it_guarda": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_push_back_it_bucle": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_push_back_it_llamada": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_push_back_ref_recto": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_back_ref_guarda": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_back_ref_bucle": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_deque_push_back_ref_llamada": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_back_ptr_recto": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_back_ptr_guarda": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_back_ptr_bucle": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_deque_push_back_ptr_llamada": {
   "contenedor": "deque",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_front_it_recto": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_push_front_it_guarda": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_push_front_it_bucle": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_push_front_it_llamada": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_push_front_ref_recto": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_front_ref_guarda": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_front_ref_bucle": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_deque_push_front_ref_llamada": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_front_ptr_recto": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_front_ptr_guarda": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_push_front_ptr_bucle": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_deque_push_front_ptr_llamada": {
   "contenedor": "deque",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_emplace_back_it_recto": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_emplace_back_it_guarda": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_emplace_back_it_bucle": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_emplace_back_it_llamada": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_emplace_back_ref_recto": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_emplace_back_ref_guarda": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_emplace_back_ref_bucle": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_deque_emplace_back_ref_llamada": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_emplace_back_ptr_recto": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_emplace_back_ptr_guarda": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_emplace_back_ptr_bucle": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_deque_emplace_back_ptr_llamada": {
   "contenedor": "deque",
   "op": "emplace_back",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_insert_middle_it_recto": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_it_guarda": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_it_bucle": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_it_llamada": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_ref_recto": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_ref_guarda": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_ref_bucle": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_deque_insert_middle_ref_llamada": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_ptr_recto": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_ptr_guarda": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_insert_middle_ptr_bucle": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_deque_insert_middle_ptr_llamada": {
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_it_recto": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_it_guarda": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_it_bucle": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_it_llamada": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_ref_recto": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_ref_guarda": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_ref_bucle": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_deque_erase_begin_ref_llamada": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_ptr_recto": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_ptr_guarda": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_erase_begin_ptr_bucle": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_deque_erase_begin_ptr_llamada": {
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_it_recto": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_it_guarda": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_it_bucle": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_it_llamada": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_ref_recto": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_ref_guarda": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_ref_bucle": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_deque_clear_ref_llamada": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_ptr_recto": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_ptr_guarda": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_clear_ptr_bucle": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_deque_clear_ptr_llamada": {
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_resize_grow_it_recto": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_resize_grow_it_guarda": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_resize_grow_it_bucle": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_resize_grow_it_llamada": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_resize_grow_ref_recto": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_resize_grow_ref_guarda": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_resize_grow_ref_bucle": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_deque_resize_grow_ref_llamada": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_resize_grow_ptr_recto": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_resize_grow_ptr_guarda": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_resize_grow_ptr_bucle": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_deque_resize_grow_ptr_llamada": {
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_deque_pop_front_it_recto": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_it_guarda": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_it_bucle": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_it_llamada": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_ref_recto": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_ref_guarda": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_ref_bucle": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_deque_pop_front_ref_llamada": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_ptr_recto": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_ptr_guarda": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_deque_pop_front_ptr_bucle": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_deque_pop_front_ptr_llamada": {
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_push_back_it_recto": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_it_guarda": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_it_bucle": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_it_llamada": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_ref_recto": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_ref_guarda": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_ref_bucle": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_push_back_ref_llamada": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_ptr_recto": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_ptr_guarda": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_back_ptr_bucle": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_push_back_ptr_llamada": {
   "contenedor": "list",
   "op": "push_back",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_it_recto": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_it_guarda": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_it_bucle": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_it_llamada": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_ref_recto": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_ref_guarda": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_ref_bucle": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_push_front_ref_llamada": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_ptr_recto": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_ptr_guarda": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_push_front_ptr_bucle": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_push_front_ptr_llamada": {
   "contenedor": "list",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_it_recto": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_it_guarda": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_it_bucle": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_it_llamada": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_ref_recto": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_ref_guarda": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_ref_bucle": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_insert_ref_llamada": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_ptr_recto": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_ptr_guarda": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_insert_ptr_bucle": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_insert_ptr_llamada": {
   "contenedor": "list",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_erase_begin_it_recto": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_it_guarda": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_it_bucle": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_it_llamada": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_ref_recto": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_ref_guarda": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_ref_bucle": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_list_erase_begin_ref_llamada": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_ptr_recto": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_ptr_guarda": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_erase_begin_ptr_bucle": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_list_erase_begin_ptr_llamada": {
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_it_recto": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_it_guarda": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_it_bucle": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_it_llamada": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_ref_recto": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_ref_guarda": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_ref_bucle": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_list_clear_ref_llamada": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_ptr_recto": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_ptr_guarda": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_clear_ptr_bucle": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_list_clear_ptr_llamada": {
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_resize_grow_it_recto": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_it_guarda": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_it_bucle": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_it_llamada": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_ref_recto": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_ref_guarda": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_ref_bucle": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_resize_grow_ref_llamada": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_ptr_recto": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_ptr_guarda": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_resize_grow_ptr_bucle": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_resize_grow_ptr_llamada": {
   "contenedor": "list",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_pop_front_it_recto": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_it_guarda": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_it_bucle": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_it_llamada": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_ref_recto": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_ref_guarda": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_ref_bucle": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_list_pop_front_ref_llamada": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_ptr_recto": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_ptr_guarda": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_pop_front_ptr_bucle": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_list_pop_front_ptr_llamada": {
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_list_reverse_it_recto": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_it_guarda": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_it_bucle": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_it_llamada": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_ref_recto": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_ref_guarda": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_ref_bucle": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_reverse_ref_llamada": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_ptr_recto": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_ptr_guarda": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_reverse_ptr_bucle": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_reverse_ptr_llamada": {
   "contenedor": "list",
   "op": "reverse",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_it_recto": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_it_guarda": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_it_bucle": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_it_llamada": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_ref_recto": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_ref_guarda": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_ref_bucle": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_sort_ref_llamada": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_ptr_recto": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_ptr_guarda": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_list_sort_ptr_bucle": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_list_sort_ptr_llamada": {
   "contenedor": "list",
   "op": "sort",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_it_recto": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_it_guarda": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_it_bucle": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_it_llamada": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_ref_recto": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_ref_guarda": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_ref_bucle": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_flist_push_front_ref_llamada": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_ptr_recto": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_ptr_guarda": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_push_front_ptr_bucle": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_flist_push_front_ptr_llamada": {
   "contenedor": "flist",
   "op": "push_front",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_it_recto": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_it_guarda": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_it_bucle": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_it_llamada": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_ref_recto": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_ref_guarda": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_ref_bucle": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_flist_insert_after_ref_llamada": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_ptr_recto": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_ptr_guarda": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_insert_after_ptr_bucle": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_flist_insert_after_ptr_llamada": {
   "contenedor": "flist",
   "op": "insert_after",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_flist_erase_after_it_recto": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_it_guarda": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_it_bucle": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_it_llamada": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_ref_recto": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_ref_guarda": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_ref_bucle": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_flist_erase_after_ref_llamada": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_ptr_recto": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_ptr_guarda": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_erase_after_ptr_bucle": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_flist_erase_after_ptr_llamada": {
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_it_recto": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_it_guarda": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_it_bucle": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_it_llamada": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_ref_recto": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_ref_guarda": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_ref_bucle": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_flist_clear_ref_llamada": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_ptr_recto": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_ptr_guarda": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_flist_clear_ptr_bucle": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_flist_clear_ptr_llamada": {
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_insert_it_recto": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_it_guarda": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_it_bucle": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_it_llamada": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_ref_recto": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_ref_guarda": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_ref_bucle": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_set_insert_ref_llamada": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_ptr_recto": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_ptr_guarda": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_insert_ptr_bucle": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_set_insert_ptr_llamada": {
   "contenedor": "set",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_it_recto": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_it_guarda": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_it_bucle": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_it_llamada": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_ref_recto": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_ref_guarda": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_ref_bucle": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_set_emplace_ref_llamada": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_ptr_recto": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_ptr_guarda": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_emplace_ptr_bucle": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_set_emplace_ptr_llamada": {
   "contenedor": "set",
   "op": "emplace",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_set_erase_begin_it_recto": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_it_guarda": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_it_bucle": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_it_llamada": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_ref_recto": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_ref_guarda": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_ref_bucle": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_set_erase_begin_ref_llamada": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_ptr_recto": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_ptr_guarda": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_erase_begin_ptr_bucle": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_set_erase_begin_ptr_llamada": {
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_it_recto": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_it_guarda": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_it_bucle": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_it_llamada": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_ref_recto": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_ref_guarda": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_ref_bucle": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_set_clear_ref_llamada": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_ptr_recto": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_ptr_guarda": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_set_clear_ptr_bucle": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_set_clear_ptr_llamada": {
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_insert_it_recto": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_it_guarda": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_it_bucle": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_it_llamada": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_ref_recto": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_ref_guarda": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_ref_bucle": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_mset_insert_ref_llamada": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_ptr_recto": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_ptr_guarda": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_insert_ptr_bucle": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_mset_insert_ptr_llamada": {
   "contenedor": "mset",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mset_erase_begin_it_recto": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_it_guarda": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_it_bucle": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_it_llamada": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_ref_recto": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_ref_guarda": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_ref_bucle": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_mset_erase_begin_ref_llamada": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_ptr_recto": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_ptr_guarda": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_erase_begin_ptr_bucle": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_mset_erase_begin_ptr_llamada": {
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_it_recto": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_it_guarda": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_it_bucle": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_it_llamada": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_ref_recto": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_ref_guarda": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_ref_bucle": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_mset_clear_ref_llamada": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_ptr_recto": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_ptr_guarda": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mset_clear_ptr_bucle": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_mset_clear_ptr_llamada": {
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_insert_it_recto": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_it_guarda": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_it_bucle": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_it_llamada": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_ref_recto": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_ref_guarda": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_ref_bucle": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_map_insert_ref_llamada": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_ptr_recto": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_ptr_guarda": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_insert_ptr_bucle": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_map_insert_ptr_llamada": {
   "contenedor": "map",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_it_recto": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_it_guarda": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_it_bucle": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_it_llamada": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_ref_recto": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_ref_guarda": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_ref_bucle": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_map_emplace_ref_llamada": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_ptr_recto": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_ptr_guarda": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_emplace_ptr_bucle": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_map_emplace_ptr_llamada": {
   "contenedor": "map",
   "op": "emplace",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_it_recto": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_it_guarda": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_it_bucle": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_it_llamada": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_ref_recto": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_ref_guarda": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_ref_bucle": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_map_subscript_ref_llamada": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_ptr_recto": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_ptr_guarda": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_subscript_ptr_bucle": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_map_subscript_ptr_llamada": {
   "contenedor": "map",
   "op": "subscript",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_map_erase_begin_it_recto": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_it_guarda": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_it_bucle": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_it_llamada": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_ref_recto": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_ref_guarda": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_ref_bucle": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_map_erase_begin_ref_llamada": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_ptr_recto": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_ptr_guarda": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_erase_begin_ptr_bucle": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_map_erase_begin_ptr_llamada": {
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_it_recto": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_it_guarda": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_it_bucle": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_it_llamada": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_ref_recto": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_ref_guarda": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_ref_bucle": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_map_clear_ref_llamada": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_ptr_recto": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_ptr_guarda": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_map_clear_ptr_bucle": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_map_clear_ptr_llamada": {
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_insert_it_recto": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_it_guarda": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_it_bucle": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_it_llamada": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_ref_recto": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_ref_guarda": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_ref_bucle": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_mmap_insert_ref_llamada": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_ptr_recto": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_ptr_guarda": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_insert_ptr_bucle": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_mmap_insert_ptr_llamada": {
   "contenedor": "mmap",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_it_recto": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_it_guarda": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_it_bucle": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_it_llamada": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_ref_recto": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_ref_guarda": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_ref_bucle": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_mmap_erase_begin_ref_llamada": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_ptr_recto": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_ptr_guarda": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_erase_begin_ptr_bucle": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_mmap_erase_begin_ptr_llamada": {
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_it_recto": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_it_guarda": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_it_bucle": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_it_llamada": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_ref_recto": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_ref_guarda": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_ref_bucle": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_mmap_clear_ref_llamada": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_ptr_recto": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_ptr_guarda": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_mmap_clear_ptr_bucle": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_mmap_clear_ptr_llamada": {
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_insert_it_recto": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_uset_insert_it_recto_reserva": {
+  "contenedor": "uset",
+  "op": "insert",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_it_guarda": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_uset_insert_it_guarda_reserva": {
+  "contenedor": "uset",
+  "op": "insert",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_it_bucle": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_uset_insert_it_bucle_reserva": {
+  "contenedor": "uset",
+  "op": "insert",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_it_llamada": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_uset_insert_it_llamada_reserva": {
+  "contenedor": "uset",
+  "op": "insert",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_ref_recto": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_ref_guarda": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_ref_bucle": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "POLICY"
+  }
+ },
+ "f_uset_insert_ref_bucle_reserva": {
+  "contenedor": "uset",
+  "op": "insert",
+  "sostiene": "ref",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_uset_insert_ref_llamada": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_ptr_recto": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_ptr_guarda": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_insert_ptr_bucle": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "POLICY"
+  }
+ },
+ "f_uset_insert_ptr_bucle_reserva": {
+  "contenedor": "uset",
+  "op": "insert",
+  "sostiene": "ptr",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_uset_insert_ptr_llamada": {
   "contenedor": "uset",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_erase_begin_it_recto": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_it_guarda": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_it_bucle": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_it_llamada": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_ref_recto": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_ref_guarda": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_ref_bucle": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_uset_erase_begin_ref_llamada": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_ptr_recto": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_ptr_guarda": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_erase_begin_ptr_bucle": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_uset_erase_begin_ptr_llamada": {
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_it_recto": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_it_guarda": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_it_bucle": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_it_llamada": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_ref_recto": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_ref_guarda": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_ref_bucle": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_uset_clear_ref_llamada": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_ptr_recto": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_ptr_guarda": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_clear_ptr_bucle": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_uset_clear_ptr_llamada": {
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_rehash_it_recto": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_rehash_it_guarda": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_rehash_it_bucle": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_rehash_it_llamada": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_rehash_ref_recto": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_rehash_ref_guarda": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_rehash_ref_bucle": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_uset_rehash_ref_llamada": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_rehash_ptr_recto": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_rehash_ptr_guarda": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_rehash_ptr_bucle": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_uset_rehash_ptr_llamada": {
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_reserve_it_recto": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_reserve_it_guarda": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_reserve_it_bucle": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_reserve_it_llamada": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_uset_reserve_ref_recto": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_reserve_ref_guarda": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_reserve_ref_bucle": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_uset_reserve_ref_llamada": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_reserve_ptr_recto": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_reserve_ptr_guarda": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_uset_reserve_ptr_bucle": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_uset_reserve_ptr_llamada": {
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_it_recto": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_umap_insert_it_recto_reserva": {
+  "contenedor": "umap",
+  "op": "insert",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_it_guarda": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_umap_insert_it_guarda_reserva": {
+  "contenedor": "umap",
+  "op": "insert",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_it_bucle": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_umap_insert_it_bucle_reserva": {
+  "contenedor": "umap",
+  "op": "insert",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_it_llamada": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_umap_insert_it_llamada_reserva": {
+  "contenedor": "umap",
+  "op": "insert",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_ref_recto": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_ref_guarda": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_ref_bucle": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "POLICY"
+  }
+ },
+ "f_umap_insert_ref_bucle_reserva": {
+  "contenedor": "umap",
+  "op": "insert",
+  "sostiene": "ref",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_umap_insert_ref_llamada": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_ptr_recto": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_ptr_guarda": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_insert_ptr_bucle": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "POLICY"
+  }
+ },
+ "f_umap_insert_ptr_bucle_reserva": {
+  "contenedor": "umap",
+  "op": "insert",
+  "sostiene": "ptr",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_umap_insert_ptr_llamada": {
   "contenedor": "umap",
   "op": "insert",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_it_recto": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_umap_subscript_it_recto_reserva": {
+  "contenedor": "umap",
+  "op": "subscript",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_it_guarda": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_umap_subscript_it_guarda_reserva": {
+  "contenedor": "umap",
+  "op": "subscript",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_it_bucle": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_umap_subscript_it_bucle_reserva": {
+  "contenedor": "umap",
+  "op": "subscript",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_it_llamada": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "POLICY"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "POLICY",
+   "control": null
+  }
+ },
+ "f_umap_subscript_it_llamada_reserva": {
+  "contenedor": "umap",
+  "op": "subscript",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_ref_recto": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_ref_guarda": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_ref_bucle": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "POLICY"
+  }
+ },
+ "f_umap_subscript_ref_bucle_reserva": {
+  "contenedor": "umap",
+  "op": "subscript",
+  "sostiene": "ref",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_umap_subscript_ref_llamada": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_ptr_recto": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_ptr_guarda": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_subscript_ptr_bucle": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "SAFE"
+  "esperado": "POLICY",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "POLICY"
+  }
+ },
+ "f_umap_subscript_ptr_bucle_reserva": {
+  "contenedor": "umap",
+  "op": "subscript",
+  "sostiene": "ptr",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "reserva",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "SAFE"
+  }
  },
  "f_umap_subscript_ptr_llamada": {
   "contenedor": "umap",
   "op": "subscript",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_erase_begin_it_recto": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_it_guarda": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_it_bucle": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_it_llamada": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_ref_recto": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_ref_guarda": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_ref_bucle": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_umap_erase_begin_ref_llamada": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_ptr_recto": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_ptr_guarda": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_erase_begin_ptr_bucle": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_umap_erase_begin_ptr_llamada": {
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_it_recto": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_it_guarda": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_it_bucle": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_it_llamada": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_ref_recto": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_ref_guarda": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_ref_bucle": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_umap_clear_ref_llamada": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_ptr_recto": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_ptr_guarda": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_clear_ptr_bucle": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  }
  },
  "f_umap_clear_ptr_llamada": {
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_rehash_it_recto": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "it",
   "forma": "recto",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_rehash_it_guarda": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "it",
   "forma": "guarda",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_rehash_it_bucle": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "it",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_rehash_it_llamada": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "it",
   "forma": "llamada",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  }
  },
  "f_umap_rehash_ref_recto": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_rehash_ref_guarda": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_rehash_ref_bucle": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_umap_rehash_ref_llamada": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_rehash_ptr_recto": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "recto",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_rehash_ptr_guarda": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "guarda",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  },
  "f_umap_rehash_ptr_bucle": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "bucle",
-  "esperado": "UB"
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  }
  },
  "f_umap_rehash_ptr_llamada": {
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "llamada",
-  "esperado": "SAFE"
+  "esperado": "SAFE",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_vector_erase_ret_it_bucle": {
+  "contenedor": "vector",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_deque_erase_ret_it_bucle": {
+  "contenedor": "deque",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_list_erase_ret_it_bucle": {
+  "contenedor": "list",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_set_erase_ret_it_bucle": {
+  "contenedor": "set",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_mset_erase_ret_it_bucle": {
+  "contenedor": "mset",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_map_erase_ret_it_bucle": {
+  "contenedor": "map",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_mmap_erase_ret_it_bucle": {
+  "contenedor": "mmap",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_uset_erase_ret_it_bucle": {
+  "contenedor": "uset",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_umap_erase_ret_it_bucle": {
+  "contenedor": "umap",
+  "op": "erase_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_vector_insert_ret_it_bucle": {
+  "contenedor": "vector",
+  "op": "insert_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_deque_insert_ret_it_bucle": {
+  "contenedor": "deque",
+  "op": "insert_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
+ },
+ "f_list_insert_ret_it_bucle": {
+  "contenedor": "list",
+  "op": "insert_ret",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "SAFE",
+  "garantia": "devuelto",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": null
+  }
  }
 }

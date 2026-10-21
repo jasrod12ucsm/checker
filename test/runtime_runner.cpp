@@ -21,6 +21,13 @@ Mode parse_mode(const char *arg) {
 std::vector<int> make_vector(Mode mode, std::string_view op) {
   std::vector<int> c;
   if (mode == Mode::ForceInvalidation && op == "pop_back") { c.push_back(1); return c; }
+  // pop_back en bucle: el iterador de control avanza mientras se borra el
+  // final. Con 8 elementos, tres rondas no lo alcanzan (con 3 sí: sería UB).
+  if (mode == Mode::PreserveValidity && op == "pop_back") {
+    c.reserve(512);
+    for (int i = 1; i <= 8; ++i) c.push_back(i);
+    return c;
+  }
   // shrink_to_fit es una solicitud no vinculante: se prepara holgura para
   // observar la decisión de esta implementación, no para imponerla.
   if (op == "shrink_to_fit") {
@@ -34,9 +41,9 @@ std::vector<int> make_vector(Mode mode, std::string_view op) {
     while (c.size() < c.capacity()) c.push_back(static_cast<int>(c.size() + 1));
     return c;
   }
-  // resize_grow y reserve solicitan size()+100; 256 hace que esa solicitud
-  // no exceda la capacidad de la configuración de preservación.
-  if (mode == Mode::PreserveValidity) c.reserve(256);
+  // resize_grow y reserve solicitan size()+100, tres veces en bucle: 512
+  // hace que ninguna solicitud exceda la capacidad de la preservación.
+  if (mode == Mode::PreserveValidity) c.reserve(512);
   c.push_back(1); c.push_back(2); c.push_back(3);
   return c;
 }
@@ -76,9 +83,19 @@ int main(int argc, char **argv) {
     f_vector_push_back_it_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_push_back_it_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_it_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_push_back_it_guarda") {
     std::vector<int> c = make_vector(mode, "push_back");
     f_vector_push_back_it_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_push_back_it_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_it_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_push_back_it_bucle") {
@@ -86,9 +103,19 @@ int main(int argc, char **argv) {
     f_vector_push_back_it_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_push_back_it_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_it_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_push_back_it_llamada") {
     std::vector<int> c = make_vector(mode, "push_back");
     f_vector_push_back_it_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_push_back_it_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_it_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_push_back_ref_recto") {
@@ -96,9 +123,19 @@ int main(int argc, char **argv) {
     f_vector_push_back_ref_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_push_back_ref_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_ref_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_push_back_ref_guarda") {
     std::vector<int> c = make_vector(mode, "push_back");
     f_vector_push_back_ref_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_push_back_ref_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_ref_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_push_back_ref_bucle") {
@@ -106,9 +143,19 @@ int main(int argc, char **argv) {
     f_vector_push_back_ref_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_push_back_ref_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_ref_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_push_back_ref_llamada") {
     std::vector<int> c = make_vector(mode, "push_back");
     f_vector_push_back_ref_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_push_back_ref_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_ref_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_push_back_ptr_recto") {
@@ -116,9 +163,19 @@ int main(int argc, char **argv) {
     f_vector_push_back_ptr_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_push_back_ptr_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_ptr_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_push_back_ptr_guarda") {
     std::vector<int> c = make_vector(mode, "push_back");
     f_vector_push_back_ptr_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_push_back_ptr_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_ptr_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_push_back_ptr_bucle") {
@@ -126,9 +183,19 @@ int main(int argc, char **argv) {
     f_vector_push_back_ptr_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_push_back_ptr_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_ptr_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_push_back_ptr_llamada") {
     std::vector<int> c = make_vector(mode, "push_back");
     f_vector_push_back_ptr_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_push_back_ptr_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "push_back");
+    f_vector_push_back_ptr_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_emplace_back_it_recto") {
@@ -136,9 +203,19 @@ int main(int argc, char **argv) {
     f_vector_emplace_back_it_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_emplace_back_it_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_it_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_emplace_back_it_guarda") {
     std::vector<int> c = make_vector(mode, "emplace_back");
     f_vector_emplace_back_it_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_emplace_back_it_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_it_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_emplace_back_it_bucle") {
@@ -146,9 +223,19 @@ int main(int argc, char **argv) {
     f_vector_emplace_back_it_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_emplace_back_it_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_it_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_emplace_back_it_llamada") {
     std::vector<int> c = make_vector(mode, "emplace_back");
     f_vector_emplace_back_it_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_emplace_back_it_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_it_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_emplace_back_ref_recto") {
@@ -156,9 +243,19 @@ int main(int argc, char **argv) {
     f_vector_emplace_back_ref_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_emplace_back_ref_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_ref_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_emplace_back_ref_guarda") {
     std::vector<int> c = make_vector(mode, "emplace_back");
     f_vector_emplace_back_ref_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_emplace_back_ref_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_ref_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_emplace_back_ref_bucle") {
@@ -166,9 +263,19 @@ int main(int argc, char **argv) {
     f_vector_emplace_back_ref_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_emplace_back_ref_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_ref_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_emplace_back_ref_llamada") {
     std::vector<int> c = make_vector(mode, "emplace_back");
     f_vector_emplace_back_ref_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_emplace_back_ref_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_ref_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_emplace_back_ptr_recto") {
@@ -176,9 +283,19 @@ int main(int argc, char **argv) {
     f_vector_emplace_back_ptr_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_emplace_back_ptr_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_ptr_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_emplace_back_ptr_guarda") {
     std::vector<int> c = make_vector(mode, "emplace_back");
     f_vector_emplace_back_ptr_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_emplace_back_ptr_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_ptr_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_emplace_back_ptr_bucle") {
@@ -186,9 +303,19 @@ int main(int argc, char **argv) {
     f_vector_emplace_back_ptr_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_emplace_back_ptr_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_ptr_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_emplace_back_ptr_llamada") {
     std::vector<int> c = make_vector(mode, "emplace_back");
     f_vector_emplace_back_ptr_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_emplace_back_ptr_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "emplace_back");
+    f_vector_emplace_back_ptr_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_insert_begin_it_recto") {
@@ -256,9 +383,19 @@ int main(int argc, char **argv) {
     f_vector_insert_end_it_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_insert_end_it_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_it_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_insert_end_it_guarda") {
     std::vector<int> c = make_vector(mode, "insert_end");
     f_vector_insert_end_it_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_insert_end_it_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_it_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_insert_end_it_bucle") {
@@ -266,9 +403,19 @@ int main(int argc, char **argv) {
     f_vector_insert_end_it_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_insert_end_it_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_it_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_insert_end_it_llamada") {
     std::vector<int> c = make_vector(mode, "insert_end");
     f_vector_insert_end_it_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_insert_end_it_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_it_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_insert_end_ref_recto") {
@@ -276,9 +423,19 @@ int main(int argc, char **argv) {
     f_vector_insert_end_ref_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_insert_end_ref_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_ref_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_insert_end_ref_guarda") {
     std::vector<int> c = make_vector(mode, "insert_end");
     f_vector_insert_end_ref_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_insert_end_ref_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_ref_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_insert_end_ref_bucle") {
@@ -286,9 +443,19 @@ int main(int argc, char **argv) {
     f_vector_insert_end_ref_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_insert_end_ref_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_ref_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_insert_end_ref_llamada") {
     std::vector<int> c = make_vector(mode, "insert_end");
     f_vector_insert_end_ref_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_insert_end_ref_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_ref_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_insert_end_ptr_recto") {
@@ -296,9 +463,19 @@ int main(int argc, char **argv) {
     f_vector_insert_end_ptr_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_insert_end_ptr_recto_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_ptr_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_insert_end_ptr_guarda") {
     std::vector<int> c = make_vector(mode, "insert_end");
     f_vector_insert_end_ptr_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_insert_end_ptr_guarda_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_ptr_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_insert_end_ptr_bucle") {
@@ -306,9 +483,19 @@ int main(int argc, char **argv) {
     f_vector_insert_end_ptr_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_vector_insert_end_ptr_bucle_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_ptr_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_vector_insert_end_ptr_llamada") {
     std::vector<int> c = make_vector(mode, "insert_end");
     f_vector_insert_end_ptr_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_insert_end_ptr_llamada_reserva") {
+    std::vector<int> c = make_vector(mode, "insert_end");
+    f_vector_insert_end_ptr_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_vector_erase_begin_it_recto") {
@@ -2896,9 +3083,19 @@ int main(int argc, char **argv) {
     f_uset_insert_it_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_uset_insert_it_recto_reserva") {
+    std::unordered_set<int> c = make_uset(mode, "insert");
+    f_uset_insert_it_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_uset_insert_it_guarda") {
     std::unordered_set<int> c = make_uset(mode, "insert");
     f_uset_insert_it_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_uset_insert_it_guarda_reserva") {
+    std::unordered_set<int> c = make_uset(mode, "insert");
+    f_uset_insert_it_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_uset_insert_it_bucle") {
@@ -2906,9 +3103,19 @@ int main(int argc, char **argv) {
     f_uset_insert_it_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_uset_insert_it_bucle_reserva") {
+    std::unordered_set<int> c = make_uset(mode, "insert");
+    f_uset_insert_it_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_uset_insert_it_llamada") {
     std::unordered_set<int> c = make_uset(mode, "insert");
     f_uset_insert_it_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_uset_insert_it_llamada_reserva") {
+    std::unordered_set<int> c = make_uset(mode, "insert");
+    f_uset_insert_it_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_uset_insert_ref_recto") {
@@ -2924,6 +3131,11 @@ int main(int argc, char **argv) {
   if (id == "f_uset_insert_ref_bucle") {
     std::unordered_set<int> c = make_uset(mode, "insert");
     f_uset_insert_ref_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_uset_insert_ref_bucle_reserva") {
+    std::unordered_set<int> c = make_uset(mode, "insert");
+    f_uset_insert_ref_bucle_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_uset_insert_ref_llamada") {
@@ -2944,6 +3156,11 @@ int main(int argc, char **argv) {
   if (id == "f_uset_insert_ptr_bucle") {
     std::unordered_set<int> c = make_uset(mode, "insert");
     f_uset_insert_ptr_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_uset_insert_ptr_bucle_reserva") {
+    std::unordered_set<int> c = make_uset(mode, "insert");
+    f_uset_insert_ptr_bucle_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_uset_insert_ptr_llamada") {
@@ -3196,9 +3413,19 @@ int main(int argc, char **argv) {
     f_umap_insert_it_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_umap_insert_it_recto_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "insert");
+    f_umap_insert_it_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_umap_insert_it_guarda") {
     std::unordered_map<int, int> c = make_umap(mode, "insert");
     f_umap_insert_it_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_umap_insert_it_guarda_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "insert");
+    f_umap_insert_it_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_umap_insert_it_bucle") {
@@ -3206,9 +3433,19 @@ int main(int argc, char **argv) {
     f_umap_insert_it_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_umap_insert_it_bucle_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "insert");
+    f_umap_insert_it_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_umap_insert_it_llamada") {
     std::unordered_map<int, int> c = make_umap(mode, "insert");
     f_umap_insert_it_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_umap_insert_it_llamada_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "insert");
+    f_umap_insert_it_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_umap_insert_ref_recto") {
@@ -3224,6 +3461,11 @@ int main(int argc, char **argv) {
   if (id == "f_umap_insert_ref_bucle") {
     std::unordered_map<int, int> c = make_umap(mode, "insert");
     f_umap_insert_ref_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_umap_insert_ref_bucle_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "insert");
+    f_umap_insert_ref_bucle_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_umap_insert_ref_llamada") {
@@ -3246,6 +3488,11 @@ int main(int argc, char **argv) {
     f_umap_insert_ptr_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_umap_insert_ptr_bucle_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "insert");
+    f_umap_insert_ptr_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_umap_insert_ptr_llamada") {
     std::unordered_map<int, int> c = make_umap(mode, "insert");
     f_umap_insert_ptr_llamada(c);
@@ -3256,9 +3503,19 @@ int main(int argc, char **argv) {
     f_umap_subscript_it_recto(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_umap_subscript_it_recto_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "subscript");
+    f_umap_subscript_it_recto_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_umap_subscript_it_guarda") {
     std::unordered_map<int, int> c = make_umap(mode, "subscript");
     f_umap_subscript_it_guarda(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_umap_subscript_it_guarda_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "subscript");
+    f_umap_subscript_it_guarda_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_umap_subscript_it_bucle") {
@@ -3266,9 +3523,19 @@ int main(int argc, char **argv) {
     f_umap_subscript_it_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
+  if (id == "f_umap_subscript_it_bucle_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "subscript");
+    f_umap_subscript_it_bucle_reserva(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
   if (id == "f_umap_subscript_it_llamada") {
     std::unordered_map<int, int> c = make_umap(mode, "subscript");
     f_umap_subscript_it_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_umap_subscript_it_llamada_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "subscript");
+    f_umap_subscript_it_llamada_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_umap_subscript_ref_recto") {
@@ -3284,6 +3551,11 @@ int main(int argc, char **argv) {
   if (id == "f_umap_subscript_ref_bucle") {
     std::unordered_map<int, int> c = make_umap(mode, "subscript");
     f_umap_subscript_ref_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_umap_subscript_ref_bucle_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "subscript");
+    f_umap_subscript_ref_bucle_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_umap_subscript_ref_llamada") {
@@ -3304,6 +3576,11 @@ int main(int argc, char **argv) {
   if (id == "f_umap_subscript_ptr_bucle") {
     std::unordered_map<int, int> c = make_umap(mode, "subscript");
     f_umap_subscript_ptr_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_umap_subscript_ptr_bucle_reserva") {
+    std::unordered_map<int, int> c = make_umap(mode, "subscript");
+    f_umap_subscript_ptr_bucle_reserva(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   if (id == "f_umap_subscript_ptr_llamada") {
@@ -3489,6 +3766,66 @@ int main(int argc, char **argv) {
   if (id == "f_umap_rehash_ptr_llamada") {
     std::unordered_map<int, int> c = make_umap(mode, "rehash");
     f_umap_rehash_ptr_llamada(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_erase_ret_it_bucle") {
+    std::vector<int> c = make_vector(mode, "erase_ret");
+    f_vector_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_deque_erase_ret_it_bucle") {
+    std::deque<int> c = make_deque(mode, "erase_ret");
+    f_deque_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_list_erase_ret_it_bucle") {
+    std::list<int> c = make_list(mode, "erase_ret");
+    f_list_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_set_erase_ret_it_bucle") {
+    std::set<int> c = make_set(mode, "erase_ret");
+    f_set_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_mset_erase_ret_it_bucle") {
+    std::multiset<int> c = make_mset(mode, "erase_ret");
+    f_mset_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_map_erase_ret_it_bucle") {
+    std::map<int, int> c = make_map(mode, "erase_ret");
+    f_map_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_mmap_erase_ret_it_bucle") {
+    std::multimap<int, int> c = make_mmap(mode, "erase_ret");
+    f_mmap_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_uset_erase_ret_it_bucle") {
+    std::unordered_set<int> c = make_uset(mode, "erase_ret");
+    f_uset_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_umap_erase_ret_it_bucle") {
+    std::unordered_map<int, int> c = make_umap(mode, "erase_ret");
+    f_umap_erase_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_vector_insert_ret_it_bucle") {
+    std::vector<int> c = make_vector(mode, "insert_ret");
+    f_vector_insert_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_deque_insert_ret_it_bucle") {
+    std::deque<int> c = make_deque(mode, "insert_ret");
+    f_deque_insert_ret_it_bucle(c);
+    return runtime_sink == -1; // evita eliminar el uso final durante optimización
+  }
+  if (id == "f_list_insert_ret_it_bucle") {
+    std::list<int> c = make_list(mode, "insert_ret");
+    f_list_insert_ret_it_bucle(c);
     return runtime_sink == -1; // evita eliminar el uso final durante optimización
   }
   return 65; // identificador de caso desconocido

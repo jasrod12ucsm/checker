@@ -1,5 +1,5 @@
 [book]
-title = "Corpus de invalidación de iteradores — casos y benchmark"
+title = "Checker de invalidación de handles para Clang Static Analyzer — diseño, banco y resultados"
 authors = ["rodriguezwilbert613"]
 language = "es"
 src = "src"

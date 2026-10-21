@@ -68,9 +68,11 @@ def scenario(meta: dict, mode: str) -> dict:
         if mode == "force":
             condition = "capacidad agotada antes de la mutación"
         elif op in {"reserve", "resize_grow"}:
-            condition = "capacidad 256, suficiente para size()+100"
+            condition = "capacidad 512, suficiente para size()+100 tres veces"
+        elif op == "pop_back":
+            condition = "8 elementos: tres rondas de pop_back no alcanzan al iterador"
         else:
-            condition = "capacidad 256, con espacio para la mutación"
+            condition = "capacidad 512, con espacio para la mutación"
         return {"tipo": "controlado", "precondicion": condition}
     if container in {"uset", "umap", "umset"}:
         return {"tipo": "controlado", "precondicion": (
@@ -85,7 +87,7 @@ def main() -> None:
     parser.add_argument("--truth", default="test/corpus_truth.json")
     parser.add_argument("--runner", default="test/runtime_runner.cpp")
     parser.add_argument("--output", default="test/runtime_validation_results.json")
-    parser.add_argument("--build-dir", default="/tmp/mi-linter-runtime-validation")
+    parser.add_argument("--build-dir", default="build/runtime")
     parser.add_argument("--timeout", type=float, default=2.0)
     parser.add_argument("--limit", type=int, default=0, help="solo para depuración")
     parser.add_argument("--start", type=int, default=0, help="índice inicial para ejecutar por lotes")

@@ -1,0 +1,3052 @@
+{
+ "edicion": "C++17 (ISO/IEC 14882:2017, N4659)",
+ "nota": "Fuente única de las reglas de invalidación. Un puntero sigue la regla de la referencia (por construcción). 'banco' lista los pares del banco que se escriben con esta mutación.",
+ "mutaciones": [
+  {
+   "id": "vector.push_back.back",
+   "contenedor": "vector",
+   "operacion": "push_back",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [
+    "push_back"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.modifiers] insert"
+    }
+   ]
+  },
+  {
+   "id": "vector.emplace_back.back",
+   "contenedor": "vector",
+   "operacion": "emplace_back",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [
+    "emplace_back"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.modifiers] insert"
+    }
+   ]
+  },
+  {
+   "id": "vector.insert.front",
+   "contenedor": "vector",
+   "operacion": "insert",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [
+    "insert_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] insert"
+    }
+   ]
+  },
+  {
+   "id": "vector.insert.back",
+   "contenedor": "vector",
+   "operacion": "insert",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [
+    "insert_end"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.modifiers] insert"
+    }
+   ]
+  },
+  {
+   "id": "vector.insert.interior",
+   "contenedor": "vector",
+   "operacion": "insert",
+   "punto": "interior",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] insert"
+    }
+   ]
+  },
+  {
+   "id": "vector.erase.front",
+   "contenedor": "vector",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "vector.erase.back",
+   "contenedor": "vector",
+   "operacion": "erase",
+   "punto": "back",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "vector.erase.interior",
+   "contenedor": "vector",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "vector.pop_back.back",
+   "contenedor": "vector",
+   "operacion": "pop_back",
+   "punto": "back",
+   "crecimiento": "shrinks",
+   "banco": [
+    "pop_back"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[vector.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "vector.resize.back",
+   "contenedor": "vector",
+   "operacion": "resize",
+   "punto": "back",
+   "crecimiento": "unknown",
+   "banco": [
+    "resize_grow"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.capacity] resize"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.capacity] resize"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.capacity] resize"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[vector.capacity] resize"
+    }
+   ]
+  },
+  {
+   "id": "vector.reserve.whole",
+   "contenedor": "vector",
+   "operacion": "reserve",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "reserve"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.capacity] reserve"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "capacity_reached",
+     "clausula": "[vector.capacity] reserve"
+    }
+   ]
+  },
+  {
+   "id": "vector.shrink_to_fit.whole",
+   "contenedor": "vector",
+   "operacion": "shrink_to_fit",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "shrink_to_fit"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "non_binding",
+     "clausula": "[vector.capacity] shrink_to_fit"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "non_binding",
+     "clausula": "[vector.capacity] shrink_to_fit"
+    }
+   ]
+  },
+  {
+   "id": "vector.clear.whole",
+   "contenedor": "vector",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] clear"
+    }
+   ]
+  },
+  {
+   "id": "vector.assign.whole",
+   "contenedor": "vector",
+   "operacion": "assign",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "assign"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] assign"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] assign"
+    }
+   ]
+  },
+  {
+   "id": "deque.push_back.back",
+   "contenedor": "deque",
+   "operacion": "push_back",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [
+    "push_back"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "deque.emplace_back.back",
+   "contenedor": "deque",
+   "operacion": "emplace_back",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [
+    "emplace_back"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "deque.push_front.front",
+   "contenedor": "deque",
+   "operacion": "push_front",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [
+    "push_front"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "deque.emplace_front.front",
+   "contenedor": "deque",
+   "operacion": "emplace_front",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "deque.insert.front",
+   "contenedor": "deque",
+   "operacion": "insert",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "deque.insert.back",
+   "contenedor": "deque",
+   "operacion": "insert",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "deque.insert.interior",
+   "contenedor": "deque",
+   "operacion": "insert",
+   "punto": "interior",
+   "crecimiento": "one",
+   "banco": [
+    "insert_middle"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] insert"
+    }
+   ]
+  },
+  {
+   "id": "deque.erase.front",
+   "contenedor": "deque",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "deque.erase.back",
+   "contenedor": "deque",
+   "operacion": "erase",
+   "punto": "back",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "deque.erase.interior",
+   "contenedor": "deque",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "deque.pop_front.front",
+   "contenedor": "deque",
+   "operacion": "pop_front",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "pop_front"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "deque.pop_back.back",
+   "contenedor": "deque",
+   "operacion": "pop_back",
+   "punto": "back",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[deque.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "deque.resize.back",
+   "contenedor": "deque",
+   "operacion": "resize",
+   "punto": "back",
+   "crecimiento": "unknown",
+   "banco": [
+    "resize_grow"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "invalidates",
+     "clausula": "[deque.capacity] resize"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.capacity] resize"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[deque.capacity] resize"
+    }
+   ]
+  },
+  {
+   "id": "deque.shrink_to_fit.whole",
+   "contenedor": "deque",
+   "operacion": "shrink_to_fit",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[deque.capacity] shrink_to_fit"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[deque.capacity] shrink_to_fit"
+    }
+   ]
+  },
+  {
+   "id": "deque.clear.whole",
+   "contenedor": "deque",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] clear"
+    }
+   ]
+  },
+  {
+   "id": "deque.assign.whole",
+   "contenedor": "deque",
+   "operacion": "assign",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] assign"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] assign"
+    }
+   ]
+  },
+  {
+   "id": "list.push_back.back",
+   "contenedor": "list",
+   "operacion": "push_back",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [
+    "push_back"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.emplace_back.back",
+   "contenedor": "list",
+   "operacion": "emplace_back",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.push_front.front",
+   "contenedor": "list",
+   "operacion": "push_front",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [
+    "push_front"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.emplace_front.front",
+   "contenedor": "list",
+   "operacion": "emplace_front",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.insert.front",
+   "contenedor": "list",
+   "operacion": "insert",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [
+    "insert"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.insert.back",
+   "contenedor": "list",
+   "operacion": "insert",
+   "punto": "back",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.insert.interior",
+   "contenedor": "list",
+   "operacion": "insert",
+   "punto": "interior",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.erase.front",
+   "contenedor": "list",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.erase.back",
+   "contenedor": "list",
+   "operacion": "erase",
+   "punto": "back",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "list.erase.interior",
+   "contenedor": "list",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.pop_front.front",
+   "contenedor": "list",
+   "operacion": "pop_front",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "pop_front"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.pop_back.back",
+   "contenedor": "list",
+   "operacion": "pop_back",
+   "punto": "back",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[list.modifiers] erase"
+    }
+   ]
+  },
+  {
+   "id": "list.resize.back",
+   "contenedor": "list",
+   "operacion": "resize",
+   "punto": "back",
+   "crecimiento": "unknown",
+   "banco": [
+    "resize_grow"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[list.capacity] resize"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[list.capacity] resize"
+    }
+   ]
+  },
+  {
+   "id": "list.reverse.whole",
+   "contenedor": "list",
+   "operacion": "reverse",
+   "punto": "whole",
+   "crecimiento": "none",
+   "banco": [
+    "reverse"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.sort.whole",
+   "contenedor": "list",
+   "operacion": "sort",
+   "punto": "whole",
+   "crecimiento": "none",
+   "banco": [
+    "sort"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "list.clear.whole",
+   "contenedor": "list",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] clear"
+    }
+   ]
+  },
+  {
+   "id": "list.assign.whole",
+   "contenedor": "list",
+   "operacion": "assign",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] assign"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] assign"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.push_front.front",
+   "contenedor": "forward_list",
+   "operacion": "push_front",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [
+    "push_front"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.emplace_front.front",
+   "contenedor": "forward_list",
+   "operacion": "emplace_front",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.insert_after.front",
+   "contenedor": "forward_list",
+   "operacion": "insert_after",
+   "punto": "front",
+   "crecimiento": "one",
+   "banco": [
+    "insert_after"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.insert_after.interior",
+   "contenedor": "forward_list",
+   "operacion": "insert_after",
+   "punto": "interior",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.erase_after.front",
+   "contenedor": "forward_list",
+   "operacion": "erase_after",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_after"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[forwardlist.modifiers] erase_after"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[forwardlist.modifiers] erase_after"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.erase_after.interior",
+   "contenedor": "forward_list",
+   "operacion": "erase_after",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[forwardlist.modifiers] erase_after"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[forwardlist.modifiers] erase_after"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.pop_front.front",
+   "contenedor": "forward_list",
+   "operacion": "pop_front",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[forwardlist.modifiers] pop_front"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[forwardlist.modifiers] pop_front"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.resize.back",
+   "contenedor": "forward_list",
+   "operacion": "resize",
+   "punto": "back",
+   "crecimiento": "unknown",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[forwardlist.modops] resize"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "invalidates",
+     "clausula": "[forwardlist.modops] resize"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.reverse.whole",
+   "contenedor": "forward_list",
+   "operacion": "reverse",
+   "punto": "whole",
+   "crecimiento": "none",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.sort.whole",
+   "contenedor": "forward_list",
+   "operacion": "sort",
+   "punto": "whole",
+   "crecimiento": "none",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.clear.whole",
+   "contenedor": "forward_list",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] clear"
+    }
+   ]
+  },
+  {
+   "id": "forward_list.assign.whole",
+   "contenedor": "forward_list",
+   "operacion": "assign",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] assign"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[sequence.reqmts] assign"
+    }
+   ]
+  },
+  {
+   "id": "set.insert.by_key",
+   "contenedor": "set",
+   "operacion": "insert",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "insert"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "set.emplace.by_key",
+   "contenedor": "set",
+   "operacion": "emplace",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "emplace"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "set.erase.front",
+   "contenedor": "set",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "set.erase.interior",
+   "contenedor": "set",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "set.erase.by_key",
+   "contenedor": "set",
+   "operacion": "erase",
+   "punto": "by_key",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "set.clear.whole",
+   "contenedor": "set",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] clear"
+    }
+   ]
+  },
+  {
+   "id": "multiset.insert.by_key",
+   "contenedor": "multiset",
+   "operacion": "insert",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "insert"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multiset.emplace.by_key",
+   "contenedor": "multiset",
+   "operacion": "emplace",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multiset.erase.front",
+   "contenedor": "multiset",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multiset.erase.interior",
+   "contenedor": "multiset",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multiset.erase.by_key",
+   "contenedor": "multiset",
+   "operacion": "erase",
+   "punto": "by_key",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multiset.clear.whole",
+   "contenedor": "multiset",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] clear"
+    }
+   ]
+  },
+  {
+   "id": "map.insert.by_key",
+   "contenedor": "map",
+   "operacion": "insert",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "insert"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "map.emplace.by_key",
+   "contenedor": "map",
+   "operacion": "emplace",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "emplace"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "map.subscript.by_key",
+   "contenedor": "map",
+   "operacion": "subscript",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "subscript"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "map.erase.front",
+   "contenedor": "map",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "map.erase.interior",
+   "contenedor": "map",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "map.erase.by_key",
+   "contenedor": "map",
+   "operacion": "erase",
+   "punto": "by_key",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "map.clear.whole",
+   "contenedor": "map",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] clear"
+    }
+   ]
+  },
+  {
+   "id": "multimap.insert.by_key",
+   "contenedor": "multimap",
+   "operacion": "insert",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "insert"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multimap.emplace.by_key",
+   "contenedor": "multimap",
+   "operacion": "emplace",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multimap.erase.front",
+   "contenedor": "multimap",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multimap.erase.interior",
+   "contenedor": "multimap",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multimap.erase.by_key",
+   "contenedor": "multimap",
+   "operacion": "erase",
+   "punto": "by_key",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "multimap.clear.whole",
+   "contenedor": "multimap",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[associative.reqmts] clear"
+    }
+   ]
+  },
+  {
+   "id": "unordered_set.insert.by_key",
+   "contenedor": "unordered_set",
+   "operacion": "insert",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "insert"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "rehash_triggered",
+     "clausula": "[unord.req] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_set.emplace.by_key",
+   "contenedor": "unordered_set",
+   "operacion": "emplace",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "rehash_triggered",
+     "clausula": "[unord.req] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_set.erase.front",
+   "contenedor": "unordered_set",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_set.erase.interior",
+   "contenedor": "unordered_set",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_set.erase.by_key",
+   "contenedor": "unordered_set",
+   "operacion": "erase",
+   "punto": "by_key",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_set.rehash.whole",
+   "contenedor": "unordered_set",
+   "operacion": "rehash",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "rehash"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] rehash"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_set.reserve.whole",
+   "contenedor": "unordered_set",
+   "operacion": "reserve",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "reserve"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] reserve"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_set.clear.whole",
+   "contenedor": "unordered_set",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] clear"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.insert.by_key",
+   "contenedor": "unordered_map",
+   "operacion": "insert",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "insert"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "rehash_triggered",
+     "clausula": "[unord.req] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.emplace.by_key",
+   "contenedor": "unordered_map",
+   "operacion": "emplace",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "rehash_triggered",
+     "clausula": "[unord.req] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.subscript.by_key",
+   "contenedor": "unordered_map",
+   "operacion": "subscript",
+   "punto": "by_key",
+   "crecimiento": "one",
+   "banco": [
+    "subscript"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "depends",
+     "condicion": "rehash_triggered",
+     "clausula": "[unord.req] insert"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.erase.front",
+   "contenedor": "unordered_map",
+   "operacion": "erase",
+   "punto": "front",
+   "crecimiento": "shrinks",
+   "banco": [
+    "erase_begin"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.erase.interior",
+   "contenedor": "unordered_map",
+   "operacion": "erase",
+   "punto": "interior",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.erase.by_key",
+   "contenedor": "unordered_map",
+   "operacion": "erase",
+   "punto": "by_key",
+   "crecimiento": "shrinks",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "before",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "same",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] erase"
+    },
+    {
+     "categoria": "iterator",
+     "relacion": "after",
+     "efecto": "preserves"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "after",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.rehash.whole",
+   "contenedor": "unordered_map",
+   "operacion": "rehash",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "rehash"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] rehash"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.reserve.whole",
+   "contenedor": "unordered_map",
+   "operacion": "reserve",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] reserve"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "preserves"
+    }
+   ]
+  },
+  {
+   "id": "unordered_map.clear.whole",
+   "contenedor": "unordered_map",
+   "operacion": "clear",
+   "punto": "whole",
+   "crecimiento": "reset",
+   "banco": [
+    "clear"
+   ],
+   "reglas": [
+    {
+     "categoria": "iterator",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] clear"
+    },
+    {
+     "categoria": "reference",
+     "relacion": "any",
+     "efecto": "invalidates",
+     "clausula": "[unord.req] clear"
+    }
+   ]
+  }
+ ]
+}

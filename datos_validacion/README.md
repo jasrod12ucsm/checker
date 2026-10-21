@@ -23,7 +23,7 @@ Desde la raíz del proyecto:
 
 ```bash
 python3 bench/gen_corpus.py
-python3 bench/run_corpus.py
+python3 bench/experimento.py   # dentro de la imagen checker:llvm21
 python3 bench/run_runtime_validation.py --timeout 1
 ```
 

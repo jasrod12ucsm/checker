@@ -4,21 +4,25 @@ Mutación: `c.erase(c.begin());`
 
 - Iterador retenido: 🔴 `UB`
 - Referencia/puntero retenido: 🔴 `UB`
-- Casos `UB` detectados estáticamente: 4/12
+- Casos `UB` detectados estáticamente: 0/12
+
+**En palabras:** después de `c.erase(c.begin());` sobre un `std::multimap`, un iterador guardado queda **inválido**: usarlo después es un bug (UB); una referencia o puntero guardado queda **inválido**: usarlo después es un bug (UB).
+
+Mapa de los 12 casos. Cada celda muestra la respuesta correcta (etiqueta) y, debajo, lo que hizo el analizador estático de Clang. Clic para ir al caso. Ver [Cómo leer este libro](../../guia.md).
 
 | | `recto` | `guarda` | `bucle` | `llamada` |
 |---|---|---|---|---|
-| **iterador** | [🔴 avisa](#f_mmap_erase_begin_it_recto) | [🔴 avisa](#f_mmap_erase_begin_it_guarda) | [🔴 avisa](#f_mmap_erase_begin_it_bucle) | [🔴 avisa](#f_mmap_erase_begin_it_llamada) |
-| **referencia** | [🔴 calla](#f_mmap_erase_begin_ref_recto) | [🔴 calla](#f_mmap_erase_begin_ref_guarda) | [🔴 calla](#f_mmap_erase_begin_ref_bucle) | [🔴 calla](#f_mmap_erase_begin_ref_llamada) |
-| **puntero** | [🔴 calla](#f_mmap_erase_begin_ptr_recto) | [🔴 calla](#f_mmap_erase_begin_ptr_guarda) | [🔴 calla](#f_mmap_erase_begin_ptr_bucle) | [🔴 calla](#f_mmap_erase_begin_ptr_llamada) |
+| **iterador** | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_it_recto) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_it_guarda) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_it_bucle) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_it_llamada) |
+| **referencia** | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_ref_recto) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_ref_guarda) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_ref_bucle) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_ref_llamada) |
+| **puntero** | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_ptr_recto) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_ptr_guarda) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_ptr_bucle) | [🔴 `UB`<br>❌ no detectado](#f_mmap_erase_begin_ptr_llamada) |
 
 ## Handle: iterador
 
 ### f_mmap_erase_begin_it_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `recto` | 🔴 `UB` | ✅ detectado |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `recto` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_it_recto(std::multimap<int,int>& c) {
@@ -28,6 +32,8 @@ void f_mmap_erase_begin_it_recto(std::multimap<int,int>& c) {
 }
 ```
 
+> **Causa del falso negativo:** 2. Sin comparacion previa contra end(), el modelado no se activa
+
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
 | `natural` | estado inicial ordinario | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
@@ -36,7 +42,7 @@ void f_mmap_erase_begin_it_recto(std::multimap<int,int>& c) {
 <summary>stderr libstdc++ Debug · <code>natural</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:370:
+/usr/include/c++/13/debug/safe_iterator.h:312:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::pointer 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator->() 
@@ -47,10 +53,10 @@ In function:
 Error: attempt to dereference a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7ffd3418a000 {
+    iterator "this" @ 0x7ffefd926dc0 {
       type = std::_Rb_tree_iterator<std::pair<int const, int> > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffd3418a0f0
+      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffefd926eb0
     }
 ````
 
@@ -60,41 +66,29 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-3  (/tmp/mi-linter-runtime-validation/runtime_asan+0x285313) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x56453e8aea84  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e3a84) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7fbbc1c27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7fbbc1c278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x56453e66b2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x5b3ddb3a08f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x5b3ddb3a04f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x5b3ddb3575b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x5b3ddb2ece7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x5b3ddb33161a in main /work/test/runtime_runner.cpp:2962:33
+    #12 0x72c6238a71c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x72c6238a728a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x5b3ddb1744b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x56453e7d0fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x56453e9036c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x56453e9033cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x56453e923068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x56453e923019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x56453e922caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x56453e923967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x56453e923546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x56453e8d1033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x56453e86ce04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x56453e8aea77  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e3a77) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7fbbc1c27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7fbbc1c278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x56453e66b2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x2853b4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:3952:12 in f_mmap_erase_begin_it_recto(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7bfbc0ddfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bfbc0ddfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bfbc0ddfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bfbc0ddff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bfbc0ddff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7bfbc0de0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7bfbc0de0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7bfbc0de0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bfbc0de0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bfbc0de0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bfbc0de0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6f0622bdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6f0622bdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6f0622bdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6f0622bdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6f0622bdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x6f0622be0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x6f0622be0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x6f0622be0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6f0622be0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6f0622be0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6f0622be0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -114,16 +108,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==293==ABORTING
+==1549==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_it_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `guarda` | 🔴 `UB` | ✅ detectado |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `guarda` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_it_guarda(std::multimap<int,int>& c) {
@@ -134,6 +128,8 @@ void f_mmap_erase_begin_it_guarda(std::multimap<int,int>& c) {
 }
 ```
 
+> **Causa del falso negativo:** 3. Se invalida por identidad del iterador, no por posicion
+
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
 | `natural` | estado inicial ordinario | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
@@ -142,7 +138,7 @@ void f_mmap_erase_begin_it_guarda(std::multimap<int,int>& c) {
 <summary>stderr libstdc++ Debug · <code>natural</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:370:
+/usr/include/c++/13/debug/safe_iterator.h:312:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::pointer 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator->() 
@@ -153,10 +149,10 @@ In function:
 Error: attempt to dereference a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7ffd3ad02390 {
+    iterator "this" @ 0x7fff325652d0 {
       type = std::_Rb_tree_iterator<std::pair<int const, int> > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffd3ad02480
+      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7fff325653c0
     }
 ````
 
@@ -166,41 +162,29 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x28561d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55b698c83c03  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e3c03) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7f8572427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7f85724278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x55b698a402c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x60b13aa028f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x60b13aa024f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x60b13a9b95b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x60b13a94ee7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x60b13a993799 in main /work/test/runtime_runner.cpp:2967:33
+    #12 0x78b3ce7011c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x78b3ce70128a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x60b13a7d64b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x55b698ba5fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x55b698cd86c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x55b698cd83cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55b698cf8068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55b698cf8019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55b698cf7caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55b698cf8967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55b698cf8546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55b698ca6033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x55b698c41e04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x55b698c83bf6  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e3bf6) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7f8572427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7f85724278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x55b698a402c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x2856c1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:3958:12 in f_mmap_erase_begin_it_guarda(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7bc5715dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bc5715dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bc5715dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bc5715dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bc5715dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7bc5715e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7bc5715e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7bc5715e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bc5715e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bc5715e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bc5715e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74f3cd9dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74f3cd9dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74f3cd9dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74f3cd9dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74f3cd9dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x74f3cd9e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x74f3cd9e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x74f3cd9e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74f3cd9e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74f3cd9e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74f3cd9e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -220,16 +204,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==295==ABORTING
+==1552==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_it_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `bucle` | 🔴 `UB` | ✅ detectado |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `bucle` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_it_bucle(std::multimap<int,int>& c) {
@@ -241,6 +225,8 @@ void f_mmap_erase_begin_it_bucle(std::multimap<int,int>& c) {
 }
 ```
 
+> **Causa del falso negativo:** 3. Se invalida por identidad del iterador, no por posicion
+
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
 | `natural` | estado inicial ordinario | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
@@ -249,7 +235,7 @@ void f_mmap_erase_begin_it_bucle(std::multimap<int,int>& c) {
 <summary>stderr libstdc++ Debug · <code>natural</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:370:
+/usr/include/c++/13/debug/safe_iterator.h:312:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::pointer 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator->() 
@@ -260,10 +246,10 @@ In function:
 Error: attempt to dereference a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7ffe72e85b70 {
+    iterator "this" @ 0x7ffcc7a6ba60 {
       type = std::_Rb_tree_iterator<std::pair<int const, int> > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffe72e85c60
+      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffcc7a6bb50
     }
 ````
 
@@ -273,41 +259,29 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-0  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2859c0) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x560d80872d82  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e3d82) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7f8dfa227780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7f8dfa2278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x560d8062f2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x55a2456948f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x55a2456944f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x55a24564b5b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x55a2455e0e7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x55a245625918 in main /work/test/runtime_runner.cpp:2972:33
+    #12 0x7798bf80a1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x7798bf80a28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x55a2454684b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x560d80794fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x560d808c76c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x560d808c73cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x560d808e7068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x560d808e7019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x560d808e6caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x560d808e7967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x560d808e7546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x560d80895033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x560d80830e04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x560d80872d75  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e3d75) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7f8dfa227780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7f8dfa2278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x560d8062f2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x285a64) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:3964:14 in f_mmap_erase_begin_it_bucle(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7bcdf93dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bcdf93dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bcdf93dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bcdf93dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bcdf93dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7bcdf93e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7bcdf93e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7bcdf93e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bcdf93e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bcdf93e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bcdf93e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x73d8bebdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x73d8bebdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x73d8bebdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x73d8bebdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x73d8bebdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x73d8bebe0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x73d8bebe0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x73d8bebe0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x73d8bebe0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x73d8bebe0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x73d8bebe0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -327,16 +301,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==297==ABORTING
+==1555==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_it_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `llamada` | 🔴 `UB` | ✅ detectado |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `llamada` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_it_llamada(std::multimap<int,int>& c) {
@@ -347,6 +321,8 @@ void f_mmap_erase_begin_it_llamada(std::multimap<int,int>& c) {
 }
 ```
 
+> **Causa del falso negativo:** 3. Se invalida por identidad del iterador, no por posicion
+
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
 | `natural` | estado inicial ordinario | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
@@ -355,7 +331,7 @@ void f_mmap_erase_begin_it_llamada(std::multimap<int,int>& c) {
 <summary>stderr libstdc++ Debug · <code>natural</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:370:
+/usr/include/c++/13/debug/safe_iterator.h:312:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::pointer 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator->() 
@@ -366,10 +342,10 @@ In function:
 Error: attempt to dereference a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7ffe9131f3b0 {
+    iterator "this" @ 0x7ffdcba7a6b0 {
       type = std::_Rb_tree_iterator<std::pair<int const, int> > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffe9131f470
+      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffdcba7a770
     }
 ````
 
@@ -379,41 +355,29 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-  (/tmp/mi-linter-runtime-validation/runtime_asan+0x285cb0) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x55ad21ee0f01  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e3f01) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x7f267b227780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x7f267b2278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x55ad21c9d2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+ree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x5ac527e6a8f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x5ac527e6a4f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x5ac527e215b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x5ac527db6e7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x5ac527dfba97 in main /work/test/runtime_runner.cpp:2977:33
+    #12 0x7ba2593951c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x7ba25939528a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x5ac527c3e4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x55ad21e02fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x55ad21f356c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x55ad21f353cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55ad21f55068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55ad21f55019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55ad21f54caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55ad21f55967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55ad21f55546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55ad21f03033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x55ad21e9ee04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x55ad21ee0ef4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e3ef4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7f267b227780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7f267b2278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x55ad21c9d2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x285d4d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:3971:12 in f_mmap_erase_begin_it_llamada(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7b667a3dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b667a3dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b667a3dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b667a3dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b667a3dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b667a3e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7b667a3e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7b667a3e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b667a3e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b667a3e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b667a3e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x77e2585dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x77e2585dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x77e2585dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x77e2585dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x77e2585dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x77e2585e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x77e2585e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x77e2585e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x77e2585e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x77e2585e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x77e2585e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -433,7 +397,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==299==ABORTING
+==1558==ABORTING
 ````
 
 </details>
@@ -442,9 +406,9 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 
 ### f_mmap_erase_begin_ref_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `recto` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `recto` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_ref_recto(std::multimap<int,int>& c) {
@@ -459,47 +423,35 @@ void f_mmap_erase_begin_ref_recto(std::multimap<int,int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | 🛑 heap-use-after-free |
+| `natural` | estado inicial ordinario | sin detección | 🛑 heap-use-after-free |
 
 <details>
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x285f91) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55d2131a0080  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e4080) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7f38cec27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7f38cec278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x55d212f5c2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x6464f82cc8f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x6464f82cc4f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x6464f82835b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x6464f8218e7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x6464f825dc16 in main /work/test/runtime_runner.cpp:2982:33
+    #12 0x76daa74431c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x76daa744328a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x6464f80a04b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x55d2130c1fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x55d2131f46c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x55d2131f43cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55d213214068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55d213214019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55d213213caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55d213214967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55d213214546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55d2131c2033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x55d21315de04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x55d2131a0073  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e4073) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7f38cec27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7f38cec278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x55d212f5c2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x285ff2) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:3977:10 in f_mmap_erase_begin_ref_recto(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7b78cdddfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b78cdddfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b78cdddfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b78cdddff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b78cdddff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b78cdde0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7b78cdde0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7b78cdde0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b78cdde0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b78cdde0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b78cdde0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x731aa67dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x731aa67dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x731aa67dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x731aa67dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x731aa67dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x731aa67e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x731aa67e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x731aa67e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x731aa67e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x731aa67e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x731aa67e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -519,16 +471,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==301==ABORTING
+==1561==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_ref_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `guarda` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `guarda` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_ref_guarda(std::multimap<int,int>& c) {
@@ -544,47 +496,35 @@ void f_mmap_erase_begin_ref_guarda(std::multimap<int,int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | 🛑 heap-use-after-free |
+| `natural` | estado inicial ordinario | sin detección | 🛑 heap-use-after-free |
 
 <details>
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-0  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2862a0) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55d4452381ff  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e41ff) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7f26c3627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7f26c36278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x55d444ff42c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+ree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x61c540fac8f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x61c540fac4f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x61c540f635b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x61c540ef8e7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x61c540f3dd95 in main /work/test/runtime_runner.cpp:2987:33
+    #12 0x75f0783d21c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x75f0783d228a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x61c540d804b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x55d445159fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x55d44528c6c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x55d44528c3cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55d4452ac068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55d4452ac019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55d4452abcaf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55d4452ac967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55d4452ac546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55d44525a033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x55d4451f5e04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x55d4452381f2  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e41f2) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7f26c3627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7f26c36278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x55d444ff42c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x2862fe) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:3984:10 in f_mmap_erase_begin_ref_guarda(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7b66c27dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b66c27dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b66c27dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b66c27dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b66c27dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b66c27e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7b66c27e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7b66c27e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b66c27e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b66c27e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b66c27e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7230777dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7230777dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7230777dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7230777dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7230777dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7230777e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x7230777e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x7230777e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7230777e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7230777e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7230777e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -604,16 +544,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==303==ABORTING
+==1564==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_ref_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `bucle` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `bucle` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_ref_bucle(std::multimap<int,int>& c) {
@@ -636,7 +576,7 @@ void f_mmap_erase_begin_ref_bucle(std::multimap<int,int>& c) {
 <summary>stderr libstdc++ Debug · <code>natural</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:392:
+/usr/include/c++/13/debug/safe_iterator.h:326:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>& 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator++() 
@@ -647,10 +587,10 @@ In function:
 Error: attempt to increment a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7ffe9d425400 {
+    iterator "this" @ 0x7ffe01895070 {
       type = std::_Rb_tree_iterator<std::pair<int const, int> > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffe9d4254f0
+      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffe01895160
     }
 ````
 
@@ -660,41 +600,29 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-0  (/tmp/mi-linter-runtime-validation/runtime_asan+0x286630) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55c6f417337e  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e437e) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7f3deca27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7f3deca278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x55c6f3f2f2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x6260ef2768f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x6260ef2764f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x6260ef22d5b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x6260ef1c2e7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x6260ef207f14 in main /work/test/runtime_runner.cpp:2992:33
+    #12 0x70eb34d3c1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x70eb34d3c28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x6260ef04a4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x55c6f4094fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x55c6f41c76c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x55c6f41c73cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55c6f41e7068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55c6f41e7019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55c6f41e6caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55c6f41e7967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55c6f41e7546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55c6f4195033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x55c6f4130e04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x55c6f4173371  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e4371) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7f3deca27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7f3deca278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x55c6f3f2f2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x286691) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:3991:12 in f_mmap_erase_begin_ref_bucle(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7b7debbdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b7debbdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b7debbdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b7debbdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b7debbdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b7debbe0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7b7debbe0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7b7debbe0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b7debbe0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b7debbe0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b7debbe0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d2b33fdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d2b33fdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d2b33fdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d2b33fdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d2b33fdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x6d2b33fe0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x6d2b33fe0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x6d2b33fe0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d2b33fe0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d2b33fe0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d2b33fe0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -714,16 +642,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==305==ABORTING
+==1567==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_ref_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `llamada` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `llamada` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_ref_llamada(std::multimap<int,int>& c) {
@@ -739,47 +667,35 @@ void f_mmap_erase_begin_ref_llamada(std::multimap<int,int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | 🛑 heap-use-after-free |
+| `natural` | estado inicial ordinario | sin detección | 🛑 heap-use-after-free |
 
 <details>
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-  (/tmp/mi-linter-runtime-validation/runtime_asan+0x286925) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x563281b814fd  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e44fd) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x7fa335027780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x7fa3350278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x56328193d2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+ee<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x5cbf2663a8f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x5cbf2663a4f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x5cbf265f15b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x5cbf26586e7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x5cbf265cc093 in main /work/test/runtime_runner.cpp:2997:33
+    #12 0x7bd7a0f511c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x7bd7a0f5128a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x5cbf2640e4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x563281aa2fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x563281bd56c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x563281bd53cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x563281bf5068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x563281bf5019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x563281bf4caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x563281bf5967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x563281bf5546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x563281ba3033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x563281b3ee04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x563281b814f0  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e44f0) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7fa335027780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7fa3350278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x56328193d2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x28697f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:3999:10 in f_mmap_erase_begin_ref_llamada(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7be3341dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7be3341dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7be3341dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7be3341dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7be3341dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7be3341e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7be3341e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7be3341e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7be3341e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7be3341e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7be3341e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7817a01dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7817a01dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7817a01dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7817a01dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7817a01dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7817a01e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x7817a01e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x7817a01e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7817a01e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7817a01e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7817a01e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -799,7 +715,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==307==ABORTING
+==1570==ABORTING
 ````
 
 </details>
@@ -808,9 +724,9 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 
 ### f_mmap_erase_begin_ptr_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `recto` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `recto` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_ptr_recto(std::multimap<int,int>& c) {
@@ -825,47 +741,35 @@ void f_mmap_erase_begin_ptr_recto(std::multimap<int,int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | 🛑 heap-use-after-free |
+| `natural` | estado inicial ordinario | sin detección | 🛑 heap-use-after-free |
 
 <details>
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-e  (/tmp/mi-linter-runtime-validation/runtime_asan+0x286b9e) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x5575d4ce867c  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e467c) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7fbc8d427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7fbc8d4278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x5575d4aa42c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x56b6a69038f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x56b6a69034f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x56b6a68ba5b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x56b6a684fe7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x56b6a6895212 in main /work/test/runtime_runner.cpp:3002:33
+    #12 0x7af86980c1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x7af86980c28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x56b6a66d74b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x5575d4c09fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x5575d4d3c6c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5575d4d3c3cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5575d4d5c068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5575d4d5c019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5575d4d5bcaf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5575d4d5c967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5575d4d5c546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x5575d4d0a033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x5575d4ca5e04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x5575d4ce866f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e466f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7fbc8d427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7fbc8d4278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x5575d4aa42c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x286c3d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:4005:11 in f_mmap_erase_begin_ptr_recto(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7bfc8c5dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bfc8c5dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bfc8c5dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bfc8c5dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bfc8c5dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7bfc8c5e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7bfc8c5e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7bfc8c5e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bfc8c5e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bfc8c5e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bfc8c5e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x773868bdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x773868bdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x773868bdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x773868bdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x773868bdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x773868be0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x773868be0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x773868be0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x773868be0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x773868be0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x773868be0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -885,16 +789,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==309==ABORTING
+==1573==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_ptr_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `guarda` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `guarda` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_ptr_guarda(std::multimap<int,int>& c) {
@@ -910,47 +814,35 @@ void f_mmap_erase_begin_ptr_guarda(std::multimap<int,int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | 🛑 heap-use-after-free |
+| `natural` | estado inicial ordinario | sin detección | 🛑 heap-use-after-free |
 
 <details>
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x286ead) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x5602b2f0d7fb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e47fb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7fe736827780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7fe7368278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x5602b2cc92c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+ree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x5ede6251c8f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x5ede6251c4f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x5ede624d35b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x5ede62468e7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x5ede624ae391 in main /work/test/runtime_runner.cpp:3007:33
+    #12 0x71587c24a1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x71587c24a28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x5ede622f04b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x5602b2e2efe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x5602b2f616c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5602b2f613cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5602b2f81068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5602b2f81019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5602b2f80caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5602b2f81967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5602b2f81546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x5602b2f2f033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x5602b2ecae04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x5602b2f0d7ee  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e47ee) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7fe736827780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7fe7368278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x5602b2cc92c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x286f49) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:4012:11 in f_mmap_erase_begin_ptr_guarda(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7c27359dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c27359dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c27359dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c27359dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c27359dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7c27359e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7c27359e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7c27359e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c27359e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c27359e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c27359e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d987b5dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d987b5dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d987b5dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d987b5dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d987b5dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x6d987b5e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x6d987b5e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x6d987b5e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d987b5e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d987b5e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d987b5e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -970,16 +862,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==311==ABORTING
+==1576==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_ptr_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `bucle` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `bucle` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_ptr_bucle(std::multimap<int,int>& c) {
@@ -1002,7 +894,7 @@ void f_mmap_erase_begin_ptr_bucle(std::multimap<int,int>& c) {
 <summary>stderr libstdc++ Debug · <code>natural</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:392:
+/usr/include/c++/13/debug/safe_iterator.h:326:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>& 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator++() 
@@ -1013,10 +905,10 @@ In function:
 Error: attempt to increment a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7fff9124ab80 {
+    iterator "this" @ 0x7ffd51a3b8f0 {
       type = std::_Rb_tree_iterator<std::pair<int const, int> > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7fff9124ac70
+      references sequence with type 'std::debug::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int> > >' @ 0x7ffd51a3b9e0
     }
 ````
 
@@ -1026,41 +918,29 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x28724d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x5559c820197a  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e497a) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7f6ee1a27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7f6ee1a278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x5559c7fbd2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x64850c8f58f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x64850c8f54f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x64850c8ac5b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x64850c841e7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x64850c887510 in main /work/test/runtime_runner.cpp:3012:33
+    #12 0x7cc5052061c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x7cc50520628a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x64850c6c94b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x5559c8122fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x5559c82556c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5559c82553cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5559c8275068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5559c8275019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5559c8274caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5559c8275967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5559c8275546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x5559c8223033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x5559c81bee04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x5559c820196d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e496d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7f6ee1a27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7f6ee1a278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x5559c7fbd2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x2872ec) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:4019:13 in f_mmap_erase_begin_ptr_bucle(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7baee0bdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7baee0bdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7baee0bdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7baee0bdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7baee0bdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7baee0be0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7baee0be0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7baee0be0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7baee0be0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7baee0be0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7baee0be0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7905045dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7905045dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7905045dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7905045dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7905045dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7905045e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x7905045e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x7905045e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7905045e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7905045e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7905045e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -1080,16 +960,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==313==ABORTING
+==1579==ABORTING
 ````
 
 </details>
 
 ### f_mmap_erase_begin_ptr_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `llamada` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `llamada` | 🔴 `UB` | ❌ no detectado | ✅ detectado |
 
 ```cpp
 void f_mmap_erase_begin_ptr_llamada(std::multimap<int,int>& c) {
@@ -1105,47 +985,35 @@ void f_mmap_erase_begin_ptr_llamada(std::multimap<int,int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | — (código 0) | 🛑 heap-use-after-free |
+| `natural` | estado inicial ordinario | sin detección | 🛑 heap-use-after-free |
 
 <details>
 <summary>stderr ASan/UBSan · <code>natural</code></summary>
 
 ````text
-  (/tmp/mi-linter-runtime-validation/runtime_asan+0x287552) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x56366d51eaf9  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e4af9) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x7f3b8a827780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x7f3b8a8278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x56366d2da2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+ee<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1831:19
+    #7 0x61a5fbf5e8f7 in std::_Rb_tree_iterator<std::pair<int const, int>> std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_equal_<std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node>(std::_Rb_tree_const_iterator<std::pair<int const, int>>, std::pair<int const, int> const&, std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_Alloc_node&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:2366:11
+    #8 0x61a5fbf5e4f9 in std::enable_if<__same_value_type<std::pair<int const, int> const*>::value, void>::type std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int>>, std::less<int>, std::allocator<std::pair<int const, int>>>::_M_insert_range_equal<std::pair<int const, int> const*>(std::pair<int const, int> const*, std::pair<int const, int> const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tree.h:1121:6
+    #9 0x61a5fbf155b3 in std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>::multimap(std::initializer_list<std::pair<int const, int>>, std::less<int> const&, std::allocator<std::pair<int const, int>> const&) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_multimap.h:234:14
+    #10 0x61a5fbeaae7a in make_mmap(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:58:68
+    #11 0x61a5fbef068f in main /work/test/runtime_runner.cpp:3017:33
+    #12 0x79af257661c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #13 0x79af2576628a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #14 0x61a5fbd324b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-previously allocated by thread T0 here:
-    #0 0x56366d43ffe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x56366d5726c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3386c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x56366d5723cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x3383cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x56366d592068  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358068) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x56366d592019  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358019) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x56366d591caf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x357caf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x56366d592967  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358967) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x56366d592546  (/tmp/mi-linter-runtime-validation/runtime_asan+0x358546) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x56366d540033  (/tmp/mi-linter-runtime-validation/runtime_asan+0x306033) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x56366d4dbe04  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a1e04) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #10 0x56366d51eaec  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2e4aec) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #11 0x7f3b8a827780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #12 0x7f3b8a8278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #13 0x56366d2da2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x2875ea) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:4027:11 in f_mmap_erase_begin_ptr_llamada(std::multimap<int, int, std::less<int>, std::allocator<std::pair<int const, int>>>&)
 Shadow bytes around the buggy address:
-  0x7b7b899dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b7b899dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b7b899dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b7b899dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b7b899dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b7b899e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
-  0x7b7b899e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
-  0x7b7b899e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b7b899e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b7b899e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b7b899e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75ef249dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75ef249dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75ef249dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75ef249dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75ef249dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x75ef249e0000: fa fa fd fd fd fd[fd]fa fa fa 00 00 00 00 00 fa
+  0x75ef249e0080: fa fa 00 00 00 00 00 fa fa fa fa fa fa fa fa fa
+  0x75ef249e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75ef249e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75ef249e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75ef249e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -1165,7 +1033,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==315==ABORTING
+==1582==ABORTING
 ````
 
 </details>

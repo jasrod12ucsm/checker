@@ -1,2542 +1,3670 @@
 [
  {
-  "fn": "f_vector_push_back_it_bucle",
-  "avisa": false,
+  "fn": "f_vector_insert_begin_it_recto",
   "contenedor": "vector",
-  "op": "push_back",
+  "op": "insert_begin",
   "sostiene": "it",
-  "forma": "bucle",
+  "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_vector_insert_begin_it_guarda",
+  "contenedor": "vector",
+  "op": "insert_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
-  "fn": "f_vector_push_back_ref_bucle",
-  "avisa": false,
+  "fn": "f_vector_insert_begin_it_bucle",
   "contenedor": "vector",
-  "op": "push_back",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_push_back_ptr_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "push_back",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_emplace_back_it_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "emplace_back",
+  "op": "insert_begin",
   "sostiene": "it",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
-  "fn": "f_vector_emplace_back_ref_bucle",
-  "avisa": false,
+  "fn": "f_vector_insert_begin_it_llamada",
   "contenedor": "vector",
-  "op": "emplace_back",
-  "sostiene": "ref",
-  "forma": "bucle",
+  "op": "insert_begin",
+  "sostiene": "it",
+  "forma": "llamada",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_emplace_back_ptr_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "emplace_back",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_vector_insert_begin_ref_recto",
-  "avisa": false,
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_insert_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_insert_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_insert_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_insert_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_insert_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_insert_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_insert_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "vector",
   "op": "insert_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
-  "fn": "f_vector_insert_end_it_bucle",
-  "avisa": false,
+  "fn": "f_vector_erase_begin_it_recto",
   "contenedor": "vector",
-  "op": "insert_end",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_vector_erase_begin_it_guarda",
+  "contenedor": "vector",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_vector_erase_begin_it_bucle",
+  "contenedor": "vector",
+  "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
   "esperado": "UB",
-  "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
  },
  {
-  "fn": "f_vector_insert_end_ref_bucle",
-  "avisa": false,
+  "fn": "f_vector_erase_begin_it_llamada",
   "contenedor": "vector",
-  "op": "insert_end",
-  "sostiene": "ref",
-  "forma": "bucle",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "llamada",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_insert_end_ptr_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "insert_end",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
  },
  {
   "fn": "f_vector_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_erase_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_erase_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "vector",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_vector_clear_it_recto",
+  "contenedor": "vector",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_vector_clear_ref_recto",
-  "avisa": false,
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "vector",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
-  "fn": "f_vector_resize_grow_it_bucle",
-  "avisa": false,
+  "fn": "f_vector_assign_it_recto",
   "contenedor": "vector",
-  "op": "resize_grow",
+  "op": "assign",
   "sostiene": "it",
-  "forma": "bucle",
+  "forma": "recto",
   "esperado": "UB",
-  "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
- },
- {
-  "fn": "f_vector_resize_grow_ref_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "resize_grow",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_resize_grow_ptr_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "resize_grow",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_reserve_it_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "reserve",
-  "sostiene": "it",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
- },
- {
-  "fn": "f_vector_reserve_ref_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "reserve",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_reserve_ptr_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "reserve",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
   "fn": "f_vector_assign_ref_recto",
-  "avisa": false,
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_assign_ref_guarda",
-  "avisa": false,
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_assign_ref_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "assign",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_assign_ref_llamada",
-  "avisa": false,
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_assign_ptr_recto",
-  "avisa": false,
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_assign_ptr_guarda",
-  "avisa": false,
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_assign_ptr_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "assign",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_vector_assign_ptr_llamada",
-  "avisa": false,
   "contenedor": "vector",
   "op": "assign",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
-  "fn": "f_vector_pop_back_it_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "pop_back",
+  "fn": "f_deque_push_back_it_recto",
+  "contenedor": "deque",
+  "op": "push_back",
   "sostiene": "it",
-  "forma": "bucle",
+  "forma": "recto",
   "esperado": "UB",
-  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
-  "fn": "f_vector_pop_back_ref_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "pop_back",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_vector_pop_back_ptr_bucle",
-  "avisa": false,
-  "contenedor": "vector",
-  "op": "pop_back",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_push_back_ref_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "push_back",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_push_back_ptr_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "push_back",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_push_front_ref_bucle",
-  "avisa": false,
+  "fn": "f_deque_push_front_it_recto",
   "contenedor": "deque",
   "op": "push_front",
-  "sostiene": "ref",
-  "forma": "bucle",
+  "sostiene": "it",
+  "forma": "recto",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
-  "fn": "f_deque_push_front_ptr_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "push_front",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_emplace_back_ref_bucle",
-  "avisa": false,
+  "fn": "f_deque_emplace_back_it_recto",
   "contenedor": "deque",
   "op": "emplace_back",
-  "sostiene": "ref",
-  "forma": "bucle",
+  "sostiene": "it",
+  "forma": "recto",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
-  "fn": "f_deque_emplace_back_ptr_bucle",
-  "avisa": false,
+  "fn": "f_deque_insert_middle_it_recto",
   "contenedor": "deque",
-  "op": "emplace_back",
-  "sostiene": "ptr",
-  "forma": "bucle",
+  "op": "insert_middle",
+  "sostiene": "it",
+  "forma": "recto",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
   "fn": "f_deque_insert_middle_ref_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_insert_middle_ref_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_insert_middle_ref_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "insert_middle",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_insert_middle_ref_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_insert_middle_ptr_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_insert_middle_ptr_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_insert_middle_ptr_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "insert_middle",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_insert_middle_ptr_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "insert_middle",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_deque_erase_begin_it_recto",
+  "contenedor": "deque",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_deque_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_erase_begin_ref_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "erase_begin",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_erase_begin_ptr_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "erase_begin",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_deque_clear_it_recto",
+  "contenedor": "deque",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_deque_clear_ref_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_deque_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "deque",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_resize_grow_it_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
   "fn": "f_deque_resize_grow_it_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_deque_resize_grow_it_bucle",
-  "avisa": false,
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_deque_resize_grow_it_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "it",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_deque_resize_grow_ref_bucle",
-  "avisa": false,
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_resize_grow_ptr_bucle",
-  "avisa": false,
   "contenedor": "deque",
   "op": "resize_grow",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_deque_pop_front_it_recto",
+  "contenedor": "deque",
+  "op": "pop_front",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_deque_pop_front_it_guarda",
+  "contenedor": "deque",
+  "op": "pop_front",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_deque_pop_front_it_bucle",
+  "contenedor": "deque",
+  "op": "pop_front",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_deque_pop_front_it_llamada",
+  "contenedor": "deque",
+  "op": "pop_front",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
   "fn": "f_deque_pop_front_ref_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_pop_front_ref_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_pop_front_ref_bucle",
-  "avisa": false,
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_pop_front_ref_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_pop_front_ptr_recto",
-  "avisa": false,
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_pop_front_ptr_guarda",
-  "avisa": false,
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_pop_front_ptr_bucle",
-  "avisa": false,
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_deque_pop_front_ptr_llamada",
-  "avisa": false,
   "contenedor": "deque",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_list_erase_begin_it_recto",
+  "contenedor": "list",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_list_erase_begin_it_guarda",
+  "contenedor": "list",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_list_erase_begin_it_bucle",
+  "contenedor": "list",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_list_erase_begin_it_llamada",
+  "contenedor": "list",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
   "fn": "f_list_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_erase_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_erase_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "list",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_list_clear_it_recto",
+  "contenedor": "list",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_list_clear_ref_recto",
-  "avisa": false,
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_list_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "list",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_list_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "list",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "list",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_list_pop_front_it_recto",
+  "contenedor": "list",
+  "op": "pop_front",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_list_pop_front_it_guarda",
+  "contenedor": "list",
+  "op": "pop_front",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_list_pop_front_it_bucle",
+  "contenedor": "list",
+  "op": "pop_front",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_list_pop_front_it_llamada",
+  "contenedor": "list",
+  "op": "pop_front",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
   "fn": "f_list_pop_front_ref_recto",
-  "avisa": false,
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_pop_front_ref_guarda",
-  "avisa": false,
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_pop_front_ref_bucle",
-  "avisa": false,
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_pop_front_ref_llamada",
-  "avisa": false,
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_pop_front_ptr_recto",
-  "avisa": false,
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_pop_front_ptr_guarda",
-  "avisa": false,
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_pop_front_ptr_bucle",
-  "avisa": false,
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_list_pop_front_ptr_llamada",
-  "avisa": false,
   "contenedor": "list",
   "op": "pop_front",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_erase_after_it_recto",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "it",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
   "fn": "f_flist_erase_after_it_guarda",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "it",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_flist_erase_after_it_bucle",
+  "contenedor": "flist",
+  "op": "erase_after",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "3. Se invalida por identidad del iterador, no por posicion"
  },
  {
   "fn": "f_flist_erase_after_it_llamada",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "it",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "3. Se invalida por identidad del iterador, no por posicion"
  },
  {
   "fn": "f_flist_erase_after_ref_recto",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_erase_after_ref_guarda",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_erase_after_ref_bucle",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_erase_after_ref_llamada",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_erase_after_ptr_recto",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_erase_after_ptr_guarda",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_erase_after_ptr_bucle",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_erase_after_ptr_llamada",
-  "avisa": false,
   "contenedor": "flist",
   "op": "erase_after",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_flist_clear_it_recto",
+  "contenedor": "flist",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_flist_clear_ref_recto",
-  "avisa": false,
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_flist_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "flist",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_flist_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "flist",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_flist_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "flist",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_set_erase_begin_it_recto",
+  "contenedor": "set",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_set_erase_begin_it_guarda",
+  "contenedor": "set",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_set_erase_begin_it_bucle",
+  "contenedor": "set",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_set_erase_begin_it_llamada",
+  "contenedor": "set",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
   "fn": "f_set_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_erase_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_erase_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "set",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_set_clear_it_recto",
+  "contenedor": "set",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_set_clear_ref_recto",
-  "avisa": false,
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_set_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "set",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_set_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "set",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_set_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "set",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_mset_erase_begin_it_recto",
+  "contenedor": "mset",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_mset_erase_begin_it_guarda",
+  "contenedor": "mset",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_mset_erase_begin_it_bucle",
+  "contenedor": "mset",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_mset_erase_begin_it_llamada",
+  "contenedor": "mset",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
   "fn": "f_mset_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_erase_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_erase_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "mset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_mset_clear_it_recto",
+  "contenedor": "mset",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_mset_clear_ref_recto",
-  "avisa": false,
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_mset_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "mset",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_mset_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "mset",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mset_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "mset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_map_erase_begin_it_recto",
+  "contenedor": "map",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_map_erase_begin_it_guarda",
+  "contenedor": "map",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_map_erase_begin_it_bucle",
+  "contenedor": "map",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_map_erase_begin_it_llamada",
+  "contenedor": "map",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
   "fn": "f_map_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_erase_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_erase_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "map",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_map_clear_it_recto",
+  "contenedor": "map",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_map_clear_ref_recto",
-  "avisa": false,
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_map_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "map",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_map_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "map",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_map_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "map",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_mmap_erase_begin_it_recto",
+  "contenedor": "mmap",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_mmap_erase_begin_it_guarda",
+  "contenedor": "mmap",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_mmap_erase_begin_it_bucle",
+  "contenedor": "mmap",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "bucle",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_mmap_erase_begin_it_llamada",
+  "contenedor": "mmap",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
   "fn": "f_mmap_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_erase_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_erase_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_mmap_clear_it_recto",
+  "contenedor": "mmap",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_mmap_clear_ref_recto",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_mmap_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "mmap",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_mmap_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "mmap",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_mmap_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "mmap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
-  "fn": "f_uset_insert_it_bucle",
-  "avisa": false,
+  "fn": "f_uset_erase_begin_it_recto",
   "contenedor": "uset",
-  "op": "insert",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
+  "fn": "f_uset_erase_begin_it_guarda",
+  "contenedor": "uset",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_uset_erase_begin_it_bucle",
+  "contenedor": "uset",
+  "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
   "esperado": "UB",
-  "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_uset_erase_begin_it_llamada",
+  "contenedor": "uset",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
  },
  {
   "fn": "f_uset_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_erase_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_erase_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "uset",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_uset_clear_it_recto",
+  "contenedor": "uset",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_uset_clear_ref_recto",
-  "avisa": false,
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_uset_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "uset",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_uset_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "uset",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "uset",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_rehash_it_recto",
-  "avisa": false,
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "it",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
   "fn": "f_uset_rehash_it_guarda",
-  "avisa": false,
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "it",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_uset_rehash_it_bucle",
-  "avisa": false,
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "it",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_uset_rehash_it_llamada",
-  "avisa": false,
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "it",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_uset_rehash_ref_bucle",
-  "avisa": false,
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_rehash_ptr_bucle",
-  "avisa": false,
   "contenedor": "uset",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_reserve_it_recto",
-  "avisa": false,
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "it",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
   "fn": "f_uset_reserve_it_guarda",
-  "avisa": false,
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "it",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_uset_reserve_it_bucle",
-  "avisa": false,
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "it",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_uset_reserve_it_llamada",
-  "avisa": false,
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "it",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_uset_reserve_ref_bucle",
-  "avisa": false,
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_uset_reserve_ptr_bucle",
-  "avisa": false,
   "contenedor": "uset",
   "op": "reserve",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
-  "fn": "f_umap_insert_it_bucle",
-  "avisa": false,
+  "fn": "f_umap_erase_begin_it_recto",
   "contenedor": "umap",
-  "op": "insert",
+  "op": "erase_begin",
   "sostiene": "it",
-  "forma": "bucle",
+  "forma": "recto",
   "esperado": "UB",
-  "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
-  "fn": "f_umap_subscript_it_bucle",
-  "avisa": false,
+  "fn": "f_umap_erase_begin_it_guarda",
   "contenedor": "umap",
-  "op": "subscript",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "guarda",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_umap_erase_begin_it_bucle",
+  "contenedor": "umap",
+  "op": "erase_begin",
   "sostiene": "it",
   "forma": "bucle",
   "esperado": "UB",
-  "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
+ },
+ {
+  "fn": "f_umap_erase_begin_it_llamada",
+  "contenedor": "umap",
+  "op": "erase_begin",
+  "sostiene": "it",
+  "forma": "llamada",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "3. Se invalida por identidad del iterador, no por posicion"
  },
  {
   "fn": "f_umap_erase_begin_ref_recto",
-  "avisa": false,
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_erase_begin_ref_guarda",
-  "avisa": false,
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_erase_begin_ref_bucle",
-  "avisa": false,
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_erase_begin_ref_llamada",
-  "avisa": false,
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_erase_begin_ptr_recto",
-  "avisa": false,
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_erase_begin_ptr_guarda",
-  "avisa": false,
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_erase_begin_ptr_bucle",
-  "avisa": false,
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_erase_begin_ptr_llamada",
-  "avisa": false,
   "contenedor": "umap",
   "op": "erase_begin",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
+  "fn": "f_umap_clear_it_recto",
+  "contenedor": "umap",
+  "op": "clear",
+  "sostiene": "it",
+  "forma": "recto",
+  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
+  "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
+ },
+ {
   "fn": "f_umap_clear_ref_recto",
-  "avisa": false,
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_clear_ref_guarda",
-  "avisa": false,
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_umap_clear_ref_bucle",
-  "avisa": false,
-  "contenedor": "umap",
-  "op": "clear",
-  "sostiene": "ref",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_clear_ref_llamada",
-  "avisa": false,
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ref",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_clear_ptr_recto",
-  "avisa": false,
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_clear_ptr_guarda",
-  "avisa": false,
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "guarda",
   "esperado": "UB",
-  "causa": "1. El dominio de referencias y punteros no esta modelado"
- },
- {
-  "fn": "f_umap_clear_ptr_bucle",
-  "avisa": false,
-  "contenedor": "umap",
-  "op": "clear",
-  "sostiene": "ptr",
-  "forma": "bucle",
-  "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_clear_ptr_llamada",
-  "avisa": false,
   "contenedor": "umap",
   "op": "clear",
   "sostiene": "ptr",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_rehash_it_recto",
-  "avisa": false,
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "it",
   "forma": "recto",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "2. Sin comparacion previa contra end(), el modelado no se activa"
  },
  {
   "fn": "f_umap_rehash_it_guarda",
-  "avisa": false,
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "it",
   "forma": "guarda",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_umap_rehash_it_bucle",
-  "avisa": false,
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "it",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_umap_rehash_it_llamada",
-  "avisa": false,
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "it",
   "forma": "llamada",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "UB",
+   "control": null
+  },
   "causa": "4. La invalidacion por insercion/realojamiento no esta modelada"
  },
  {
   "fn": "f_umap_rehash_ref_bucle",
-  "avisa": false,
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ref",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  },
  {
   "fn": "f_umap_rehash_ptr_bucle",
-  "avisa": false,
   "contenedor": "umap",
   "op": "rehash",
   "sostiene": "ptr",
   "forma": "bucle",
   "esperado": "UB",
+  "garantia": "ninguna",
+  "handles": {
+   "sostenido": "SAFE",
+   "control": "UB"
+  },
   "causa": "1. El dominio de referencias y punteros no esta modelado"
  }
 ]

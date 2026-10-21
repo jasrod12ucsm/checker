@@ -1,6 +1,10 @@
 # Uso:
 #   docker compose build                 construir la imagen (una vez)
-#   docker compose run --rm linter       compilar y correr el linter sobre los tests
+#   docker compose run --rm verificar    construir y verificar los requerimientos (< 1 min)
+#   docker compose run --rm plugin       construir el plugin y correr leyes + lit
+#   docker compose run --rm calidad      formato, mypy, leyes del arnés, cobertura del núcleo
+#   docker compose run --rm experimento  banco en 4 condiciones + regla de regresión
+#   docker compose run --rm linter       (prototipo retirado, D-01)
 #   docker compose run --rm shell        shell interactiva dentro del entorno
 #   docker compose run --rm query        REPL de clang-query para descubrir matchers
 
@@ -10,7 +14,7 @@ x-base: &base
     dockerfile: Dockerfile
     args:
       LLVM_VERSION: "21"
-  image: mi-linter:llvm21
+  image: checker:llvm21
   working_dir: /work
   volumes:
     # El codigo se monta desde el host: editas fuera, compilas dentro.
@@ -33,6 +37,47 @@ services:
         cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
         cmake --build build
         ./build/mi-linter test/catch_by_value.cpp -- -std=c++17
+
+  # Plugin de CSA: construir, leyes del núcleo y pruebas lit.
+  plugin:
+    <<: *base
+    command:
+      - bash
+      - -euo
+      - pipefail
+      - -c
+      - |
+        cmake -S plugin -B build/plugin -G Ninja -DCMAKE_BUILD_TYPE=Debug
+        cmake --build build/plugin
+        ./build/plugin/dominio_tests --gtest_brief=1
+        lit build/plugin/tests/lit
+
+  # Calidad (7.4): formato, mypy, leyes del arnés y cobertura del núcleo >= 90 %.
+  calidad:
+    <<: *base
+    command: ["bash", "plugin/tests/calidad.sh"]
+
+  # Experimento (RF-13): el banco en las cuatro condiciones, la regla de regresión del CI
+  # y el costo del checker (RNF-04, RNF-05).
+  experimento:
+    <<: *base
+    command:
+      - bash
+      - -euo
+      - pipefail
+      - -c
+      - |
+        cmake -S plugin -B build/plugin -G Ninja -DCMAKE_BUILD_TYPE=Debug >/dev/null
+        cmake --build build/plugin >/dev/null
+        python3 bench/experimento.py
+        python3 bench/regresion.py
+        python3 bench/rendimiento.py
+
+  # Verificación de los requerimientos (libro: Guía de uso). Rápida por omisión;
+  # «docker compose run --rm verificar --completo» corre además el banco entero.
+  verificar:
+    <<: *base
+    entrypoint: ["bash", "verificar.sh"]
 
   # Shell interactiva con todo el toolchain en el PATH.
   shell:

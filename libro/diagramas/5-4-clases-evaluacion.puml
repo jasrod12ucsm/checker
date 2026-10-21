@@ -1,0 +1,73 @@
+@startuml
+!include _estilo.iuml
+hide empty members
+
+package "evaluacion (Python, dataclasses inmutables)" {
+  class Case <<frozen>> {
+    case_id : CaseId
+    container : ContainerKind
+    mutation : str
+    holds : HandleCategory
+    form : Form
+    label : Label
+  }
+  enum Label {
+    UB
+    SAFE
+    POLICY
+  }
+  enum Form {
+    STRAIGHT
+    GUARD
+    LOOP
+    CALL
+  }
+  class Configuration <<frozen>> {
+    config_id : ConfigId
+    clang : Version
+    checkers : tuple[str, ...]
+    plugin : Optional[PluginBuild]
+  }
+  class Run <<frozen>> {
+    run_id : RunId
+    case : CaseId
+    config : ConfigId
+    outcome : Outcome
+  }
+  class Outcome <<unión>> {
+    Completed(raw_path, seconds, max_rss)
+    CompileError(stderr)
+    Crash(stderr)
+    Timeout(seconds)
+  }
+  class Warning <<frozen>> {
+    run : RunId
+    file, line, column
+    checker : str
+    kind : Confirmed | Unresolved
+  }
+  class Match <<frozen>> {
+    case : CaseId
+    verdict : TP | FP | FN | TN
+    warnings : tuple[Warning, ...]
+  }
+  class Counts <<monoide>> {
+    tp, fp, fn, tn : int
+    {static} empty() : Counts
+    combine(Counts) : Counts
+    precision() : Ratio | Undefined
+    recall() : Ratio | Undefined
+    f1() : Ratio | Undefined
+  }
+}
+
+Run --> Case
+Run --> Configuration
+Run *-- Outcome
+Warning --> Run
+Match --> Case
+Match o-- Warning
+Counts ..> Match : se arma sumando
+Case *-- Label
+Case *-- Form
+@enduml

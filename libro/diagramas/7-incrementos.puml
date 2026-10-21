@@ -1,0 +1,20 @@
+@startgantt
+!pragma layout smetana
+printscale weekly zoom 2
+Project starts 2026-10-19
+[I0 Entorno y plugin vacío registrado] lasts 7 days
+[I1 Núcleo + tabla normativa + leyes] lasts 10 days
+[I1 Núcleo + tabla normativa + leyes] starts at [I0 Entorno y plugin vacío registrado]'s end
+[I2 Referencias y punteros desde *it] lasts 14 days
+[I2 Referencias y punteros desde *it] starts at [I1 Núcleo + tabla normativa + leyes]'s end
+[I3 Iteradores propios + posiciones] lasts 14 days
+[I3 Iteradores propios + posiciones] starts at [I2 Referencias y punteros desde *it]'s end
+[I4 Capacidad y factor de carga (POLICY)] lasts 10 days
+[I4 Capacidad y factor de carga (POLICY)] starts at [I3 Iteradores propios + posiciones]'s end
+[I5 Notas de ruta y mensajes] lasts 7 days
+[I5 Notas de ruta y mensajes] starts at [I4 Capacidad y factor de carga (POLICY)]'s end
+[I6 Evaluación congelada y redacción] lasts 10 days
+[I6 Evaluación congelada y redacción] starts at [I5 Notas de ruta y mensajes]'s end
+[Arnés: normalizador + cotejo + métricas] lasts 21 days
+[Arnés: normalizador + cotejo + métricas] starts at [I0 Entorno y plugin vacío registrado]'s end
+@endgantt

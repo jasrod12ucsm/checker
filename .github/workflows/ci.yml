@@ -1,0 +1,36 @@
+# Integración continua (capítulo 7.1 e y 7.3 g): la misma imagen que en local.
+# Falla si el plugin no compila, si una prueba falla, si el formato o los tipos no
+# pasan, si la cobertura del núcleo baja de 90 %, o si el banco muestra una
+# regresión (un SAFE con aviso confirmado o un UB que deja de detectarse).
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Imagen checker:llvm21
+        run: docker compose build
+
+      - name: Plugin, gtests y lit (RF-16)
+        run: docker compose run --rm plugin
+
+      - name: Calidad (formato, mypy, leyes del arnés, cobertura)
+        run: docker compose run --rm calidad
+
+      - name: Experimento y regresión del banco (RF-13, RF-14)
+        run: docker compose run --rm experimento
+
+      - name: Publicar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: experimento
+          path: test/experimento/

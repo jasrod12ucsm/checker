@@ -26,7 +26,7 @@ void mutar_vector_pop_back(std::vector<int>& c) { c.pop_back(); }
 void mutar_deque_push_back(std::deque<int>& c) { c.push_back(1); }
 void mutar_deque_push_front(std::deque<int>& c) { c.push_front(1); }
 void mutar_deque_emplace_back(std::deque<int>& c) { c.emplace_back(1); }
-void mutar_deque_insert_middle(std::deque<int>& c) { c.insert(c.begin(),1); }
+void mutar_deque_insert_middle(std::deque<int>& c) { c.insert(c.begin()+1,1); }
 void mutar_deque_erase_begin(std::deque<int>& c) { c.erase(c.begin()); }
 void mutar_deque_clear(std::deque<int>& c) { c.clear(); }
 void mutar_deque_resize_grow(std::deque<int>& c) { c.resize(c.size()+100); }
@@ -75,7 +75,20 @@ void f_vector_push_back_it_recto(std::vector<int>& c) {
   c.push_back(1);
   sink(*it);
 }
+void f_vector_push_back_it_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  c.push_back(1);
+  sink(*it);
+}
 void f_vector_push_back_it_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  c.push_back(1);
+  sink(*it);
+}
+void f_vector_push_back_it_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   c.push_back(1);
@@ -88,7 +101,22 @@ void f_vector_push_back_it_bucle(std::vector<int>& c) {
     sink(*it);
   }
 }
+void f_vector_push_back_it_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    c.push_back(1);
+    sink(*it);
+  }
+}
 void f_vector_push_back_it_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  mutar_vector_push_back(c);
+  sink(*it);
+}
+void f_vector_push_back_it_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   mutar_vector_push_back(c);
@@ -100,7 +128,22 @@ void f_vector_push_back_ref_recto(std::vector<int>& c) {
   c.push_back(1);
   sink(h);
 }
+void f_vector_push_back_ref_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  const auto& h = *it;
+  c.push_back(1);
+  sink(h);
+}
 void f_vector_push_back_ref_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto& h = *it;
+  c.push_back(1);
+  sink(h);
+}
+void f_vector_push_back_ref_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto& h = *it;
@@ -115,7 +158,24 @@ void f_vector_push_back_ref_bucle(std::vector<int>& c) {
     sink(h);
   }
 }
+void f_vector_push_back_ref_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto& h = *it;
+    c.push_back(1);
+    sink(h);
+  }
+}
 void f_vector_push_back_ref_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto& h = *it;
+  mutar_vector_push_back(c);
+  sink(h);
+}
+void f_vector_push_back_ref_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto& h = *it;
@@ -128,7 +188,22 @@ void f_vector_push_back_ptr_recto(std::vector<int>& c) {
   c.push_back(1);
   sink(*h);
 }
+void f_vector_push_back_ptr_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  const auto* h = &*it;
+  c.push_back(1);
+  sink(*h);
+}
 void f_vector_push_back_ptr_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto* h = &*it;
+  c.push_back(1);
+  sink(*h);
+}
+void f_vector_push_back_ptr_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto* h = &*it;
@@ -143,7 +218,24 @@ void f_vector_push_back_ptr_bucle(std::vector<int>& c) {
     sink(*h);
   }
 }
+void f_vector_push_back_ptr_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto* h = &*it;
+    c.push_back(1);
+    sink(*h);
+  }
+}
 void f_vector_push_back_ptr_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto* h = &*it;
+  mutar_vector_push_back(c);
+  sink(*h);
+}
+void f_vector_push_back_ptr_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto* h = &*it;
@@ -155,7 +247,20 @@ void f_vector_emplace_back_it_recto(std::vector<int>& c) {
   c.emplace_back(1);
   sink(*it);
 }
+void f_vector_emplace_back_it_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  c.emplace_back(1);
+  sink(*it);
+}
 void f_vector_emplace_back_it_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  c.emplace_back(1);
+  sink(*it);
+}
+void f_vector_emplace_back_it_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   c.emplace_back(1);
@@ -168,7 +273,22 @@ void f_vector_emplace_back_it_bucle(std::vector<int>& c) {
     sink(*it);
   }
 }
+void f_vector_emplace_back_it_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    c.emplace_back(1);
+    sink(*it);
+  }
+}
 void f_vector_emplace_back_it_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  mutar_vector_emplace_back(c);
+  sink(*it);
+}
+void f_vector_emplace_back_it_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   mutar_vector_emplace_back(c);
@@ -180,7 +300,22 @@ void f_vector_emplace_back_ref_recto(std::vector<int>& c) {
   c.emplace_back(1);
   sink(h);
 }
+void f_vector_emplace_back_ref_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  const auto& h = *it;
+  c.emplace_back(1);
+  sink(h);
+}
 void f_vector_emplace_back_ref_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto& h = *it;
+  c.emplace_back(1);
+  sink(h);
+}
+void f_vector_emplace_back_ref_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto& h = *it;
@@ -195,7 +330,24 @@ void f_vector_emplace_back_ref_bucle(std::vector<int>& c) {
     sink(h);
   }
 }
+void f_vector_emplace_back_ref_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto& h = *it;
+    c.emplace_back(1);
+    sink(h);
+  }
+}
 void f_vector_emplace_back_ref_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto& h = *it;
+  mutar_vector_emplace_back(c);
+  sink(h);
+}
+void f_vector_emplace_back_ref_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto& h = *it;
@@ -208,7 +360,22 @@ void f_vector_emplace_back_ptr_recto(std::vector<int>& c) {
   c.emplace_back(1);
   sink(*h);
 }
+void f_vector_emplace_back_ptr_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  const auto* h = &*it;
+  c.emplace_back(1);
+  sink(*h);
+}
 void f_vector_emplace_back_ptr_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto* h = &*it;
+  c.emplace_back(1);
+  sink(*h);
+}
+void f_vector_emplace_back_ptr_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto* h = &*it;
@@ -223,7 +390,24 @@ void f_vector_emplace_back_ptr_bucle(std::vector<int>& c) {
     sink(*h);
   }
 }
+void f_vector_emplace_back_ptr_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto* h = &*it;
+    c.emplace_back(1);
+    sink(*h);
+  }
+}
 void f_vector_emplace_back_ptr_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto* h = &*it;
+  mutar_vector_emplace_back(c);
+  sink(*h);
+}
+void f_vector_emplace_back_ptr_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto* h = &*it;
@@ -315,7 +499,20 @@ void f_vector_insert_end_it_recto(std::vector<int>& c) {
   c.insert(c.end(),1);
   sink(*it);
 }
+void f_vector_insert_end_it_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  c.insert(c.end(),1);
+  sink(*it);
+}
 void f_vector_insert_end_it_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  c.insert(c.end(),1);
+  sink(*it);
+}
+void f_vector_insert_end_it_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   c.insert(c.end(),1);
@@ -328,7 +525,22 @@ void f_vector_insert_end_it_bucle(std::vector<int>& c) {
     sink(*it);
   }
 }
+void f_vector_insert_end_it_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    c.insert(c.end(),1);
+    sink(*it);
+  }
+}
 void f_vector_insert_end_it_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  mutar_vector_insert_end(c);
+  sink(*it);
+}
+void f_vector_insert_end_it_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   mutar_vector_insert_end(c);
@@ -340,7 +552,22 @@ void f_vector_insert_end_ref_recto(std::vector<int>& c) {
   c.insert(c.end(),1);
   sink(h);
 }
+void f_vector_insert_end_ref_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  const auto& h = *it;
+  c.insert(c.end(),1);
+  sink(h);
+}
 void f_vector_insert_end_ref_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto& h = *it;
+  c.insert(c.end(),1);
+  sink(h);
+}
+void f_vector_insert_end_ref_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto& h = *it;
@@ -355,7 +582,24 @@ void f_vector_insert_end_ref_bucle(std::vector<int>& c) {
     sink(h);
   }
 }
+void f_vector_insert_end_ref_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto& h = *it;
+    c.insert(c.end(),1);
+    sink(h);
+  }
+}
 void f_vector_insert_end_ref_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto& h = *it;
+  mutar_vector_insert_end(c);
+  sink(h);
+}
+void f_vector_insert_end_ref_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto& h = *it;
@@ -368,7 +612,22 @@ void f_vector_insert_end_ptr_recto(std::vector<int>& c) {
   c.insert(c.end(),1);
   sink(*h);
 }
+void f_vector_insert_end_ptr_recto_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  const auto* h = &*it;
+  c.insert(c.end(),1);
+  sink(*h);
+}
 void f_vector_insert_end_ptr_guarda(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto* h = &*it;
+  c.insert(c.end(),1);
+  sink(*h);
+}
+void f_vector_insert_end_ptr_guarda_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto* h = &*it;
@@ -383,7 +642,24 @@ void f_vector_insert_end_ptr_bucle(std::vector<int>& c) {
     sink(*h);
   }
 }
+void f_vector_insert_end_ptr_bucle_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto* h = &*it;
+    c.insert(c.end(),1);
+    sink(*h);
+  }
+}
 void f_vector_insert_end_ptr_llamada(std::vector<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  const auto* h = &*it;
+  mutar_vector_insert_end(c);
+  sink(*h);
+}
+void f_vector_insert_end_ptr_llamada_reserva(std::vector<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   const auto* h = &*it;
@@ -1192,19 +1468,19 @@ void f_deque_emplace_back_ptr_llamada(std::deque<int>& c) {
 }
 void f_deque_insert_middle_it_recto(std::deque<int>& c) {
   auto it = c.begin();
-  c.insert(c.begin(),1);
+  c.insert(c.begin()+1,1);
   sink(*it);
 }
 void f_deque_insert_middle_it_guarda(std::deque<int>& c) {
   auto it = c.begin();
   if (it == c.end()) return;
-  c.insert(c.begin(),1);
+  c.insert(c.begin()+1,1);
   sink(*it);
 }
 void f_deque_insert_middle_it_bucle(std::deque<int>& c) {
   int rondas = 0;
   for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
-    c.insert(c.begin(),1);
+    c.insert(c.begin()+1,1);
     sink(*it);
   }
 }
@@ -1217,21 +1493,21 @@ void f_deque_insert_middle_it_llamada(std::deque<int>& c) {
 void f_deque_insert_middle_ref_recto(std::deque<int>& c) {
   auto it = c.begin();
   const auto& h = *it;
-  c.insert(c.begin(),1);
+  c.insert(c.begin()+1,1);
   sink(h);
 }
 void f_deque_insert_middle_ref_guarda(std::deque<int>& c) {
   auto it = c.begin();
   if (it == c.end()) return;
   const auto& h = *it;
-  c.insert(c.begin(),1);
+  c.insert(c.begin()+1,1);
   sink(h);
 }
 void f_deque_insert_middle_ref_bucle(std::deque<int>& c) {
   int rondas = 0;
   for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
     const auto& h = *it;
-    c.insert(c.begin(),1);
+    c.insert(c.begin()+1,1);
     sink(h);
   }
 }
@@ -1245,21 +1521,21 @@ void f_deque_insert_middle_ref_llamada(std::deque<int>& c) {
 void f_deque_insert_middle_ptr_recto(std::deque<int>& c) {
   auto it = c.begin();
   const auto* h = &*it;
-  c.insert(c.begin(),1);
+  c.insert(c.begin()+1,1);
   sink(*h);
 }
 void f_deque_insert_middle_ptr_guarda(std::deque<int>& c) {
   auto it = c.begin();
   if (it == c.end()) return;
   const auto* h = &*it;
-  c.insert(c.begin(),1);
+  c.insert(c.begin()+1,1);
   sink(*h);
 }
 void f_deque_insert_middle_ptr_bucle(std::deque<int>& c) {
   int rondas = 0;
   for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
     const auto* h = &*it;
-    c.insert(c.begin(),1);
+    c.insert(c.begin()+1,1);
     sink(*h);
   }
 }
@@ -3835,7 +4111,20 @@ void f_uset_insert_it_recto(std::unordered_set<int>& c) {
   c.insert(99);
   sink(*it);
 }
+void f_uset_insert_it_recto_reserva(std::unordered_set<int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  c.insert(99);
+  sink(*it);
+}
 void f_uset_insert_it_guarda(std::unordered_set<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  c.insert(99);
+  sink(*it);
+}
+void f_uset_insert_it_guarda_reserva(std::unordered_set<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   c.insert(99);
@@ -3848,7 +4137,22 @@ void f_uset_insert_it_bucle(std::unordered_set<int>& c) {
     sink(*it);
   }
 }
+void f_uset_insert_it_bucle_reserva(std::unordered_set<int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    c.insert(99);
+    sink(*it);
+  }
+}
 void f_uset_insert_it_llamada(std::unordered_set<int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  mutar_uset_insert(c);
+  sink(*it);
+}
+void f_uset_insert_it_llamada_reserva(std::unordered_set<int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   mutar_uset_insert(c);
@@ -3868,6 +4172,15 @@ void f_uset_insert_ref_guarda(std::unordered_set<int>& c) {
   sink(h);
 }
 void f_uset_insert_ref_bucle(std::unordered_set<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto& h = *it;
+    c.insert(99);
+    sink(h);
+  }
+}
+void f_uset_insert_ref_bucle_reserva(std::unordered_set<int>& c) {
+  c.reserve(c.size() + 3);
   int rondas = 0;
   for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
     const auto& h = *it;
@@ -3896,6 +4209,15 @@ void f_uset_insert_ptr_guarda(std::unordered_set<int>& c) {
   sink(*h);
 }
 void f_uset_insert_ptr_bucle(std::unordered_set<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto* h = &*it;
+    c.insert(99);
+    sink(*h);
+  }
+}
+void f_uset_insert_ptr_bucle_reserva(std::unordered_set<int>& c) {
+  c.reserve(c.size() + 3);
   int rondas = 0;
   for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
     const auto* h = &*it;
@@ -4235,7 +4557,20 @@ void f_umap_insert_it_recto(std::unordered_map<int,int>& c) {
   c.insert({99,1});
   sink(it->second);
 }
+void f_umap_insert_it_recto_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  c.insert({99,1});
+  sink(it->second);
+}
 void f_umap_insert_it_guarda(std::unordered_map<int,int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  c.insert({99,1});
+  sink(it->second);
+}
+void f_umap_insert_it_guarda_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   c.insert({99,1});
@@ -4248,7 +4583,22 @@ void f_umap_insert_it_bucle(std::unordered_map<int,int>& c) {
     sink(it->second);
   }
 }
+void f_umap_insert_it_bucle_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    c.insert({99,1});
+    sink(it->second);
+  }
+}
 void f_umap_insert_it_llamada(std::unordered_map<int,int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  mutar_umap_insert(c);
+  sink(it->second);
+}
+void f_umap_insert_it_llamada_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   mutar_umap_insert(c);
@@ -4268,6 +4618,15 @@ void f_umap_insert_ref_guarda(std::unordered_map<int,int>& c) {
   sink(h.second);
 }
 void f_umap_insert_ref_bucle(std::unordered_map<int,int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto& h = *it;
+    c.insert({99,1});
+    sink(h.second);
+  }
+}
+void f_umap_insert_ref_bucle_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 3);
   int rondas = 0;
   for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
     const auto& h = *it;
@@ -4303,6 +4662,15 @@ void f_umap_insert_ptr_bucle(std::unordered_map<int,int>& c) {
     sink(h->second);
   }
 }
+void f_umap_insert_ptr_bucle_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto* h = &*it;
+    c.insert({99,1});
+    sink(h->second);
+  }
+}
 void f_umap_insert_ptr_llamada(std::unordered_map<int,int>& c) {
   auto it = c.begin();
   if (it == c.end()) return;
@@ -4315,7 +4683,20 @@ void f_umap_subscript_it_recto(std::unordered_map<int,int>& c) {
   c[97]=1;
   sink(it->second);
 }
+void f_umap_subscript_it_recto_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 1);
+  auto it = c.begin();
+  c[97]=1;
+  sink(it->second);
+}
 void f_umap_subscript_it_guarda(std::unordered_map<int,int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  c[97]=1;
+  sink(it->second);
+}
+void f_umap_subscript_it_guarda_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   c[97]=1;
@@ -4328,7 +4709,22 @@ void f_umap_subscript_it_bucle(std::unordered_map<int,int>& c) {
     sink(it->second);
   }
 }
+void f_umap_subscript_it_bucle_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 3);
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    c[97]=1;
+    sink(it->second);
+  }
+}
 void f_umap_subscript_it_llamada(std::unordered_map<int,int>& c) {
+  auto it = c.begin();
+  if (it == c.end()) return;
+  mutar_umap_subscript(c);
+  sink(it->second);
+}
+void f_umap_subscript_it_llamada_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 1);
   auto it = c.begin();
   if (it == c.end()) return;
   mutar_umap_subscript(c);
@@ -4348,6 +4744,15 @@ void f_umap_subscript_ref_guarda(std::unordered_map<int,int>& c) {
   sink(h.second);
 }
 void f_umap_subscript_ref_bucle(std::unordered_map<int,int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto& h = *it;
+    c[97]=1;
+    sink(h.second);
+  }
+}
+void f_umap_subscript_ref_bucle_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 3);
   int rondas = 0;
   for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
     const auto& h = *it;
@@ -4376,6 +4781,15 @@ void f_umap_subscript_ptr_guarda(std::unordered_map<int,int>& c) {
   sink(h->second);
 }
 void f_umap_subscript_ptr_bucle(std::unordered_map<int,int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
+    const auto* h = &*it;
+    c[97]=1;
+    sink(h->second);
+  }
+}
+void f_umap_subscript_ptr_bucle_reserva(std::unordered_map<int,int>& c) {
+  c.reserve(c.size() + 3);
   int rondas = 0;
   for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {
     const auto* h = &*it;
@@ -4629,4 +5043,88 @@ void f_umap_rehash_ptr_llamada(std::unordered_map<int,int>& c) {
   const auto* h = &*it;
   mutar_umap_rehash(c);
   sink(h->second);
+}
+void f_vector_erase_ret_it_bucle(std::vector<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(*it);
+  }
+}
+void f_deque_erase_ret_it_bucle(std::deque<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(*it);
+  }
+}
+void f_list_erase_ret_it_bucle(std::list<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(*it);
+  }
+}
+void f_set_erase_ret_it_bucle(std::set<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(*it);
+  }
+}
+void f_mset_erase_ret_it_bucle(std::multiset<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(*it);
+  }
+}
+void f_map_erase_ret_it_bucle(std::map<int,int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(it->second);
+  }
+}
+void f_mmap_erase_ret_it_bucle(std::multimap<int,int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(it->second);
+  }
+}
+void f_uset_erase_ret_it_bucle(std::unordered_set<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(*it);
+  }
+}
+void f_umap_erase_ret_it_bucle(std::unordered_map<int,int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.erase(it);
+    if (it != c.end()) sink(it->second);
+  }
+}
+void f_vector_insert_ret_it_bucle(std::vector<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.insert(it, 1); ++it;
+    if (it != c.end()) sink(*it);
+  }
+}
+void f_deque_insert_ret_it_bucle(std::deque<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.insert(it, 1); ++it;
+    if (it != c.end()) sink(*it);
+  }
+}
+void f_list_insert_ret_it_bucle(std::list<int>& c) {
+  int rondas = 0;
+  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {
+    it = c.insert(it, 1); ++it;
+    if (it != c.end()) sink(*it);
+  }
 }

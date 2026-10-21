@@ -1,0 +1,12 @@
+[
+ {"id": "H1", "proyecto": "duckdb", "commit": "5a9d3210b", "archivo": "src/main/connection_manager.cpp",
+  "mecanismo": "range-for sobre unordered_map con erase(clave) del elemento actual (M5)",
+  "norma": "UB: el erase invalida el iterador implícito del for, y luego ++",
+  "banderas": ["-Ithird_party/fmt/include", "-Ithird_party/utf8proc/include", "-Ithird_party/re2",
+               "-Ithird_party/fastpforlib", "-Ithird_party/fsst", "-Ithird_party/hyperloglog",
+               "-Ithird_party/miniz", "-Ithird_party/skiplist", "-Ithird_party/yyjson/include",
+               "-Ithird_party/jaro_winkler", "-Ithird_party/mbedtls/include", "-Ithird_party/zstd/include",
+               "-Ithird_party/lz4", "-Ithird_party/brotli/include", "-Ithird_party/fast_float", "-Ithird_party/tdigest",
+               "-Ithird_party/pcg", "-Ithird_party/concurrentqueue", "-Ithird_party/libpg_query/include", "-Ithird_party/parquet"],
+  "std": "c++17"}
+]

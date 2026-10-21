@@ -1,0 +1,19 @@
+@startuml
+!include _estilo.iuml
+hide empty description
+
+state "Mutación con efecto\nDepends(CapacityReached | RehashTriggered)" as Dep
+state c <<choice>>
+[*] --> Dep : push_back / insert / emplace\nen vector o unordered_*
+Dep --> c : answer(condición, crecimiento, crédito)
+c --> SinReubicar : OnlyNo: inserción de 1 elemento\ny crédito ≥ 1 (reserve(size() + k))
+c --> Ambos : Both: sin crédito\no crecimiento que no se cuenta
+
+state "Válido\ncrédito − 1" as SinReubicar
+state "No resuelto (DependsOnState)" as Ambos {
+  state "PolicyMode = Silent\n→ sin aviso" as S
+  state "PolicyMode = Possibly\n→ aviso «posible» que nombra\nla garantía que falta" as P
+}
+SinReubicar --> [*]
+Ambos --> [*]
+@enduml

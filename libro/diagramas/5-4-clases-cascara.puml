@@ -1,0 +1,72 @@
+@startuml
+!include _estilo.iuml
+hide empty members
+
+package "Clang Static Analyzer" <<externo>> #F5F5F5 {
+  class "Checker<check::PostCall, check::PreCall,\ncheck::Location, check::Bind,\ncheck::DeadSymbols, check::PointerEscape>" as CsaChecker
+  class CheckerContext
+  class ProgramState <<inmutable>>
+  class CallEvent
+  class "BugType" as BugType
+  class "PathSensitiveBugReport" as Report
+  class NoteTag
+}
+
+package "acl" {
+  class ClangRecognizer {
+    -calls : CallDescriptionMap<Mutation>
+    +containerOf(const CXXRecordDecl*) : optional<ContainerKind>
+    +recognize(const CallEvent&, ProgramStateRef) : Recognized
+    +positionOf(SVal iterador, ProgramStateRef) : Position
+    +categoryAt(const ValueDecl*) : HandleCategory
+  }
+  class Recognized <<variant>> {
+    Obtention{origin, region}
+    Mutation{event}
+    IteratorMove{region, delta}
+    NotOurs
+  }
+}
+
+package "checker" {
+  class InvalidationChecker {
+    -confirmed : BugType
+    -unresolved : BugType
+    -policyMode : PolicyMode
+    +checkPostCall(const CallEvent&, CheckerContext&)
+    +checkPreCall(const CallEvent&, CheckerContext&)
+    +checkLocation(SVal, bool, const Stmt*, CheckerContext&)
+    +checkBind(SVal, SVal, const Stmt*, CheckerContext&)
+    +checkDeadSymbols(SymbolReaper&, CheckerContext&)
+    +checkPointerEscape(...) : ProgramStateRef
+  }
+  class "HandleMap\n<<REGISTER_MAP_WITH_PROGRAMSTATE>>" as HandleMap {
+    const MemRegion* ↦ HandleState
+  }
+  class "IteratorMap\n<<REGISTER_MAP_WITH_PROGRAMSTATE>>" as IteratorMap {
+    const MemRegion* ↦ HandleState
+  }
+  enum PolicyMode {
+    Silent
+    Possibly
+  }
+}
+
+package "registro" {
+  class "clang_registerCheckers()\nclang_analyzerAPIVersionString" as Reg <<extern C>>
+}
+
+InvalidationChecker --|> CsaChecker
+InvalidationChecker ..> ClangRecognizer : traduce con
+InvalidationChecker ..> "dominio::Decisions" : decide con
+InvalidationChecker ..> HandleMap
+InvalidationChecker ..> IteratorMap
+InvalidationChecker ..> CheckerContext
+InvalidationChecker ..> Report : emite
+InvalidationChecker ..> NoteTag : adjunta
+ClangRecognizer ..> CallEvent
+ClangRecognizer ..> Recognized
+HandleMap ..> ProgramState : vive en
+IteratorMap ..> ProgramState : vive en
+Reg ..> InvalidationChecker : registra «ucsm.ContainerInvalidation»
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+!include _estilo.iuml
+
+rectangle "Detección (dentro de clang)" as det {
+  rectangle "Cáscara CSA\n(callbacks)\n\nCARGAR: lee ProgramState\nAPLICAR: addTransition, emitReport" as shell #FCEDEF
+  rectangle "Anticorrupción\nClang → lenguaje ubicuo" as acl #F3ECFA
+  rectangle "NÚCLEO\nfunciones puras\n\nDECIDIR:\n(estado, evento) → (estado', efectos)" as core #E8F1FB
+  rectangle "Tabla normativa\n(constexpr, generada)" as tab #FFF8E6
+}
+
+rectangle "Norma (fuente única)" as norma #FFF8E6 {
+  rectangle "matriz.json\n101 mutaciones, 348 reglas\ncon cláusula C++17" as matriz
+}
+
+rectangle "Evaluación (fuera de clang)" as eval #EDF7EE {
+  rectangle "generar banco" as g
+  rectangle "ejecutar\nreferencia | experimental" as e
+  rectangle "normalizar\nplist/SARIF → Aviso" as n
+  rectangle "cotejar\nAviso ↔ Sitio" as m
+  rectangle "agregar\nConteos (monoide)\n→ métricas al final" as a
+  rectangle "registro de ejecución\n(versiones, comandos, incidencias)" as r
+}
+
+rectangle "Validación dinámica\n(segundo oráculo)" as din #EDF7EE
+
+shell --> acl
+acl --> core
+core --> tab
+matriz --> tab : gen_tabla.py
+matriz --> g : etiquetas
+g --> e
+e --> n
+n --> m
+m --> a
+e --> r
+e ..> shell : clang --analyze -load
+matriz --> din
+din ..> g : confirma etiquetas
+@enduml

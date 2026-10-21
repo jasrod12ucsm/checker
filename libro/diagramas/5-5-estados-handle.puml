@@ -1,0 +1,30 @@
+@startuml
+!include _estilo.iuml
+hide empty description
+
+[*] --> Valido : obtención reconocida\n(begin, *it, &*it, operator[], front…)
+
+state "Válido" as Valido
+state "No resuelto" as NoResuelto
+state "Inválido" as Invalido
+
+Valido --> Valido : mutación con efecto Preserva\n/ uso: nada
+Valido --> Invalido : mutación con efecto Invalida\n/ nota «quedó inválido por op»
+Valido --> NoResuelto : efecto DependeDe sin decidir\n| posición desconocida\n| el contenedor escapa a código opaco
+
+NoResuelto --> NoResuelto : Preserva | DependeDe\n/ uso: aviso «posible» (opción)
+NoResuelto --> Invalido : mutación con efecto Invalida
+
+Invalido --> Invalido : cualquier mutación\n/ uso: aviso confirmado (una vez)
+
+Valido --> [*] : región muerta
+NoResuelto --> [*] : región muerta
+Invalido --> [*] : región muerta
+
+note right of Invalido
+  Absorbente: ninguna operación
+  devuelve la validez a un handle.
+  Re-obtener crea OTRO handle
+  (otra región), no revive éste.
+end note
+@enduml

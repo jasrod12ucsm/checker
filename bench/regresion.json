@@ -1,0 +1,5 @@
+{
+ "Experimental-Silent":   {"tp_min": 342, "sostenido_min": 328, "fp_max": 0},
+ "Experimental-Possibly": {"tp_min": 342, "sostenido_min": 328, "fp_max": 0},
+ "Plugin-Possibly":       {"tp_min": 342, "sostenido_min": 328, "fp_max": 0}
+}

@@ -48,6 +48,13 @@ Mode parse_mode(const char *arg) {{
 std::vector<int> make_vector(Mode mode, std::string_view op) {{
   std::vector<int> c;
   if (mode == Mode::ForceInvalidation && op == "pop_back") {{ c.push_back(1); return c; }}
+  // pop_back en bucle: el iterador de control avanza mientras se borra el
+  // final. Con 8 elementos, tres rondas no lo alcanzan (con 3 sí: sería UB).
+  if (mode == Mode::PreserveValidity && op == "pop_back") {{
+    c.reserve(512);
+    for (int i = 1; i <= 8; ++i) c.push_back(i);
+    return c;
+  }}
   // shrink_to_fit es una solicitud no vinculante: se prepara holgura para
   // observar la decisión de esta implementación, no para imponerla.
   if (op == "shrink_to_fit") {{
@@ -61,9 +68,9 @@ std::vector<int> make_vector(Mode mode, std::string_view op) {{
     while (c.size() < c.capacity()) c.push_back(static_cast<int>(c.size() + 1));
     return c;
   }}
-  // resize_grow y reserve solicitan size()+100; 256 hace que esa solicitud
-  // no exceda la capacidad de la configuración de preservación.
-  if (mode == Mode::PreserveValidity) c.reserve(256);
+  // resize_grow y reserve solicitan size()+100, tres veces en bucle: 512
+  // hace que ninguna solicitud exceda la capacidad de la preservación.
+  if (mode == Mode::PreserveValidity) c.reserve(512);
   c.push_back(1); c.push_back(2); c.push_back(3);
   return c;
 }}

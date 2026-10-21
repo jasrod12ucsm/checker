@@ -19,6 +19,10 @@ Correspondencia con el Documento 01:
 """
 import json
 
+from etiquetar import cargar, depende_de_capacidad, etiqueta, por_handle
+
+NORMA = cargar()
+
 # ---- EJE A: contenedores -------------------------------------------------
 # usa_par: el elemento es un pair (map-likes) -> hay que leer .second
 C = {
@@ -35,7 +39,9 @@ C = {
 }
 
 # ---- EJE B: operaciones. (nombre, sentencia, exp_iterador, exp_referencia)
-# exp_puntero == exp_referencia: el estandar los trata juntos.
+# Las etiquetas escritas aquí son HISTÓRICAS: la etiqueta del caso sale de
+# norma/matriz.json (bench/etiquetar.py). Se conservan para el informe de
+# cambios de etiqueta (contradicciones 4, 5 y 6 del libro).
 # Se excluyen adrede swap y resize_shrink: su regla no es inequivoca.
 OPS = {
  "vector": [
@@ -55,7 +61,7 @@ OPS = {
    ("push_back",     "c.push_back(1);",             "UB","SAFE"),
    ("push_front",    "c.push_front(1);",            "UB","SAFE"),
    ("emplace_back",  "c.emplace_back(1);",          "UB","SAFE"),
-   ("insert_middle", "c.insert(c.begin(),1);",      "UB","UB"),
+   ("insert_middle", "c.insert(c.begin()+1,1);",    "UB","UB"),   # contradicción 5: antes insertaba en el frente
    ("erase_begin",   "c.erase(c.begin());",         "UB","UB"),
    ("clear",         "c.clear();",                  "UB","UB"),
    ("resize_grow",   "c.resize(c.size()+100);",     "UB","SAFE"),
@@ -110,55 +116,75 @@ out = ["// GENERADO por bench/gen_corpus.py — no editar a mano"]
 out += [f"#include <{h}>" for h in hdrs]
 out += ["", "void sink(int);", "void sink(char);", "void sink(const void*);", ""]
 
-truth = {}
+truth: dict[str, dict] = {}
 # mutadores para el eje D=llamada (Caso 6: la mutacion cruza una llamada)
-for cn,(ct,_,_) in C.items():
-    for op, stmt, _, _ in OPS[cn]:
+for cn,(ct,_h,_p) in C.items():
+    for op, stmt, _e1, _e2 in OPS[cn]:
         out += [f"void mutar_{cn}_{op}({ct}& c) {{ {stmt} }}"]
 out += [""]
 
+def cuerpo(fn, ct, cn, op, stmt, decl, use, ctx, reserva=0):
+    """La función C++ de un caso. reserva=k: reserve(c.size() + k) antes de obtener."""
+    pre = [f"  c.reserve(c.size() + {reserva});"] if reserva else []
+    if ctx == "bucle":
+        body = [f"void {fn}({ct}& c) {{", *pre,
+                # La cota conserva el patrón de mutar durante la iteración,
+                # pero evita recorrer para siempre lo recién insertado.
+                "  int rondas = 0;",
+                f"  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {{"]
+        if decl: body.append(f"    {decl}")
+        body += [f"    {stmt}", f"    {use}", "  }", "}"]
+        return body
+    body = [f"void {fn}({ct}& c) {{", *pre, "  auto it = c.begin();"]
+    if ctx in ("guarda", "llamada"):
+        body.append("  if (it == c.end()) return;")
+    if decl: body.append(f"  {decl}")
+    body.append(f"  mutar_{cn}_{op}(c);" if ctx == "llamada" else f"  {stmt}")
+    body += [f"  {use}", "}"]
+    return body
+
+historico: dict[str, dict] = {}
 for cn,(ct,_,par) in C.items():
     for op, stmt, exp_it, exp_rf in OPS[cn]:
+        m = NORMA[(cn, op)]
         for hk in ("it","ref","ptr"):
             decl, use = holder(hk, par)
-            exp = exp_it if hk == "it" else exp_rf
             for ctx in ("recto","guarda","bucle","llamada"):
                 fn = f"f_{cn}_{op}_{hk}_{ctx}"
-                # En un bucle hay dos handles: el declarado por el eje C y el
-                # iterador de control `it`. Si la operación invalida el
-                # iterador, el incremento/chequeo de la siguiente vuelta ya es
-                # UB aunque una referencia o puntero al elemento conserve su
-                # validez. Para inserciones condicionales, el crecimiento
-                # repetido del bucle termina forzando el caso invalidante; con
-                # pop_back, las rondas sucesivas terminan eliminando el
-                # elemento retenido.
-                e = ("UB" if ctx == "bucle" and
-                     (exp_it == "UB" or
-                      (op in INSERCION and exp == "POLICY") or
-                      (op == "pop_back" and exp == "POLICY"))
-                     else exp)
-                if ctx == "bucle":
-                    body = [f"void {fn}({ct}& c) {{",
-                            # La cota conserva el patrón de mutar durante la
-                            # iteración, pero evita que los contenedores cuyos
-                            # iteradores permanecen válidos recorran para
-                            # siempre los elementos recién insertados.
-                            "  int rondas = 0;",
-                            f"  for (auto it = c.begin(); it != c.end() && rondas++ < 3; ++it) {{"]
-                    if decl: body.append(f"    {decl}")
-                    body += [f"    {stmt}", f"    {use}", "  }", "}"]
-                else:
-                    body = [f"void {fn}({ct}& c) {{", "  auto it = c.begin();"]
-                    if ctx in ("guarda","llamada"):
-                        body.append("  if (it == c.end()) return;")
-                    if decl: body.append(f"  {decl}")
-                    body.append(f"  mutar_{cn}_{op}(c);" if ctx == "llamada" else f"  {stmt}")
-                    body += [f"  {use}", "}"]
-                out += body
-                truth[fn] = dict(contenedor=cn, op=op, sostiene=hk, forma=ctx, esperado=e)
+                e = etiqueta(m, hk, ctx)
+                out += cuerpo(fn, ct, cn, op, stmt, decl, use, ctx)
+                truth[fn] = dict(contenedor=cn, op=op, sostiene=hk, forma=ctx, esperado=e,
+                                 garantia="ninguna", handles=por_handle(m, hk, ctx))
+                # EJE E (D-20): el buen uso de lo que puede fallar.
+                if e == "POLICY" and depende_de_capacidad(m):
+                    k = 3 if ctx == "bucle" else 1
+                    fr = f"{fn}_reserva"
+                    out += cuerpo(fr, ct, cn, op, stmt, decl, use, ctx, reserva=k)
+                    truth[fr] = dict(contenedor=cn, op=op, sostiene=hk, forma=ctx,
+                                     esperado=etiqueta(m, hk, ctx, credito=True), garantia="reserva",
+                                     handles=por_handle(m, hk, ctx, credito=True))
+
+# EJE E: el iterador que devuelve la mutación (it = c.erase(it), it = c.insert(it, x)).
+# «lo que devuelve una mutación es válido»: SAFE por la norma.
+DEVUELTO = {
+ "erase_ret":  ("it = c.erase(it);", ["vector","deque","list","set","mset","map","mmap","uset","umap"]),
+ "insert_ret": ("it = c.insert(it, 1); ++it;", ["vector","deque","list"]),
+}
+for op, (stmt, conts) in DEVUELTO.items():
+    for cn in conts:
+        ct, _, par = C[cn]
+        use = "if (it != c.end()) sink(it->second);" if par else "if (it != c.end()) sink(*it);"
+        fn = f"f_{cn}_{op}_it_bucle"
+        out += [f"void {fn}({ct}& c) {{", "  int rondas = 0;",
+                "  for (auto it = c.begin(); it != c.end() && rondas++ < 3;) {",
+                f"    {stmt}", f"    {use}", "  }", "}"]
+        truth[fn] = dict(contenedor=cn, op=op, sostiene="it", forma="bucle", esperado="SAFE",
+                         garantia="devuelto", handles={"sostenido": "SAFE", "control": None})
 
 open("test/corpus.cpp","w").write("\n".join(out)+"\n")
 json.dump(truth, open("test/corpus_truth.json","w"), indent=1)
 pares = sum(len(v) for v in OPS.values())
-print(f"test/corpus.cpp -> {len(truth)} casos")
+import collections
+print(f"test/corpus.cpp -> {len(truth)} casos", dict(collections.Counter(t["esperado"] for t in truth.values())))
+print("  por garantía:", dict(collections.Counter(t["garantia"] for t in truth.values())))
 print(f"  {len(C)} contenedores x {pares} pares (contenedor,operacion) x 3 sostenes x 4 formas")

@@ -3,7 +3,7 @@
 
 ## Dimensiones
 
-Cada caso es una tupla `(contenedor, operación, sostiene, forma)`:
+Cada caso es una tupla `(contenedor, operación, sostiene, forma, garantía)`:
 
 | Dimensión | Valores |
 |---|---|
@@ -11,8 +11,10 @@ Cada caso es una tupla `(contenedor, operación, sostiene, forma)`:
 | Operación mutadora | 57 pares contenedor–operación |
 | Sostiene (handle retenido) | `it` iterador, `ref` referencia, `ptr` puntero |
 | Forma sintáctica | `recto`, `guarda`, `bucle`, `llamada` |
+| Garantía (D-20) | `ninguna`; `reserva`: `reserve(size() + k)` antes; `devuelto`: el handle que devuelve la mutación |
 
-Total: 57 pares × 3 handles × 4 formas = **684 casos**.
+Total: 57 pares × 3 handles × 4 formas = **684 casos** sin garantía,
+más **66** casos de buen uso con garantía = **750 casos**.
 
 ### Formas sintácticas
 
@@ -39,31 +41,38 @@ iteradores el caso es `UB` aunque la referencia retenida siga siendo válida.
 
 ```bash
 python3 bench/gen_corpus.py
-python3 bench/run_corpus.py
+python3 bench/experimento.py      # dentro de la imagen checker:llvm21
+python3 bench/pruebas_evaluacion.py
 ```
 
-Ejecuta `clang++ --analyze -std=c++17` con los checkers
+Una invocación de `clang++ --analyze -std=c++17` **por caso y por condición**
+(`-analyze-function=<firma>`), con salida SARIF. La condición de referencia usa
+los checkers
 
 ```text
 core, cplusplus, alpha.cplusplus.IteratorModeling, alpha.cplusplus.ContainerModeling, alpha.cplusplus.InvalidatedIterator, alpha.cplusplus.IteratorRange, alpha.cplusplus.MismatchedIterator
 ```
 
-y `aggressive-binary-operation-simplification=true`. Un aviso se atribuye a un
-caso si cae en una línea de su función; en forma `bucle`, un aviso sobre la
-cabecera del `for` solo cuenta cuando el handle retenido es el iterador.
+y `aggressive-binary-operation-simplification=true`; las experimentales, los
+mismos más el plugin. Ver [Experimento](resultados/experimento.md).
+
+**Cotejo por sitio.** Un aviso se atribuye al caso cuya función lo contiene, y
+al **handle** sobre el que cae: el sostenido (la línea de `sink(...)`) o el
+iterador de control (la cabecera del `for`). En un caso `UB`, el aviso acierta
+sólo si cae sobre un handle que la norma da por inválido.
 
 ## Validación dinámica
 
 ```bash
-python3 bench/run_runtime_validation.py --timeout 1
+python3 bench/run_runtime_validation.py --timeout 2
 ```
 
 Cada caso se ejecuta en un proceso aislado con dos instrumentos:
 
 | Instrumento | Compilador | Flags |
 |---|---|---|
-| libstdc++ Debug Mode | `g++ (GCC) 16.2.1 20260810` | `-D_GLIBCXX_DEBUG` |
-| ASan + UBSan | `clang version 23.1.1` | `-fsanitize=address,undefined` |
+| libstdc++ Debug Mode | `g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0` | `-D_GLIBCXX_DEBUG` |
+| ASan + UBSan | `Ubuntu clang version 21.1.8 (++20251221032922+2078da43e25a-1~exp1~20251221153059.70)` | `-fsanitize=address,undefined` |
 
 Estándar: C++17. Una ejecución sin detección **no**
 reclasifica un caso `UB` como seguro: C++ no exige que el defecto se manifieste.

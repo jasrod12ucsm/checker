@@ -1,0 +1,29 @@
+@startuml
+!include _estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam ranksep 28
+
+rectangle "**① Norma C++17 como datos** (escrita una sola vez)\nnorma/matriz.json: cada regla con su cláusula\n(contenedor, operación, punto) × categoría × relación con el punto\n→ Preserva | Invalida | Depende(capacidad o rehash)" as Norma #EAF0F7
+
+rectangle "**② Obtener** (begin(), find(), *it, c[i], front(), insert().first)\nhandle = (contenedor, categoría: iterador | referencia | puntero, posición, validez = Válido)" as Obt
+
+rectangle "**③ Mutar** el mismo contenedor: efecto = norma(mutación, categoría, relación(posición, punto))\nPreserva → Válido, la posición se mueve  ·  Invalida → Inválido + nota en la ruta\nDepende → con crédito de reserve(size() + k): Válido  ·  sin crédito: No resuelto (con su razón)" as Mut
+
+rectangle "**④ Usar** (*it, ++it, r, *p)\nVálido → nada  ·  No resuelto → aviso posible (solo con PolicyMode=Possibly)\nInválido → aviso confirmado con la ruta obtener → mutar → usar" as Uso
+
+rectangle "**⑤ Evaluación**: banco de casos etiquetados desde la misma norma (UB, SAFE, POLICY),\netiquetas contrastadas con libstdc++ Debug y ASan.\nCSA solo frente a CSA + checker; cotejo por sitio de uso → precisión, exhaustividad, F1." as Eval #EAF0F7
+
+Norma -down-> Obt : NormTable.inc generada (gen_tabla.py comprueba las leyes)
+Obt -down-> Mut : en cada camino simbólico de CSA
+Mut -down-> Uso
+Uso -down-> Eval : avisos SARIF
+Norma -[#7F8C8D,dashed]right-> Eval : gen_corpus.py:\nla etiqueta es el JOIN\nde los handles
+
+note right of Mut
+  Válido ⊑ No resuelto ⊑ Inválido: la validez sólo sube;
+  re-obtener crea otro handle.
+  it = c.erase(it) da un handle nuevo y válido.
+  Si el contenedor escapa a código opaco,
+  se olvidan los válidos; un inválido sigue avisando.
+end note
+@enduml

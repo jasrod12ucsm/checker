@@ -11,5 +11,5 @@ forma `bucle` puede pasar a `UB` por el iterador de control.
 |---|---|---|---|---:|---:|---:|
 | [`push_front`](push_front.md) | `c.push_front(1);` | 🟢 `SAFE` | 🟢 `SAFE` | 0 | 0 | 0 |
 | [`insert_after`](insert_after.md) | `c.insert_after(c.before_begin(),1);` | 🟢 `SAFE` | 🟢 `SAFE` | 0 | 0 | 0 |
-| [`erase_after`](erase_after.md) | `c.erase_after(c.before_begin());` | 🔴 `UB` | 🔴 `UB` | 12 | 1 | 12 |
-| [`clear`](clear.md) | `c.clear();` | 🔴 `UB` | 🔴 `UB` | 12 | 4 | 12 |
+| [`erase_after`](erase_after.md) | `c.erase_after(c.before_begin());` | 🔴 `UB` | 🔴 `UB` | 12 | 0 | 12 |
+| [`clear`](clear.md) | `c.clear();` | 🔴 `UB` | 🔴 `UB` | 12 | 5 | 12 |

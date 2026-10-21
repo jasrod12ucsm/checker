@@ -1,0 +1,210 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nolayout,es-tabla,es-nodecimaldot,es-noshorthands]{babel}
+\usepackage[nocompress]{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{stfloats}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-\do.\do_\do?\do=\do\&\do\%}
+
+% Nombres de los componentes en español con la forma de IEEE.
+\addto\captionsspanish{%
+  \renewcommand{\figurename}{Fig.}%
+  \renewcommand{\tablename}{TABLA}%
+  \renewcommand{\abstractname}{Resumen}%
+  \renewcommand{\refname}{Referencias}%
+}
+\renewcommand{\IEEEkeywordsname}{Palabras clave}
+\newcommand{\code}[1]{\texttt{#1}}
+\urldef{\urlbalogh}\url{https://llvm.org/devmtg/2018-04/slides/Balogh-Finding%20Iterator-related%20Errors%20with%20Clang%20Static%20Analyzer.pdf}
+
+\begin{document}
+
+\title{Detección de iteradores, referencias y punteros invalidados en contenedores de C++ con un checker para Clang Static Analyzer derivado de la norma}
+
+\author{\IEEEauthorblockN{Jason Sebastián Rodríguez Chávez}
+\IEEEauthorblockA{\textit{Escuela Profesional de Ingeniería de Sistemas} \\
+\textit{Universidad Católica de Santa María}\\
+Arequipa, Perú}
+\and
+\IEEEauthorblockN{Mayerly Katrina Aranibar Zegovia}
+\IEEEauthorblockA{\textit{Escuela Profesional de Ingeniería de Sistemas} \\
+\textit{Universidad Católica de Santa María}\\
+Arequipa, Perú}
+}
+
+\maketitle
+
+\section{Introducción}
+
+En C++, un iterador, una referencia o un puntero que designa un elemento de un contenedor deja de ser utilizable cuando ciertas operaciones modifican el contenedor. La norma del lenguaje especifica, operación por operación, qué identificadores quedan invalidados \cite{iso17}, y usar uno invalidado es comportamiento indefinido (\textit{undefined behavior}, UB). La regla CTR51-CPP del estándar de codificación segura CERT del Software Engineering Institute (SEI) prohíbe expresamente ese uso \cite{cert}. El defecto es difícil de ver en una revisión: el programa suele funcionar mientras la memoria del elemento no se reutilice, y falla después, lejos de la causa.
+
+La dificultad no está en la idea, sino en el detalle de las reglas. Un \code{push\_back} sobre \code{std::vector} invalida todo solo si se agota la capacidad; el mismo \code{push\_back} sobre \code{std::list} no invalida nada; \code{erase} sobre un \code{vector} invalida el elemento borrado y los posteriores, pero conserva los anteriores; y una inserción en el frente de un \code{std::deque} invalida los iteradores pero conserva las referencias. Decidir la validez exige saber a qué contenedor pertenece cada identificador, qué categoría tiene y dónde está su elemento respecto del punto de la mutación. Ese seguimiento es indecidible en general \cite{landi92}, \cite{ramalingam94}, de modo que toda herramienta práctica aproxima \cite{livshits15}. La forma de aproximar importa: los desarrolladores abandonan los analizadores que producen falsas alarmas \cite{christakis16}, \cite{guo23}.
+
+Clang Static Analyzer (CSA) explora los caminos de ejecución de cada función mediante ejecución simbólica \cite{king76} y admite extensiones, llamadas \textit{checkers} (término que se conserva en inglés), que observan los eventos de cada camino \cite{csadev}. Sus checkers de iteradores, todavía experimentales, siguen iteradores pero no referencias ni punteros a elementos \cite{csadoc}, \cite{balogh18}. Otras herramientas tratan una lista de operaciones como siempre invalidantes \cite{saxena26}, \cite{infer}, \cite{cppcheck} o se limitan a \code{std::vector} \cite{infer}, \cite{liu25}. Esas herramientas tratan como siempre invalidante una inserción que solo invalida al agotarse la capacidad \cite{saxena26}, \cite{infer}, \cite{cppcheck} o la modelan solo para \code{std::vector} \cite{liu25}. Además, la evaluación más cercana usa un banco construido a mano \cite{liu25}, y los bancos generados para evaluar analizadores obtienen sus etiquetas de los defectos inyectados o de la comparación entre analizadores, no de la norma del lenguaje \cite{kashyap19}, \cite{klinger19}.
+
+El objetivo de este trabajo es diseñar, implementar y evaluar un checker para CSA que modele las reglas de invalidación de iteradores, referencias y punteros en contenedores seleccionados de la biblioteca estándar, y comparar su precisión, exhaustividad y medida F1 con la de la configuración de referencia del analizador. Los aportes son:
+\begin{itemize}
+\item un modelo de invalidación que consulta las reglas de C++17 escritas como datos, con su cláusula, según el contenedor, la operación, la categoría del identificador y la posición relativa del elemento;
+\item el checker \code{ucsm.ContainerInvalidation}, que se carga como \textit{plugin} en CSA, cubre diez contenedores y distingue avisos confirmados de avisos posibles, y reconoce las garantías que da el código;
+\item un banco de 750 casos etiquetados a partir de la misma norma, validado con dos instrumentos dinámicos, y un protocolo que atribuye cada aviso a su sitio y separa los incidentes;
+\item una evaluación comparativa en el banco y en cuatro proyectos de código abierto.
+\end{itemize}
+
+La Sección~II describe la metodología: el procedimiento general, el desarrollo del checker y el diseño de la evaluación experimental.
+
+\begin{figure*}[!t]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  caja/.style={draw, rounded corners=1.5pt, align=left, inner sep=3pt, text width=#1},
+  flecha/.style={-{Latex[length=1.8mm]}, thick},
+  node distance=3.5mm and 3.5mm]
+\node[caja=3.95cm, fill=black!8] (norma) {%
+\textbf{(a) Norma C++17 como datos}\\[1pt]
+cada regla con su cláusula\\[1pt]
+$N(m,k,r)\in\{$\textsc{Preserva}, \textsc{Invalida}, \textsc{Depende}$(c)\}$\\
+$m$: contenedor, operación, punto\\
+$k$: iterador, referencia, puntero\\
+$r$: antes, mismo, después, cualquiera\\
+$c$: capacidad agotada o \textit{rehash}};
+\node[caja=3.1cm, right=14mm of norma.north east, anchor=north west, yshift=-6mm] (obt) {%
+\textbf{(b) Obtener}\\[1pt]
+\code{begin()}, \code{find()}, \code{*it}, \code{c[i]}, \code{front()}, \code{insert().first}\\[1pt]
+$h=(\gamma,k,p,v)$ con $v={}$\textsc{Válido}};
+\node[caja=4.1cm, right=of obt.north east, anchor=north west] (mut) {%
+\textbf{(c) Mutar el contenedor $\gamma$}\\[1pt]
+$R$: relaciones de $p$ con el punto $q$\\
+$e=N(m,k,r)$, para todo $r\in R$\\
+\textsc{Preserva}: se traslada $p$\\
+\textsc{Invalida}: $v \leftarrow{}$\textsc{Inválido} y nota\\
+\textsc{Depende}$(c)$: con $\kappa\geq 1$, como \textsc{Preserva}; con $\kappa=0$, $v \leftarrow v \sqcup{}$\textsc{NoResuelto}};
+\node[caja=3.45cm, right=of mut.north east, anchor=north west] (uso) {%
+\textbf{(d) Usar}\\[1pt]
+\textsc{Válido}: sin aviso\\
+\textsc{NoResuelto}: aviso posible si se pide (\code{Possibly})\\
+\textsc{Inválido}: aviso confirmado con la ruta obtener, mutar, usar};
+\node[caja=7.75cm, fill=black!3, anchor=north west] (leyes) at ($(obt.west |- mut.south)+(0,-3mm)$) {%
+\textbf{Leyes:} \textsc{Válido} $\sqsubseteq$ \textsc{NoResuelto} $\sqsubseteq$ \textsc{Inválido}; la validez solo sube. \code{reserve(size()+n)} fija $\kappa=n$; \code{it = c.erase(it)} da un identificador nuevo y válido. Si $\gamma$ escapa a código no analizado, se olvidan los válidos.};
+\node[draw, dashed, rounded corners=2pt, inner sep=4pt, fit=(obt)(mut)(uso)(leyes)] (csa) {};
+\node[anchor=south west, font=\footnotesize\bfseries, inner sep=1pt] at (csa.north west) {Checker en cada camino simbólico de CSA};
+\node[caja=17.7cm, fill=black!8, anchor=north west] (eval) at ($(norma.west |- csa.south)+(0,-8mm)$) {%
+\textbf{(e) Evaluación:} banco de casos etiquetados con la misma norma (\code{UB}, \code{SAFE}, \code{POLICY}), con etiquetas contrastadas con el modo de depuración de libstdc++ y AddressSanitizer. CSA solo frente a CSA con el checker; precisión, exhaustividad y F1 por sitio de uso.};
+\draw[flecha] (norma.east |- obt.west) -- node[above=1pt, align=center, font=\footnotesize]{tabla\\generada} (obt.west);
+\draw[flecha] (obt) -- (mut);
+\draw[flecha] (mut) -- (uso);
+\draw[flecha] (uso.south) -- node[right]{avisos} (uso.south |- eval.north);
+\draw[flecha, dashed] (norma.south) -- node[right, align=left]{etiqueta: máximo de\\la validez de los\\identificadores} (norma.south |- eval.north);
+\end{tikzpicture}
+\caption{Modelo de invalidación. La norma decide el efecto de cada mutación según el contenedor, la categoría del identificador y su relación con el punto (a); el checker sigue cada identificador desde su obtención (b) y a través de las mutaciones (c) hasta su uso (d). La misma norma etiqueta el banco con el que se compara CSA solo con CSA y el checker (e).}
+\label{fig:modelo}
+\end{figure*}
+
+\section{Metodología}
+
+\subsection{Procedimiento general}
+
+El trabajo siguió cinco etapas: 1) viabilidad de la integración de un checker externo en CSA; 2) transcripción de las reglas de C++17 a datos; 3) construcción del banco, validación dinámica de sus etiquetas y medición de la configuración de referencia; 4) desarrollo incremental del checker, de iteradores a referencias y punteros, garantías y rutas de diagnóstico; y 5) evaluación final con el banco congelado. La comparación es pareada: las condiciones usan el mismo banco, el mismo compilador y las mismas opciones, y solo difieren en la carga del checker.
+
+\subsection{Desarrollo del checker}
+
+\subsubsection{Alcance normativo}
+Las reglas provienen de las cláusulas de modificadores de contenedores del borrador N4659 \cite{n4659}, equivalente a C++17 \cite{iso17}. El alcance comprende \code{vector}, \code{deque}, \code{list}, \code{forward\_list}, \code{set}, \code{multiset}, \code{map}, \code{multimap}, \code{unordered\_set} y \code{unordered\_map}, y tres categorías de identificador: iterador, referencia y puntero. Una mutación $m$ es una terna (contenedor, operación, punto), donde el punto indica si actúa en el frente, el final, el interior, todo el contenedor o una clave. La norma se escribió como una función
+\begin{equation}
+N(m,k,r) \in \{\textsc{Preserva},\ \textsc{Invalida},\ \textsc{Depende}(c)\}
+\label{eq:norma}
+\end{equation}
+donde $k$ es la categoría, $r \in \{$antes, mismo, después, cualquiera$\}$ es la relación del elemento con el punto y $c$ es la condición de la que depende el efecto: capacidad agotada o redistribución de cubetas (\textit{rehash}). Cada regla cita su cláusula. Un generador verifica sus leyes, por ejemplo que toda regla tenga cláusula, que todo efecto dependiente tenga condición y que una mutación que invalida las referencias de una relación invalide también sus iteradores, y produce la tabla en C++ que compila el checker.
+
+\subsubsection{Modelo de invalidación}
+La Fig.~\ref{fig:modelo} resume el modelo. En cada camino simbólico, un identificador es una tupla $h=(\gamma,k,p,v)$ con su contenedor $\gamma$, su categoría $k$, la posición $p$ de su elemento y su validez $v$. La posición se expresa como desplazamiento desde el primero o el último elemento, desde un ancla de posición desconocida o como desconocida. La validez pertenece a la cadena
+\begin{equation}
+\textsc{Válido} \sqsubseteq \textsc{NoResuelto} \sqsubseteq \textsc{Inválido}
+\label{eq:cadena}
+\end{equation}
+y solo puede subir: ninguna operación devuelve la validez a un identificador, y volver a obtenerlo crea un identificador nuevo.
+
+Cuando una mutación $m$ con punto $q$ actúa sobre $\gamma$, el checker calcula el conjunto $R$ de relaciones compatibles con $p$ y $q$ que la norma admite para $m$ y $k$. Si todas las relaciones de $R$ dan el mismo efecto $e$, la validez nueva es
+\begin{equation}
+v' =
+\begin{cases}
+v & e=\textsc{Preserva},\\
+\textsc{Inválido} & e=\textsc{Invalida},\\
+v & e=\textsc{Depende}(c),\ \kappa \geq 1,\\
+v \sqcup \textsc{NoResuelto} & e=\textsc{Depende}(c),\ \kappa = 0,
+\end{cases}
+\label{eq:aplicar}
+\end{equation}
+donde $\kappa$ es el crédito de inserciones garantizadas del contenedor,
+y, si las relaciones de $R$ discrepan, $v'=v \sqcup \textsc{NoResuelto}$. Cuando el identificador se preserva, su posición se traslada; por ejemplo, una inserción anterior lo desplaza un lugar. \textsc{Inválido} es absorbente.
+
+El checker no inventa la capacidad, que CSA no representa como número. En cambio, registra las garantías que el código establece: \code{c.reserve(c.size()+n)} fija $\kappa=n$: concede $n$ inserciones de un elemento sin reubicación ni \textit{rehash}, cada inserción consume una unidad y una mutación cuyo crecimiento no se puede contar borra el crédito. La otra garantía es el identificador que devuelve la propia mutación, como en \code{it = c.erase(it)}, que se registra como nuevo y válido.
+
+Al usar un identificador, el veredicto depende solo de su validez: \textsc{Válido} no produce aviso; \textsc{NoResuelto} produce un aviso posible únicamente si la opción \code{PolicyMode} vale \code{Possibly}, y el aviso nombra la garantía que falta; \textsc{Inválido} produce un aviso confirmado con la ruta completa: obtención, mutación que invalidó y uso. Si el contenedor se pasa a código cuyo cuerpo no se analiza, los identificadores válidos o no resueltos dejan de seguirse, porque no se sabe qué les hizo esa llamada; uno inválido se conserva, porque ninguna llamada lo revive.
+
+
+
+\subsubsection{Implementación}
+El checker es una biblioteca dinámica que \code{clang} carga con \code{-Xclang -load}, sin modificar LLVM \cite{lattner04}. Está dividido en un núcleo puro que contiene la tabla normativa y las decisiones de (\ref{eq:aplicar}) y no depende de Clang; una capa de traducción que reconoce en las llamadas de CSA las obtenciones, mutaciones y usos; y los manejadores de eventos del checker, que cargan el estado del camino, invocan al núcleo y registran el resultado con notas de ruta. El núcleo se verifica con pruebas unitarias que expresan sus leyes, con medición de cobertura de líneas, y el checker con pruebas de regresión de Clang que fijan los avisos esperados. La construcción usa LLVM 21.1.8 dentro de una imagen de contenedor reproducible.
+
+\subsection{Evaluación experimental}
+
+\subsubsection{Banco y etiquetas}
+Cada caso es una función que obtiene un identificador, ejecuta una mutación y usa el identificador. El banco combina 57 pares contenedor y operación, tres categorías de identificador retenido y cuatro formas sintácticas (\textit{recta}; \textit{con guarda} contra \code{end()}; \textit{con llamada}, en la que la mutación ocurre en otra función; y \textit{en bucle}, donde también se usa el iterador de control), lo que da 684 casos, más 66 casos de buen uso con garantía: 54 con \code{reserve} y 12 con el identificador devuelto. La etiqueta de cada caso se deduce de (\ref{eq:norma}) y es el máximo, según (\ref{eq:cadena}), de la validez de los identificadores que el caso usa: \code{UB} si alguno queda inválido, \code{POLICY} si alguno depende del estado y \code{SAFE} si todos se preservan. El banco resultante tiene 342 casos \code{UB}, 306 \code{SAFE} y 102 \code{POLICY}.
+
+Las etiquetas se contrastaron con dos oráculos dinámicos independientes: el modo de depuración de libstdc++ \cite{libstdcxx} y AddressSanitizer con UndefinedBehaviorSanitizer \cite{asan}. Cada caso se ejecutó en un proceso aislado; los casos \code{POLICY} se ejecutaron dos veces, una forzando la condición y otra impidiéndola. Una detección en un caso \code{SAFE} se considera una contradicción que detiene la publicación del banco. Ante una contradicción, se revisa la regla de etiquetado contra la norma y se corrige antes de congelar el banco; por ejemplo, en un bucle la etiqueta debe combinar el identificador retenido con el iterador de control. Un UB sin síntoma conserva su etiqueta, porque la norma no exige que se manifieste. El banco final se selló con su resumen criptográfico SHA-256.
+
+\subsubsection{Entorno}
+Clang y CSA 21.1.8, libstdc++ 13.3 y Ubuntu 24.04, dentro de la misma imagen para todas las condiciones, con \code{-std=c++17}.
+
+\subsubsection{Configuraciones}
+La condición de referencia activa los checkers \code{core}, \code{cplusplus} y los cinco checkers experimentales de iteradores y contenedores de CSA. Las condiciones experimentales añaden el checker con \code{PolicyMode=Silent} o \code{PolicyMode=Possibly}. Una cuarta condición carga solo el checker con \code{core} y \code{cplusplus}, para aislar su aporte.
+
+\subsubsection{Protocolo}
+El arnés invoca \code{clang} una vez por caso y condición, con un tiempo límite, y conserva la salida en el formato \textit{Static Analysis Results Interchange Format} (SARIF) \cite{sarif}. Un aviso cuenta para un caso solo si se atribuye al sitio de uso que el caso declara, y una compilación fallida, una caída o un tiempo agotado se registran como incidentes, no como verdaderos negativos. El arnés verifica las versiones y los resúmenes del checker y del banco antes de ejecutar.
+
+\subsubsection{Métricas}
+Sobre los casos \code{UB} y \code{SAFE}, un aviso confirmado es un verdadero positivo (VP) en un caso \code{UB} y un falso positivo (FP) en uno \code{SAFE}; la ausencia de aviso es un falso negativo (FN) o un verdadero negativo, respectivamente. Se calculan
+\begin{equation}
+P=\frac{\mathit{VP}}{\mathit{VP}+\mathit{FP}},\quad R=\frac{\mathit{VP}}{\mathit{VP}+\mathit{FN}},\quad F_1=\frac{2PR}{P+R}.
+\label{eq:metricas}
+\end{equation}
+Los casos \code{POLICY} se informan aparte, porque en ellos el acierto es un aviso posible y no uno confirmado. También se mide la exhaustividad sobre el identificador que el caso retiene, para separar las detecciones debidas al iterador de control de un bucle.
+
+\subsubsection{Pruebas complementarias}
+El checker se ejecutó con \code{PolicyMode=Possibly} sobre todas las unidades de traducción de ninja, leveldb, yaml-cpp y RocksDB, y sobre ocho defectos sembrados y dos usos correctos sembrados en esos proyectos.
+
+\begin{thebibliography}{00}
+\bibitem{iso17} \textit{Programming Languages---C++}, ISO/IEC Standard 14882:2017, Int. Org. Standardization, Geneva, Switzerland, Dec. 2017.
+\bibitem{cert} Software Eng. Inst. ``CTR51-CPP. Use valid references, pointers, and iterators to reference elements of a container.'' SEI CERT C++ Coding Standard. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://wiki.sei.cmu.edu/confluence/spaces/cplusplus/pages/88046457/CTR51-CPP.+Use+valid+references+pointers+and+iterators+to+reference+elements+of+a+container}
+\bibitem{landi92} W. Landi, ``Undecidability of static analysis,'' \textit{ACM Lett. Program. Lang. Syst.}, vol. 1, no. 4, pp. 323--337, Dec. 1992, doi: 10.1145/161494.161501.
+\bibitem{ramalingam94} G. Ramalingam, ``The undecidability of aliasing,'' \textit{ACM Trans. Program. Lang. Syst.}, vol. 16, no. 5, pp. 1467--1471, Sep. 1994, doi: 10.1145/186025.186041.
+\bibitem{livshits15} B. Livshits \textit{et al.}, ``In defense of soundiness: A manifesto,'' \textit{Commun. ACM}, vol. 58, no. 2, pp. 44--46, Feb. 2015, doi: 10.1145/2644805.
+\bibitem{christakis16} M. Christakis and C. Bird, ``What developers want and need from program analysis: An empirical study,'' in \textit{Proc. 31st IEEE/ACM Int. Conf. Automated Softw. Eng. (ASE)}, Singapore, Sep. 2016, pp. 332--343, doi: 10.1145/2970276.2970347.
+\bibitem{guo23} Z. Guo \textit{et al.}, ``Mitigating false positive static analysis warnings: Progress, challenges, and opportunities,'' \textit{IEEE Trans. Softw. Eng.}, vol. 49, no. 12, pp. 5154--5188, Dec. 2023, doi: 10.1109/TSE.2023.3329667.
+\bibitem{king76} J. C. King, ``Symbolic execution and program testing,'' \textit{Commun. ACM}, vol. 19, no. 7, pp. 385--394, Jul. 1976, doi: 10.1145/360248.360252.
+\bibitem{csadev} LLVM Project. ``Checker developer manual.'' Clang Static Analyzer. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://clang-analyzer.llvm.org/checker_dev_manual.html}
+\bibitem{csadoc} LLVM Project. ``Available checkers.'' Clang Static Analyzer Documentation. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://clang.llvm.org/docs/analyzer/checkers.html}
+\bibitem{balogh18} \'{A}. Balogh. (Apr. 2018). \textit{Finding iterator-related errors with Clang Static Analyzer}. Presented at EuroLLVM 2018, Bristol, U.K. [Online]. Available: \urlbalogh
+\bibitem{saxena26} U. Saxena. \textit{[LifetimeSafety] Detect Use-After-Invalidation for STL Containers}. (Feb. 6, 2026). GitHub: llvm/llvm-project, Pull Request 179093, commit 21f3875. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://github.com/llvm/llvm-project/pull/179093}
+\bibitem{infer} Meta Platforms. ``List of all issue types.'' Infer. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://fbinfer.com/docs/all-issue-types/}
+\bibitem{cppcheck} Cppcheck Team. \textit{Cppcheck: lib/checkstl.cpp}. (Sep. 19, 2026). GitHub: danmar/cppcheck. (v2.22.0). Accessed: Oct. 20, 2026. [Online]. Available: \url{https://github.com/danmar/cppcheck/blob/2.22.0/lib/checkstl.cpp}
+\bibitem{liu25} S. Liu, L. Chen, G. Fan, B. Yin, C. Huang, and J. Wang, ``Detecting vector container errors in C++ programs via abstract interpretation,'' in \textit{Proc. 26th Int. Conf. Formal Eng. Methods (ICFEM)}, in Lecture Notes Comput. Sci., vol. 16229, Hangzhou, China, Nov. 2025, pp. 117--133, doi: 10.1007/978-981-95-4213-0\_7.
+\bibitem{kashyap19} V. Kashyap \textit{et al.}, ``Automated customized bug-benchmark generation,'' in \textit{Proc. IEEE 19th Int. Work. Conf. Source Code Anal. Manipulation (SCAM)}, Cleveland, OH, USA, Sep. 2019, pp. 103--114, doi: 10.1109/SCAM.2019.00020.
+\bibitem{klinger19} C. Klinger, M. Christakis, and V. W\"{u}stholz, ``Differentially testing soundness and precision of program analyzers,'' in \textit{Proc. 28th ACM SIGSOFT Int. Symp. Softw. Testing Anal. (ISSTA)}, Beijing, China, Jul. 2019, pp. 239--250, doi: 10.1145/3293882.3330553.
+\bibitem{n4659} R. Smith, ``Working draft, standard for programming language C++,'' ISO/IEC JTC1/SC22/WG21, Geneva, Switzerland, Rep. N4659, Mar. 21, 2017. [Online]. Available: \url{https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf}
+\bibitem{lattner04} C. Lattner and V. Adve, ``LLVM: A compilation framework for lifelong program analysis \& transformation,'' in \textit{Proc. Int. Symp. Code Gener. Optim. (CGO)}, San Jose, CA, USA, Mar. 2004, pp. 75--86, doi: 10.1109/CGO.2004.1281665.
+\bibitem{libstdcxx} GNU Project. ``Chapter 18. Debug mode.'' The GNU C++ Library Manual. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://gcc.gnu.org/onlinedocs/libstdc++/manual/debug_mode.html}
+\bibitem{asan} LLVM Project. ``AddressSanitizer.'' Clang Documentation. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://clang.llvm.org/docs/AddressSanitizer.html}
+\bibitem{sarif} \textit{Static Analysis Results Interchange Format (SARIF) Version 2.1.0}, OASIS Standard sarif-v2.1.0-os, Mar. 27, 2020. [Online]. Available: \url{https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/sarif-v2.1.0-os.html}
+\end{thebibliography}
+
+\end{document}

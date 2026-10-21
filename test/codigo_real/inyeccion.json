@@ -1,0 +1,311 @@
+[
+ {
+  "id": "S1",
+  "proyecto": "ninja",
+  "archivo": "src/build.cc",
+  "mecanismo": "map::erase libera el nodo y luego se lee e->second (M5)",
+  "espera": "confirmado",
+  "obtenido": "confirmado",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": [
+   {
+    "file": "/work/build/real/ninja/src/build.cc",
+    "line": 668,
+    "msg": "Uso de un iterador invalidado: 'std::map::erase' (línea 667) lo invalidó",
+    "clase": "confirmado",
+    "ruta": [
+     "/work/build/real/ninja/src/build.cc:657: Assuming the condition is false",
+     "/work/build/real/ninja/src/build.cc:657: Loop condition is false. Execution continues on line 663",
+     "/work/build/real/ninja/src/build.cc:667: El iterador queda invalidado por 'std::map::erase'",
+     "/work/build/real/ninja/src/build.cc:668: Uso de un iterador invalidado: 'std::map::erase' (línea 667) lo invalidó"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "S2",
+  "proyecto": "ninja",
+  "archivo": "src/build.cc",
+  "mecanismo": "map::erase y lectura posterior por el iterador (M5)",
+  "espera": "confirmado",
+  "obtenido": "confirmado",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": [
+   {
+    "file": "/work/build/real/ninja/src/build.cc",
+    "line": 954,
+    "msg": "Uso de un iterador invalidado: 'std::map::erase' (línea 953) lo invalidó",
+    "clase": "confirmado",
+    "ruta": [
+     "/work/build/real/ninja/src/build.cc:927: Assuming 'g_metrics' is null",
+     "/work/build/real/ninja/src/metrics.h:85: expanded from macro 'METRIC_RECORD'",
+     "/work/build/real/ninja/src/build.cc:927: '?' condition is false",
+     "/work/build/real/ninja/src/metrics.h:85: expanded from macro 'METRIC_RECORD'",
+     "/work/build/real/ninja/src/build.cc:939: Assuming the condition is false",
+     "/work/build/real/ninja/src/build.cc:939: Taking false branch",
+     "/work/build/real/ninja/src/build.cc:953: El iterador queda invalidado por 'std::map::erase'",
+     "/work/build/real/ninja/src/build.cc:954: Uso de un iterador invalidado: 'std::map::erase' (línea 953) lo invalidó"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "S3",
+  "proyecto": "ninja",
+  "archivo": "src/missing_deps.cc",
+  "mecanismo": "unordered_map::clear y uso de un iterador obtenido con insert(...).first (M5)",
+  "espera": "confirmado",
+  "obtenido": "confirmado",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": [
+   {
+    "file": "/work/build/real/ninja/src/missing_deps.cc",
+    "line": 191,
+    "msg": "Uso de un iterador invalidado: 'std::unordered_map::clear' (línea 190) lo invalidó",
+    "clase": "confirmado",
+    "ruta": [
+     "/work/build/real/ninja/src/missing_deps.cc:174: Taking true branch",
+     "/work/build/real/ninja/src/missing_deps.cc:176: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:183: Assuming the condition is true",
+     "/work/build/real/ninja/src/missing_deps.cc:183: Loop condition is true.  Entering loop body",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Assuming 'e' is non-null",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Left side of '&&' is true",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Assuming 'e' is equal to 'from'",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Left side of '||' is true",
+     "/work/build/real/ninja/src/missing_deps.cc:187:  Execution continues on line 190",
+     "/work/build/real/ninja/src/missing_deps.cc:190: 'found' is true",
+     "/work/build/real/ninja/src/missing_deps.cc:190: Taking true branch",
+     "/work/build/real/ninja/src/missing_deps.cc:190: El iterador queda invalidado por 'std::unordered_map::clear'",
+     "/work/build/real/ninja/src/missing_deps.cc:191: Uso de un iterador invalidado: 'std::unordered_map::clear' (línea 190) lo invalidó"
+    ]
+   },
+   {
+    "file": "/work/build/real/ninja/src/missing_deps.cc",
+    "line": 191,
+    "msg": "Uso de un iterador posiblemente invalidado: 'std::unordered_map::insert' (línea 180) si supera el factor de carga rehace las cubetas; nada garantiza espacio: use reserve(size() + n) antes, o vuelva a obtenerlo",
+    "clase": "posible",
+    "ruta": [
+     "/work/build/real/ninja/src/missing_deps.cc:79: Assuming 'node' is non-null",
+     "/work/build/real/ninja/src/missing_deps.cc:79: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:82: Assuming 'edge' is non-null",
+     "/work/build/real/ninja/src/missing_deps.cc:82: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:84: Assuming field 'second' is true",
+     "/work/build/real/ninja/src/missing_deps.cc:84: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:87: Loop condition is false. Execution continues on line 92",
+     "/work/build/real/ninja/src/missing_deps.cc:93: Assuming the condition is true",
+     "/work/build/real/ninja/src/missing_deps.cc:93: Taking true branch",
+     "/work/build/real/ninja/src/missing_deps.cc:95: Assuming 'deps' is non-null",
+     "/work/build/real/ninja/src/missing_deps.cc:95: Taking true branch",
+     "/work/build/real/ninja/src/missing_deps.cc:96: Calling 'MissingDependencyScanner::ProcessNodeDeps'",
+     "/work/build/real/ninja/src/missing_deps.cc:113: Assuming 'i' is >= 'dep_nodes_count'",
+     "/work/build/real/ninja/src/missing_deps.cc:113: Loop condition is false. Execution continues on line 128",
+     "/work/build/real/ninja/src/missing_deps.cc:129: Loop condition is true.  Entering loop body",
+     "/work/build/real/ninja/src/missing_deps.cc:131: Calling 'MissingDependencyScanner::PathExistsBetween'",
+     "/work/build/real/ninja/src/missing_deps.cc:174: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:180: El iterador puede quedar invalidado por 'std::unordered_map::insert'",
+     "/work/build/real/ninja/src/missing_deps.cc:183: Assuming the condition is true",
+     "/work/build/real/ninja/src/missing_deps.cc:183: Loop condition is true.  Entering loop body",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Assuming 'e' is non-null",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Left side of '&&' is true",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Assuming 'e' is not equal to 'from'",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Left side of '||' is false",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Calling 'MissingDependencyScanner::PathExistsBetween'",
+     "/work/build/real/ninja/src/missing_deps.cc:174: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:180: El iterador puede quedar invalidado por 'std::unordered_map::insert'",
+     "/work/build/real/ninja/src/missing_deps.cc:183: Assuming the condition is false",
+     "/work/build/real/ninja/src/missing_deps.cc:183: Loop condition is false. Execution continues on line 190",
+     "/work/build/real/ninja/src/missing_deps.cc:190: 'found' is false",
+     "/work/build/real/ninja/src/missing_deps.cc:190: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Returning from 'MissingDependencyScanner::PathExistsBetween'",
+     "/work/build/real/ninja/src/missing_deps.cc:185: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:183: Assuming the condition is false",
+     "/work/build/real/ninja/src/missing_deps.cc:183: Loop condition is false. Execution continues on line 190",
+     "/work/build/real/ninja/src/missing_deps.cc:190: 'found' is false",
+     "/work/build/real/ninja/src/missing_deps.cc:190: Taking false branch",
+     "/work/build/real/ninja/src/missing_deps.cc:191: Uso de un iterador posiblemente invalidado: 'std::unordered_map::insert' (línea 180) si supera el factor de carga rehace las cubetas; nada garantiza espacio: use reserve(size() + n) antes, o vuelva a obtenerlo"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "S4",
+  "proyecto": "ninja",
+  "archivo": "src/graph.cc",
+  "mecanismo": "referencia al frente de un deque y pop_front (M5)",
+  "espera": "confirmado",
+  "obtenido": "confirmado",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": [
+   {
+    "file": "/work/build/real/ninja/src/graph.cc",
+    "line": 66,
+    "msg": "Uso de una referencia invalidada: 'std::deque::pop_front' (línea 61) lo invalidó",
+    "clase": "confirmado",
+    "ruta": [
+     "/work/build/real/ninja/src/graph.cc:59: Assuming the condition is true",
+     "/work/build/real/ninja/src/graph.cc:59: Loop condition is true.  Entering loop body",
+     "/work/build/real/ninja/src/graph.cc:61: El handle al elemento queda invalidado por 'std::deque::pop_front'",
+     "/work/build/real/ninja/src/graph.cc:66: Uso de una referencia invalidada: 'std::deque::pop_front' (línea 61) lo invalidó"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "S5",
+  "proyecto": "ninja",
+  "archivo": "src/build_log.cc",
+  "mecanismo": "unordered_map::erase dentro del recorrido y ++i (M5)",
+  "espera": "confirmado",
+  "obtenido": "confirmado",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": [
+   {
+    "file": "/work/build/real/ninja/src/build_log.cc",
+    "line": 411,
+    "msg": "Uso de un iterador invalidado: 'std::unordered_map::erase' (línea 413) lo invalidó",
+    "clase": "confirmado",
+    "ruta": [
+     "/work/build/real/ninja/src/build_log.cc:394: Assuming 'g_metrics' is null",
+     "/work/build/real/ninja/src/metrics.h:85: expanded from macro 'METRIC_RECORD'",
+     "/work/build/real/ninja/src/build_log.cc:394: '?' condition is false",
+     "/work/build/real/ninja/src/metrics.h:85: expanded from macro 'METRIC_RECORD'",
+     "/work/build/real/ninja/src/build_log.cc:399: 'f' is non-null",
+     "/work/build/real/ninja/src/build_log.cc:399: Taking false branch",
+     "/work/build/real/ninja/src/build_log.cc:404: Taking false branch",
+     "/work/build/real/ninja/src/build_log.cc:411: Loop condition is true.  Entering loop body",
+     "/work/build/real/ninja/src/build_log.cc:412: Assuming the condition is true",
+     "/work/build/real/ninja/src/build_log.cc:412: Taking true branch",
+     "/work/build/real/ninja/src/build_log.cc:413: El iterador queda invalidado por 'std::unordered_map::erase'",
+     "/work/build/real/ninja/src/build_log.cc:414:  Execution continues on line 411",
+     "/work/build/real/ninja/src/build_log.cc:411: Uso de un iterador invalidado: 'std::unordered_map::erase' (línea 413) lo invalidó"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "S6",
+  "proyecto": "yaml-cpp",
+  "archivo": "src/node_data.cpp",
+  "mecanismo": "list::erase y ++it sobre el borrado (M5)",
+  "espera": "confirmado",
+  "obtenido": "confirmado",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": [
+   {
+    "file": "/work/build/real/yaml-cpp/src/node_data.cpp",
+    "line": 117,
+    "msg": "Uso de un iterador invalidado: 'std::list::erase' (línea 116) lo invalidó",
+    "clase": "confirmado",
+    "ruta": [
+     "/work/build/real/yaml-cpp/src/node_data.cpp:114: Loop condition is true.  Entering loop body",
+     "/work/build/real/yaml-cpp/src/node_data.cpp:115: Assuming the condition is true",
+     "/work/build/real/yaml-cpp/src/node_data.cpp:115: Left side of '&&' is true",
+     "/work/build/real/yaml-cpp/src/node_data.cpp:115: Assuming the condition is true",
+     "/work/build/real/yaml-cpp/src/node_data.cpp:115: Taking true branch",
+     "/work/build/real/yaml-cpp/src/node_data.cpp:116: El iterador queda invalidado por 'std::list::erase'",
+     "/work/build/real/yaml-cpp/src/node_data.cpp:117: Uso de un iterador invalidado: 'std::list::erase' (línea 116) lo invalidó"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "S7",
+  "proyecto": "leveldb",
+  "archivo": "db/db_impl.cc",
+  "mecanismo": "puntero a un elemento de vector y push_back sin reserve (M1)",
+  "espera": "posible",
+  "obtenido": "posible",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": [
+   {
+    "file": "/work/build/real/leveldb/db/db_impl.cc",
+    "line": 815,
+    "msg": "Uso de un puntero posiblemente invalidado: 'std::vector::push_back' (línea 814) si la capacidad está agotada reubica los elementos; nada garantiza espacio: use reserve(size() + n) antes, o vuelva a obtenerlo",
+    "clase": "posible",
+    "ruta": [
+     "/work/build/real/leveldb/db/db_impl.cc:801: Assuming the condition is true",
+     "/usr/include/assert.h:103: expanded from macro 'assert'",
+     "/work/build/real/leveldb/db/db_impl.cc:801: '?' condition is true",
+     "/usr/include/assert.h:103: expanded from macro 'assert'",
+     "/work/build/real/leveldb/db/db_impl.cc:802: Assuming the condition is true",
+     "/usr/include/assert.h:103: expanded from macro 'assert'",
+     "/work/build/real/leveldb/db/db_impl.cc:802: '?' condition is true",
+     "/usr/include/assert.h:103: expanded from macro 'assert'",
+     "/work/build/real/leveldb/db/db_impl.cc:813: Assuming the condition is false",
+     "/work/build/real/leveldb/db/db_impl.cc:813: '?' condition is false",
+     "/work/build/real/leveldb/db/db_impl.cc:814: El handle al elemento puede quedar invalidado por 'std::vector::push_back'",
+     "/work/build/real/leveldb/db/db_impl.cc:815: Assuming the condition is true",
+     "/work/build/real/leveldb/db/db_impl.cc:815: Taking true branch",
+     "/work/build/real/leveldb/db/db_impl.cc:815: Uso de un puntero posiblemente invalidado: 'std::vector::push_back' (línea 814) si la capacidad está agotada reubica los elementos; nada garantiza espacio: use reserve(size() + n) antes, o vuelva a obtenerlo"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "S8",
+  "proyecto": "ninja",
+  "archivo": "src/graph.cc",
+  "mecanismo": "puntero a back() de un vector y pop_back (M3)",
+  "espera": "confirmado",
+  "obtenido": "confirmado",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": [
+   {
+    "file": "/work/build/real/ninja/src/graph.cc",
+    "line": 468,
+    "msg": "Uso de un puntero invalidado: 'std::vector::pop_back' (línea 467) lo invalidó",
+    "clase": "confirmado",
+    "ruta": [
+     "/work/build/real/ninja/src/graph.cc:401: Left side of '||' is false",
+     "/work/build/real/ninja/src/graph.cc:401: Taking false branch",
+     "/work/build/real/ninja/src/graph.cc:406: Taking false branch",
+     "/work/build/real/ninja/src/graph.cc:444: Assuming field 'recursive_' is true",
+     "/work/build/real/ninja/src/graph.cc:444: Taking true branch",
+     "/work/build/real/ninja/src/graph.cc:446: Taking false branch",
+     "/work/build/real/ninja/src/graph.cc:457: Assuming field 'recursive_' is true",
+     "/work/build/real/ninja/src/graph.cc:457: Left side of '&&' is true",
+     "/work/build/real/ninja/src/graph.cc:458: Assuming 'record_varname' is true",
+     "/work/build/real/ninja/src/graph.cc:458: Taking true branch",
+     "/work/build/real/ninja/src/graph.cc:465: 'record_varname' is true",
+     "/work/build/real/ninja/src/graph.cc:465: '?' condition is true",
+     "/work/build/real/ninja/src/graph.cc:466: 'record_varname' is true",
+     "/work/build/real/ninja/src/graph.cc:466: Taking true branch",
+     "/work/build/real/ninja/src/graph.cc:467: El handle al elemento queda invalidado por 'std::vector::pop_back'",
+     "/work/build/real/ninja/src/graph.cc:468: 'mine' is non-null",
+     "/work/build/real/ninja/src/graph.cc:468: Left side of '&&' is true",
+     "/work/build/real/ninja/src/graph.cc:468: Uso de un puntero invalidado: 'std::vector::pop_back' (línea 467) lo invalidó"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "B1",
+  "proyecto": "leveldb",
+  "archivo": "db/db_impl.cc",
+  "mecanismo": "la misma S7 con reserve(size() + 1) antes: garantía",
+  "espera": "nada",
+  "obtenido": "nada",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": []
+ },
+ {
+  "id": "B2",
+  "proyecto": "ninja",
+  "archivo": "src/build_log.cc",
+  "mecanismo": "i = erase(i): el iterador devuelto es válido",
+  "espera": "nada",
+  "obtenido": "nada",
+  "acierto": true,
+  "codigo": 0,
+  "avisos": []
+ }
+]

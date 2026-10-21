@@ -1,0 +1,16 @@
+@startuml
+!include _estilo.iuml
+start
+:git push / pull request\n(.github/workflows/ci.yml);
+:docker compose build\nimagen «checker:llvm21»;
+:docker compose run --rm plugin\ncmake + ninja, 40 gtests, 5 archivos lit;
+:docker compose run --rm calidad\nclang-format --dry-run, mypy,\nleyes del arnés, cobertura ≥ 90 %;
+:docker compose run --rm experimento\nbanco en 4 condiciones;
+if (bench/regresion.py:\n¿un SAFE con aviso confirmado,\nun UB que ya no se detecta\no un incidente?) then (sí)
+  :fallar con la lista;
+  stop
+else (no)
+  :publicar test/experimento/\ncomo artefacto;
+endif
+stop
+@enduml

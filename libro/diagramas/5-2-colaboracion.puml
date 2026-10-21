@@ -1,0 +1,26 @@
+@startuml
+!include _estilo.iuml
+
+
+actor "Desarrollador" as dev
+rectangle ":ExprEngine\n<<CSA>>" as eng
+rectangle ":CheckerManager\n<<CSA>>" as mgr
+rectangle ":InvalidationChecker\n<<cáscara>>" as chk
+rectangle ":ClangRecognizer\n<<anticorrupción>>" as acl
+rectangle ":Núcleo de invalidación\n<<dominio puro>>" as dom
+rectangle ":NormTable\n<<generada de matriz.json>>" as tab
+rectangle ":ProgramState\n<<inmutable, por camino>>" as st
+rectangle ":BugReporter\n<<CSA>>" as bug
+
+dev --> eng : 1 clang --analyze -load plugin
+eng --> mgr : 2 evento del camino\n(PostCall / PreCall / Location / Bind)
+mgr --> chk : 2.1 callback
+chk --> st : 2.2 leer handles\ny contenedores
+chk --> acl : 2.3 traducir CallEvent / SVal
+acl --> dom : 2.4 Obtención | Mutación | Uso
+dom --> tab : 2.5 efecto(contenedor, op,\ncategoría, relación)
+dom --> chk : 2.6 decisión = estado nuevo\n+ efectos (nota | aviso)
+chk --> st : 2.7 addTransition(estado', NoteTag)
+chk --> bug : 2.8 emitReport(aviso)\nsólo si hay efecto Aviso
+bug --> dev : 3 diagnóstico con ruta\n(texto | plist | SARIF)
+@enduml

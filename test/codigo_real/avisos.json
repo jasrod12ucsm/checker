@@ -1,0 +1,5548 @@
+{
+ "modo": "Possibly",
+ "inlining": "all",
+ "proyectos": {
+  "ninja": {
+   "commit": "2daa09ba270b0a43e1929d29b073348aa985dfaa",
+   "unidades": 29,
+   "fallos": 1,
+   "segundos": 129.6,
+   "resultados": [
+    {
+     "file": "/work/build/real/ninja/src/depfile_parser.cc",
+     "segundos": 2.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/lexer.cc",
+     "segundos": 6.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/build_log.cc",
+     "segundos": 5.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/build.cc",
+     "segundos": 27.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/clean.cc",
+     "segundos": 12.45,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/clparser.cc",
+     "segundos": 3.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/dyndep.cc",
+     "segundos": 6.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/dyndep_parser.cc",
+     "segundos": 1.49,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/debug_flags.cc",
+     "segundos": 0.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/deps_log.cc",
+     "segundos": 4.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/disk_interface.cc",
+     "segundos": 0.63,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/edit_distance.cc",
+     "segundos": 0.45,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/eval_env.cc",
+     "segundos": 0.44,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/graph.cc",
+     "segundos": 11.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/graphviz.cc",
+     "segundos": 4.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/json.cc",
+     "segundos": 0.58,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/line_printer.cc",
+     "segundos": 0.37,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/manifest_parser.cc",
+     "segundos": 5.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/metrics.cc",
+     "segundos": 0.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/missing_deps.cc",
+     "segundos": 6.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": [
+      {
+       "file": "/work/build/real/ninja/src/missing_deps.cc",
+       "line": 190,
+       "msg": "Uso de un iterador posiblemente invalidado: 'std::unordered_map::insert' (línea 180) si supera el factor de carga rehace las cubetas; nada garantiza espacio: use reserve(size() + n) antes, o vuelva a obtenerlo",
+       "clase": "posible",
+       "ruta": [
+        "/work/build/real/ninja/src/missing_deps.cc:79: Assuming 'node' is non-null",
+        "/work/build/real/ninja/src/missing_deps.cc:79: Taking false branch",
+        "/work/build/real/ninja/src/missing_deps.cc:82: Assuming 'edge' is non-null",
+        "/work/build/real/ninja/src/missing_deps.cc:82: Taking false branch",
+        "/work/build/real/ninja/src/missing_deps.cc:84: Assuming field 'second' is true",
+        "/work/build/real/ninja/src/missing_deps.cc:84: Taking false branch",
+        "/work/build/real/ninja/src/missing_deps.cc:87: Loop condition is false. Execution continues on line 92",
+        "/work/build/real/ninja/src/missing_deps.cc:93: Assuming the condition is true",
+        "/work/build/real/ninja/src/missing_deps.cc:93: Taking true branch",
+        "/work/build/real/ninja/src/missing_deps.cc:95: Assuming 'deps' is non-null",
+        "/work/build/real/ninja/src/missing_deps.cc:95: Taking true branch",
+        "/work/build/real/ninja/src/missing_deps.cc:96: Calling 'MissingDependencyScanner::ProcessNodeDeps'",
+        "/work/build/real/ninja/src/missing_deps.cc:113: Assuming 'i' is >= 'dep_nodes_count'",
+        "/work/build/real/ninja/src/missing_deps.cc:113: Loop condition is false. Execution continues on line 128",
+        "/work/build/real/ninja/src/missing_deps.cc:129: Loop condition is true.  Entering loop body",
+        "/work/build/real/ninja/src/missing_deps.cc:131: Calling 'MissingDependencyScanner::PathExistsBetween'",
+        "/work/build/real/ninja/src/missing_deps.cc:174: Taking false branch",
+        "/work/build/real/ninja/src/missing_deps.cc:180: El iterador puede quedar invalidado por 'std::unordered_map::insert'",
+        "/work/build/real/ninja/src/missing_deps.cc:183: Assuming the condition is true",
+        "/work/build/real/ninja/src/missing_deps.cc:183: Loop condition is true.  Entering loop body",
+        "/work/build/real/ninja/src/missing_deps.cc:185: Assuming 'e' is non-null",
+        "/work/build/real/ninja/src/missing_deps.cc:185: Left side of '&&' is true",
+        "/work/build/real/ninja/src/missing_deps.cc:185: Assuming 'e' is not equal to 'from'",
+        "/work/build/real/ninja/src/missing_deps.cc:185: Left side of '||' is false",
+        "/work/build/real/ninja/src/missing_deps.cc:185: Calling 'MissingDependencyScanner::PathExistsBetween'",
+        "/work/build/real/ninja/src/missing_deps.cc:174: Taking false branch",
+        "/work/build/real/ninja/src/missing_deps.cc:180: El iterador puede quedar invalidado por 'std::unordered_map::insert'",
+        "/work/build/real/ninja/src/missing_deps.cc:183: Assuming the condition is false",
+        "/work/build/real/ninja/src/missing_deps.cc:183: Loop condition is false. Execution continues on line 190",
+        "/work/build/real/ninja/src/missing_deps.cc:185: Returning from 'MissingDependencyScanner::PathExistsBetween'",
+        "/work/build/real/ninja/src/missing_deps.cc:185: Taking false branch",
+        "/work/build/real/ninja/src/missing_deps.cc:183: Assuming the condition is false",
+        "/work/build/real/ninja/src/missing_deps.cc:183: Loop condition is false. Execution continues on line 190",
+        "/work/build/real/ninja/src/missing_deps.cc:190: Uso de un iterador posiblemente invalidado: 'std::unordered_map::insert' (línea 180) si supera el factor de carga rehace las cubetas; nada garantiza espacio: use reserve(size() + n) antes, o vuelva a obtenerlo"
+       ]
+      }
+     ]
+    },
+    {
+     "file": "/work/build/real/ninja/src/parser.cc",
+     "segundos": 0.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/state.cc",
+     "segundos": 2.57,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/status.cc",
+     "segundos": 3.56,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/string_piece_util.cc",
+     "segundos": 0.48,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/util.cc",
+     "segundos": 8.2,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/version.cc",
+     "segundos": 0.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/subprocess-posix.cc",
+     "segundos": 0.77,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/ninja.cc",
+     "segundos": 12.91,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/ninja/src/browse.cc",
+     "segundos": 0.18,
+     "codigo": 1,
+     "error": "/work/build/real/ninja/src/browse.cc:23:10: fatal error: 'build/browse_py.h' file not found\n   23 | #include \"build/browse_py.h\"\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated.\n",
+     "avisos": []
+    }
+   ]
+  },
+  "leveldb": {
+   "commit": "99b3c03b3284f5886f9ef9a4ef703d57373e61be",
+   "unidades": 39,
+   "fallos": 0,
+   "segundos": 72.0,
+   "resultados": [
+    {
+     "file": "/work/build/real/leveldb/db/builder.cc",
+     "segundos": 0.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/c.cc",
+     "segundos": 0.28,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/db_impl.cc",
+     "segundos": 16.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/db_iter.cc",
+     "segundos": 1.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/dbformat.cc",
+     "segundos": 0.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/dumpfile.cc",
+     "segundos": 0.81,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/filename.cc",
+     "segundos": 0.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/log_reader.cc",
+     "segundos": 3.94,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/log_writer.cc",
+     "segundos": 2.56,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/memtable.cc",
+     "segundos": 3.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/repair.cc",
+     "segundos": 2.81,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/table_cache.cc",
+     "segundos": 0.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/version_edit.cc",
+     "segundos": 2.64,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/version_set.cc",
+     "segundos": 12.48,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/write_batch.cc",
+     "segundos": 0.39,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/block_builder.cc",
+     "segundos": 0.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/block.cc",
+     "segundos": 3.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/filter_block.cc",
+     "segundos": 0.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/format.cc",
+     "segundos": 0.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/iterator.cc",
+     "segundos": 0.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/merger.cc",
+     "segundos": 0.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/table_builder.cc",
+     "segundos": 2.91,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/table.cc",
+     "segundos": 0.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/table/two_level_iterator.cc",
+     "segundos": 6.61,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/arena.cc",
+     "segundos": 0.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/bloom.cc",
+     "segundos": 0.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/cache.cc",
+     "segundos": 2.79,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/coding.cc",
+     "segundos": 0.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/comparator.cc",
+     "segundos": 0.31,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/crc32c.cc",
+     "segundos": 0.28,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/env.cc",
+     "segundos": 0.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/filter_policy.cc",
+     "segundos": 0.12,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/hash.cc",
+     "segundos": 0.28,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/logging.cc",
+     "segundos": 0.24,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/options.cc",
+     "segundos": 0.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/status.cc",
+     "segundos": 0.31,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/util/env_posix.cc",
+     "segundos": 0.87,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/helpers/memenv/memenv.cc",
+     "segundos": 0.69,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/leveldb/db/leveldbutil.cc",
+     "segundos": 0.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    }
+   ]
+  },
+  "yaml-cpp": {
+   "commit": "f7320141120f720aecc4c32be25586e7da9eb978",
+   "unidades": 31,
+   "fallos": 0,
+   "segundos": 82.3,
+   "resultados": [
+    {
+     "file": "/work/build/real/yaml-cpp/src/contrib/graphbuilder.cpp",
+     "segundos": 0.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/contrib/graphbuilderadapter.cpp",
+     "segundos": 0.36,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/binary.cpp",
+     "segundos": 0.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/convert.cpp",
+     "segundos": 4.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/depthguard.cpp",
+     "segundos": 0.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/directives.cpp",
+     "segundos": 0.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/emit.cpp",
+     "segundos": 0.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/emitfromevents.cpp",
+     "segundos": 1.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/emitter.cpp",
+     "segundos": 8.98,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/emitterstate.cpp",
+     "segundos": 1.74,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/emitterutils.cpp",
+     "segundos": 7.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/exceptions.cpp",
+     "segundos": 0.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/exp.cpp",
+     "segundos": 2.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/memory.cpp",
+     "segundos": 0.52,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/node.cpp",
+     "segundos": 0.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/node_data.cpp",
+     "segundos": 0.96,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/nodebuilder.cpp",
+     "segundos": 0.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/nodeevents.cpp",
+     "segundos": 1.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/null.cpp",
+     "segundos": 0.12,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/ostream_wrapper.cpp",
+     "segundos": 0.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/parse.cpp",
+     "segundos": 0.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/parser.cpp",
+     "segundos": 3.58,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/regex_yaml.cpp",
+     "segundos": 0.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/scanner.cpp",
+     "segundos": 9.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/scanscalar.cpp",
+     "segundos": 2.72,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/scantag.cpp",
+     "segundos": 6.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/scantoken.cpp",
+     "segundos": 8.7,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/simplekey.cpp",
+     "segundos": 0.45,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/singledocparser.cpp",
+     "segundos": 12.74,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/stream.cpp",
+     "segundos": 4.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/yaml-cpp/src/tag.cpp",
+     "segundos": 0.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    }
+   ]
+  },
+  "rocksdb": {
+   "commit": "3c27a3dde0993210c5cc30d99717093f7537916f",
+   "unidades": 682,
+   "fallos": 0,
+   "segundos": 9451.4,
+   "resultados": [
+    {
+     "file": "/work/build/real/rocksdb/cache/cache.cc",
+     "segundos": 5.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache_entry_roles.cc",
+     "segundos": 0.52,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache_key.cc",
+     "segundos": 0.87,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache_helpers.cc",
+     "segundos": 0.85,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache_reservation_manager.cc",
+     "segundos": 8.84,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/charged_cache.cc",
+     "segundos": 1.37,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/clock_cache.cc",
+     "segundos": 63.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/compressed_secondary_cache.cc",
+     "segundos": 17.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/lru_cache.cc",
+     "segundos": 8.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/secondary_cache.cc",
+     "segundos": 0.74,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/secondary_cache_adapter.cc",
+     "segundos": 17.49,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/sharded_cache.cc",
+     "segundos": 1.27,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/tiered_secondary_cache.cc",
+     "segundos": 2.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/arena_wrapped_db_iter.cc",
+     "segundos": 13.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/attribute_group_iterator_impl.cc",
+     "segundos": 1.09,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_contents.cc",
+     "segundos": 0.85,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_fetcher.cc",
+     "segundos": 2.89,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_addition.cc",
+     "segundos": 1.85,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_builder.cc",
+     "segundos": 15.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_cache.cc",
+     "segundos": 1.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_garbage.cc",
+     "segundos": 1.27,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_meta.cc",
+     "segundos": 0.87,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_reader.cc",
+     "segundos": 20.14,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_garbage_meter.cc",
+     "segundos": 3.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_log_format.cc",
+     "segundos": 0.73,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_log_sequential_reader.cc",
+     "segundos": 4.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_log_writer.cc",
+     "segundos": 7.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_source.cc",
+     "segundos": 14.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/prefetch_buffer_collection.cc",
+     "segundos": 1.7,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/builder.cc",
+     "segundos": 7.57,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/c.cc",
+     "segundos": 19.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/coalescing_iterator.cc",
+     "segundos": 3.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/column_family.cc",
+     "segundos": 51.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction.cc",
+     "segundos": 17.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_iterator.cc",
+     "segundos": 28.01,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_picker.cc",
+     "segundos": 18.85,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_job.cc",
+     "segundos": 42.35,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_picker_fifo.cc",
+     "segundos": 7.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_picker_level.cc",
+     "segundos": 18.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_picker_universal.cc",
+     "segundos": 18.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_service_job.cc",
+     "segundos": 11.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_state.cc",
+     "segundos": 4.66,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_outputs.cc",
+     "segundos": 19.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/sst_partitioner.cc",
+     "segundos": 4.54,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/subcompaction_state.cc",
+     "segundos": 2.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/convenience.cc",
+     "segundos": 13.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_filesnapshot.cc",
+     "segundos": 13.36,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/compacted_db_impl.cc",
+     "segundos": 14.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl.cc",
+     "segundos": 118.06,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_write.cc",
+     "segundos": 58.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_compaction_flush.cc",
+     "segundos": 63.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_files.cc",
+     "segundos": 22.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_follower.cc",
+     "segundos": 19.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_open.cc",
+     "segundos": 64.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_debug.cc",
+     "segundos": 5.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_experimental.cc",
+     "segundos": 10.77,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_readonly.cc",
+     "segundos": 13.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_secondary.cc",
+     "segundos": 48.79,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_info_dumper.cc",
+     "segundos": 5.08,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_iter.cc",
+     "segundos": 35.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/dbformat.cc",
+     "segundos": 1.14,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/error_handler.cc",
+     "segundos": 19.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/event_helpers.cc",
+     "segundos": 16.96,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/experimental.cc",
+     "segundos": 26.52,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/external_sst_file_ingestion_job.cc",
+     "segundos": 32.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/file_indexer.cc",
+     "segundos": 7.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/flush_job.cc",
+     "segundos": 19.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/flush_scheduler.cc",
+     "segundos": 3.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/forward_iterator.cc",
+     "segundos": 52.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/import_column_family_job.cc",
+     "segundos": 17.01,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/internal_stats.cc",
+     "segundos": 24.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/logs_with_prep_tracker.cc",
+     "segundos": 0.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/log_reader.cc",
+     "segundos": 13.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/log_writer.cc",
+     "segundos": 11.97,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/malloc_stats.cc",
+     "segundos": 0.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/memtable.cc",
+     "segundos": 26.14,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/memtable_list.cc",
+     "segundos": 14.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/merge_helper.cc",
+     "segundos": 14.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/merge_operator.cc",
+     "segundos": 1.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/output_validator.cc",
+     "segundos": 0.9,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/periodic_task_scheduler.cc",
+     "segundos": 3.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/range_del_aggregator.cc",
+     "segundos": 25.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/range_tombstone_fragmenter.cc",
+     "segundos": 8.9,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/repair.cc",
+     "segundos": 59.0,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/seqno_to_time_mapping.cc",
+     "segundos": 13.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/snapshot_impl.cc",
+     "segundos": 0.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/table_cache.cc",
+     "segundos": 34.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/table_properties_collector.cc",
+     "segundos": 1.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/transaction_log_impl.cc",
+     "segundos": 23.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/trim_history_scheduler.cc",
+     "segundos": 3.95,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/version_builder.cc",
+     "segundos": 53.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/version_edit.cc",
+     "segundos": 20.01,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/version_edit_handler.cc",
+     "segundos": 29.27,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/version_set.cc",
+     "segundos": 232.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wal_edit.cc",
+     "segundos": 6.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wal_manager.cc",
+     "segundos": 13.94,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wide/wide_column_serialization.cc",
+     "segundos": 4.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wide/wide_columns.cc",
+     "segundos": 0.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wide/wide_columns_helper.cc",
+     "segundos": 10.77,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_batch.cc",
+     "segundos": 60.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_batch_base.cc",
+     "segundos": 0.45,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_controller.cc",
+     "segundos": 0.64,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_stall_stats.cc",
+     "segundos": 2.95,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_thread.cc",
+     "segundos": 21.77,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/composite_env.cc",
+     "segundos": 5.28,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/env.cc",
+     "segundos": 19.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/env_chroot.cc",
+     "segundos": 3.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/env_encryption.cc",
+     "segundos": 40.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/file_system.cc",
+     "segundos": 19.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/file_system_tracer.cc",
+     "segundos": 4.9,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/fs_on_demand.cc",
+     "segundos": 15.43,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/fs_remap.cc",
+     "segundos": 2.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/mock_env.cc",
+     "segundos": 7.97,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/unique_id_gen.cc",
+     "segundos": 0.97,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/delete_scheduler.cc",
+     "segundos": 17.35,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/file_prefetch_buffer.cc",
+     "segundos": 15.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/file_util.cc",
+     "segundos": 17.2,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/filename.cc",
+     "segundos": 14.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/line_file_reader.cc",
+     "segundos": 3.39,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/random_access_file_reader.cc",
+     "segundos": 14.48,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/read_write_util.cc",
+     "segundos": 1.94,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/readahead_raf.cc",
+     "segundos": 2.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/sequence_file_reader.cc",
+     "segundos": 8.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/sst_file_manager_impl.cc",
+     "segundos": 17.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/writable_file_writer.cc",
+     "segundos": 33.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/logging/auto_roll_logger.cc",
+     "segundos": 14.45,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/logging/event_logger.cc",
+     "segundos": 0.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/logging/log_buffer.cc",
+     "segundos": 0.74,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/arena.cc",
+     "segundos": 0.97,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/concurrent_arena.cc",
+     "segundos": 0.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/jemalloc_nodump_allocator.cc",
+     "segundos": 1.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/memkind_kmem_allocator.cc",
+     "segundos": 0.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/memory_allocator.cc",
+     "segundos": 6.8,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/alloc_tracker.cc",
+     "segundos": 0.7,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/hash_linklist_rep.cc",
+     "segundos": 6.97,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/hash_skiplist_rep.cc",
+     "segundos": 5.72,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/skiplistrep.cc",
+     "segundos": 12.27,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/vectorrep.cc",
+     "segundos": 8.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/write_buffer_manager.cc",
+     "segundos": 4.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/histogram.cc",
+     "segundos": 1.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/histogram_windowing.cc",
+     "segundos": 1.49,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/in_memory_stats_history.cc",
+     "segundos": 4.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/instrumented_mutex.cc",
+     "segundos": 0.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/iostats_context.cc",
+     "segundos": 2.73,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/perf_context.cc",
+     "segundos": 4.72,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/perf_level.cc",
+     "segundos": 0.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/persistent_stats_history.cc",
+     "segundos": 2.98,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/statistics.cc",
+     "segundos": 3.61,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/thread_status_impl.cc",
+     "segundos": 0.72,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/thread_status_updater.cc",
+     "segundos": 1.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/thread_status_util.cc",
+     "segundos": 1.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/thread_status_util_debug.cc",
+     "segundos": 1.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/cf_options.cc",
+     "segundos": 22.61,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/configurable.cc",
+     "segundos": 62.63,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/customizable.cc",
+     "segundos": 2.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/db_options.cc",
+     "segundos": 25.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/offpeak_time_info.cc",
+     "segundos": 0.36,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/options.cc",
+     "segundos": 10.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/options_helper.cc",
+     "segundos": 40.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/options_parser.cc",
+     "segundos": 23.66,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/port/mmap.cc",
+     "segundos": 0.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/port/stack_trace.cc",
+     "segundos": 0.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/adaptive/adaptive_table_factory.cc",
+     "segundos": 8.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/binary_search_index_reader.cc",
+     "segundos": 2.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block.cc",
+     "segundos": 27.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_based_table_builder.cc",
+     "segundos": 77.2,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_based_table_factory.cc",
+     "segundos": 18.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_based_table_iterator.cc",
+     "segundos": 34.89,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_based_table_reader.cc",
+     "segundos": 109.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_builder.cc",
+     "segundos": 1.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_cache.cc",
+     "segundos": 1.35,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_prefetcher.cc",
+     "segundos": 5.01,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_prefix_index.cc",
+     "segundos": 3.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/data_block_hash_index.cc",
+     "segundos": 0.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/data_block_footer.cc",
+     "segundos": 0.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/filter_block_reader_common.cc",
+     "segundos": 2.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/filter_policy.cc",
+     "segundos": 29.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/flush_block_policy.cc",
+     "segundos": 5.81,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/full_filter_block.cc",
+     "segundos": 2.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/hash_index_reader.cc",
+     "segundos": 7.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/index_builder.cc",
+     "segundos": 5.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/index_reader_common.cc",
+     "segundos": 1.37,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/parsed_full_filter_block.cc",
+     "segundos": 1.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/partitioned_filter_block.cc",
+     "segundos": 20.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/partitioned_index_iterator.cc",
+     "segundos": 18.58,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/partitioned_index_reader.cc",
+     "segundos": 5.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/reader_common.cc",
+     "segundos": 6.09,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/uncompression_dict_reader.cc",
+     "segundos": 3.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_fetcher.cc",
+     "segundos": 9.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/cuckoo/cuckoo_table_builder.cc",
+     "segundos": 11.86,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/cuckoo/cuckoo_table_factory.cc",
+     "segundos": 2.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/cuckoo/cuckoo_table_reader.cc",
+     "segundos": 14.91,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/format.cc",
+     "segundos": 15.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/get_context.cc",
+     "segundos": 5.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/iterator.cc",
+     "segundos": 1.89,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/merging_iterator.cc",
+     "segundos": 40.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/compaction_merging_iterator.cc",
+     "segundos": 8.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/meta_blocks.cc",
+     "segundos": 16.19,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/persistent_cache_helper.cc",
+     "segundos": 1.7,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_bloom.cc",
+     "segundos": 1.48,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_builder.cc",
+     "segundos": 11.87,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_factory.cc",
+     "segundos": 18.42,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_index.cc",
+     "segundos": 1.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_key_coding.cc",
+     "segundos": 13.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_reader.cc",
+     "segundos": 24.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/sst_file_dumper.cc",
+     "segundos": 23.58,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/sst_file_reader.cc",
+     "segundos": 17.66,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/sst_file_writer.cc",
+     "segundos": 61.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/table_factory.cc",
+     "segundos": 3.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/table_properties.cc",
+     "segundos": 2.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/two_level_iterator.cc",
+     "segundos": 18.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/unique_id.cc",
+     "segundos": 1.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/test_util/sync_point.cc",
+     "segundos": 1.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/test_util/sync_point_impl.cc",
+     "segundos": 2.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/test_util/testutil.cc",
+     "segundos": 19.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/test_util/transaction_test_util.cc",
+     "segundos": 12.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/block_cache_analyzer/block_cache_trace_analyzer.cc",
+     "segundos": 0.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/dump/db_dump_tool.cc",
+     "segundos": 6.91,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/io_tracer_parser_tool.cc",
+     "segundos": 0.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/ldb_cmd.cc",
+     "segundos": 196.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/ldb_tool.cc",
+     "segundos": 7.0,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/sst_dump_tool.cc",
+     "segundos": 5.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/trace_analyzer_tool.cc",
+     "segundos": 0.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/block_cache_tracer.cc",
+     "segundos": 7.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/io_tracer.cc",
+     "segundos": 7.8,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/trace_record_handler.cc",
+     "segundos": 6.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/trace_record_result.cc",
+     "segundos": 0.44,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/trace_record.cc",
+     "segundos": 0.68,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/trace_replay.cc",
+     "segundos": 6.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/async_file_reader.cc",
+     "segundos": 0.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/cleanable.cc",
+     "segundos": 0.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/coding.cc",
+     "segundos": 0.64,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/compaction_job_stats_impl.cc",
+     "segundos": 0.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/comparator.cc",
+     "segundos": 11.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/compression.cc",
+     "segundos": 0.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/compression_context_cache.cc",
+     "segundos": 0.81,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/concurrent_task_limiter_impl.cc",
+     "segundos": 0.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/crc32c.cc",
+     "segundos": 0.68,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/data_structure.cc",
+     "segundos": 0.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/dynamic_bloom.cc",
+     "segundos": 1.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/hash.cc",
+     "segundos": 0.68,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/murmurhash.cc",
+     "segundos": 0.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/random.cc",
+     "segundos": 0.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/rate_limiter.cc",
+     "segundos": 4.12,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/ribbon_config.cc",
+     "segundos": 0.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/slice.cc",
+     "segundos": 7.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/file_checksum_helper.cc",
+     "segundos": 6.19,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/status.cc",
+     "segundos": 0.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/stderr_logger.cc",
+     "segundos": 0.56,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/string_util.cc",
+     "segundos": 1.7,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/thread_local.cc",
+     "segundos": 1.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/threadpool_imp.cc",
+     "segundos": 8.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/udt_util.cc",
+     "segundos": 7.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/write_batch_util.cc",
+     "segundos": 0.87,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/xxhash.cc",
+     "segundos": 0.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/agg_merge/agg_merge.cc",
+     "segundos": 2.28,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/backup/backup_engine.cc",
+     "segundos": 73.09,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_compaction_filter.cc",
+     "segundos": 9.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_db.cc",
+     "segundos": 3.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_db_impl.cc",
+     "segundos": 85.81,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_db_impl_filesnapshot.cc",
+     "segundos": 3.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_dump_tool.cc",
+     "segundos": 5.56,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_file.cc",
+     "segundos": 12.72,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cache_dump_load.cc",
+     "segundos": 2.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cache_dump_load_impl.cc",
+     "segundos": 9.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cassandra/cassandra_compaction_filter.cc",
+     "segundos": 1.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cassandra/format.cc",
+     "segundos": 11.96,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cassandra/merge_operator.cc",
+     "segundos": 1.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/checkpoint/checkpoint_impl.cc",
+     "segundos": 18.35,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/compaction_filters.cc",
+     "segundos": 4.77,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/compaction_filters/remove_emptyvalue_compactionfilter.cc",
+     "segundos": 0.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/counted_fs.cc",
+     "segundos": 5.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/debug.cc",
+     "segundos": 6.38,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/env_mirror.cc",
+     "segundos": 1.08,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/env_timed.cc",
+     "segundos": 2.61,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/fault_injection_env.cc",
+     "segundos": 15.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/fault_injection_fs.cc",
+     "segundos": 26.91,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/fault_injection_secondary_cache.cc",
+     "segundos": 7.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/leveldb_options/leveldb_options.cc",
+     "segundos": 2.9,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/memory/memory_util.cc",
+     "segundos": 2.71,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators.cc",
+     "segundos": 13.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/bytesxor.cc",
+     "segundos": 0.49,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/max.cc",
+     "segundos": 0.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/put.cc",
+     "segundos": 0.66,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/sortlist.cc",
+     "segundos": 1.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/string_append/stringappend.cc",
+     "segundos": 1.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/string_append/stringappend2.cc",
+     "segundos": 1.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/uint64add.cc",
+     "segundos": 0.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/object_registry.cc",
+     "segundos": 12.07,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/option_change_migration/option_change_migration.cc",
+     "segundos": 19.43,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/options/options_util.cc",
+     "segundos": 10.24,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/block_cache_tier.cc",
+     "segundos": 15.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/block_cache_tier_file.cc",
+     "segundos": 11.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/block_cache_tier_metadata.cc",
+     "segundos": 6.0,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/persistent_cache_tier.cc",
+     "segundos": 6.87,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/volatile_tier_impl.cc",
+     "segundos": 2.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/simulator_cache/cache_simulator.cc",
+     "segundos": 6.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/simulator_cache/sim_cache.cc",
+     "segundos": 29.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/table_properties_collectors/compact_for_tiering_collector.cc",
+     "segundos": 1.79,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/table_properties_collectors/compact_on_deletion_collector.cc",
+     "segundos": 3.42,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/trace/file_trace_reader_writer.cc",
+     "segundos": 4.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/trace/replayer_impl.cc",
+     "segundos": 5.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/lock_manager.cc",
+     "segundos": 1.63,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/point/point_lock_tracker.cc",
+     "segundos": 2.01,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/point/point_lock_manager.cc",
+     "segundos": 21.58,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/range_tree_lock_manager.cc",
+     "segundos": 9.64,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/range_tree_lock_tracker.cc",
+     "segundos": 1.39,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/optimistic_transaction_db_impl.cc",
+     "segundos": 3.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/optimistic_transaction.cc",
+     "segundos": 6.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/pessimistic_transaction.cc",
+     "segundos": 60.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/pessimistic_transaction_db.cc",
+     "segundos": 25.27,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/snapshot_checker.cc",
+     "segundos": 7.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/transaction_base.cc",
+     "segundos": 13.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/transaction_db_mutex_impl.cc",
+     "segundos": 0.35,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/transaction_util.cc",
+     "segundos": 7.49,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/write_prepared_txn.cc",
+     "segundos": 7.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/write_prepared_txn_db.cc",
+     "segundos": 27.91,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/write_unprepared_txn.cc",
+     "segundos": 40.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/write_unprepared_txn_db.cc",
+     "segundos": 13.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/types_util.cc",
+     "segundos": 0.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/ttl/db_ttl_impl.cc",
+     "segundos": 27.28,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/wal_filter.cc",
+     "segundos": 4.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/write_batch_with_index/write_batch_with_index.cc",
+     "segundos": 43.91,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/write_batch_with_index/write_batch_with_index_internal.cc",
+     "segundos": 33.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/concurrent_tree.cc",
+     "segundos": 0.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/keyrange.cc",
+     "segundos": 0.49,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/lock_request.cc",
+     "segundos": 9.39,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/locktree.cc",
+     "segundos": 6.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/manager.cc",
+     "segundos": 15.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/range_buffer.cc",
+     "segundos": 0.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/treenode.cc",
+     "segundos": 10.06,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/txnid_set.cc",
+     "segundos": 3.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/wfg.cc",
+     "segundos": 4.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/standalone_port.cc",
+     "segundos": 0.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/util/dbt.cc",
+     "segundos": 0.07,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/util/memarena.cc",
+     "segundos": 0.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/port/port_posix.cc",
+     "segundos": 0.56,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/env_posix.cc",
+     "segundos": 1.58,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/fs_posix.cc",
+     "segundos": 18.95,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/io_posix.cc",
+     "segundos": 42.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb-build/build_version.cc",
+     "segundos": 0.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache.cc",
+     "segundos": 4.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache_entry_roles.cc",
+     "segundos": 0.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache_key.cc",
+     "segundos": 0.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache_helpers.cc",
+     "segundos": 0.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/cache_reservation_manager.cc",
+     "segundos": 10.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/charged_cache.cc",
+     "segundos": 1.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/clock_cache.cc",
+     "segundos": 58.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/compressed_secondary_cache.cc",
+     "segundos": 9.73,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/lru_cache.cc",
+     "segundos": 6.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/secondary_cache.cc",
+     "segundos": 0.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/secondary_cache_adapter.cc",
+     "segundos": 17.68,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/sharded_cache.cc",
+     "segundos": 0.9,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/cache/tiered_secondary_cache.cc",
+     "segundos": 2.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/arena_wrapped_db_iter.cc",
+     "segundos": 12.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/attribute_group_iterator_impl.cc",
+     "segundos": 1.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_contents.cc",
+     "segundos": 0.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_fetcher.cc",
+     "segundos": 3.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_addition.cc",
+     "segundos": 1.72,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_builder.cc",
+     "segundos": 15.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_cache.cc",
+     "segundos": 1.81,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_garbage.cc",
+     "segundos": 1.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_meta.cc",
+     "segundos": 1.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_file_reader.cc",
+     "segundos": 18.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_garbage_meter.cc",
+     "segundos": 3.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_log_format.cc",
+     "segundos": 1.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_log_sequential_reader.cc",
+     "segundos": 4.9,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_log_writer.cc",
+     "segundos": 9.94,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/blob_source.cc",
+     "segundos": 10.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/blob/prefetch_buffer_collection.cc",
+     "segundos": 1.35,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/builder.cc",
+     "segundos": 9.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/c.cc",
+     "segundos": 21.37,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/coalescing_iterator.cc",
+     "segundos": 3.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/column_family.cc",
+     "segundos": 62.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction.cc",
+     "segundos": 16.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_iterator.cc",
+     "segundos": 23.49,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_picker.cc",
+     "segundos": 18.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_job.cc",
+     "segundos": 55.85,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_picker_fifo.cc",
+     "segundos": 9.36,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_picker_level.cc",
+     "segundos": 22.19,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_picker_universal.cc",
+     "segundos": 17.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_service_job.cc",
+     "segundos": 10.54,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_state.cc",
+     "segundos": 2.96,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/compaction_outputs.cc",
+     "segundos": 15.7,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/sst_partitioner.cc",
+     "segundos": 5.85,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/compaction/subcompaction_state.cc",
+     "segundos": 3.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/convenience.cc",
+     "segundos": 13.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_filesnapshot.cc",
+     "segundos": 12.66,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/compacted_db_impl.cc",
+     "segundos": 13.69,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl.cc",
+     "segundos": 152.44,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_write.cc",
+     "segundos": 51.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_compaction_flush.cc",
+     "segundos": 73.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_files.cc",
+     "segundos": 22.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_follower.cc",
+     "segundos": 23.19,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_open.cc",
+     "segundos": 57.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_debug.cc",
+     "segundos": 5.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_experimental.cc",
+     "segundos": 7.66,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_readonly.cc",
+     "segundos": 18.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_impl/db_impl_secondary.cc",
+     "segundos": 45.39,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_info_dumper.cc",
+     "segundos": 5.66,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/db_iter.cc",
+     "segundos": 44.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/dbformat.cc",
+     "segundos": 1.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/error_handler.cc",
+     "segundos": 18.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/event_helpers.cc",
+     "segundos": 24.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/experimental.cc",
+     "segundos": 26.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/external_sst_file_ingestion_job.cc",
+     "segundos": 39.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/file_indexer.cc",
+     "segundos": 5.52,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/flush_job.cc",
+     "segundos": 20.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/flush_scheduler.cc",
+     "segundos": 2.73,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/forward_iterator.cc",
+     "segundos": 41.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/import_column_family_job.cc",
+     "segundos": 16.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/internal_stats.cc",
+     "segundos": 31.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/logs_with_prep_tracker.cc",
+     "segundos": 0.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/log_reader.cc",
+     "segundos": 11.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/log_writer.cc",
+     "segundos": 9.37,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/malloc_stats.cc",
+     "segundos": 0.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/memtable.cc",
+     "segundos": 43.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/memtable_list.cc",
+     "segundos": 21.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/merge_helper.cc",
+     "segundos": 14.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/merge_operator.cc",
+     "segundos": 1.57,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/output_validator.cc",
+     "segundos": 0.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/periodic_task_scheduler.cc",
+     "segundos": 4.37,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/range_del_aggregator.cc",
+     "segundos": 29.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/range_tombstone_fragmenter.cc",
+     "segundos": 13.52,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/repair.cc",
+     "segundos": 50.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/seqno_to_time_mapping.cc",
+     "segundos": 10.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/snapshot_impl.cc",
+     "segundos": 1.12,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/table_cache.cc",
+     "segundos": 37.99,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/table_properties_collector.cc",
+     "segundos": 1.19,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/transaction_log_impl.cc",
+     "segundos": 16.36,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/trim_history_scheduler.cc",
+     "segundos": 3.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/version_builder.cc",
+     "segundos": 92.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/version_edit.cc",
+     "segundos": 20.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/version_edit_handler.cc",
+     "segundos": 28.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/version_set.cc",
+     "segundos": 160.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wal_edit.cc",
+     "segundos": 6.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wal_manager.cc",
+     "segundos": 22.52,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wide/wide_column_serialization.cc",
+     "segundos": 4.71,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wide/wide_columns.cc",
+     "segundos": 0.61,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/wide/wide_columns_helper.cc",
+     "segundos": 10.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_batch.cc",
+     "segundos": 109.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_batch_base.cc",
+     "segundos": 0.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_controller.cc",
+     "segundos": 0.68,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_stall_stats.cc",
+     "segundos": 3.12,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/db/write_thread.cc",
+     "segundos": 22.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/composite_env.cc",
+     "segundos": 4.85,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/env.cc",
+     "segundos": 22.28,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/env_chroot.cc",
+     "segundos": 2.89,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/env_encryption.cc",
+     "segundos": 63.48,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/file_system.cc",
+     "segundos": 15.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/file_system_tracer.cc",
+     "segundos": 4.98,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/fs_on_demand.cc",
+     "segundos": 9.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/fs_remap.cc",
+     "segundos": 3.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/mock_env.cc",
+     "segundos": 13.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/unique_id_gen.cc",
+     "segundos": 0.97,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/delete_scheduler.cc",
+     "segundos": 17.54,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/file_prefetch_buffer.cc",
+     "segundos": 14.95,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/file_util.cc",
+     "segundos": 12.61,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/filename.cc",
+     "segundos": 11.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/line_file_reader.cc",
+     "segundos": 3.57,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/random_access_file_reader.cc",
+     "segundos": 13.71,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/read_write_util.cc",
+     "segundos": 1.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/readahead_raf.cc",
+     "segundos": 2.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/sequence_file_reader.cc",
+     "segundos": 9.43,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/sst_file_manager_impl.cc",
+     "segundos": 16.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/file/writable_file_writer.cc",
+     "segundos": 29.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/logging/auto_roll_logger.cc",
+     "segundos": 9.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/logging/event_logger.cc",
+     "segundos": 0.83,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/logging/log_buffer.cc",
+     "segundos": 0.69,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/arena.cc",
+     "segundos": 1.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/concurrent_arena.cc",
+     "segundos": 0.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/jemalloc_nodump_allocator.cc",
+     "segundos": 0.94,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/memkind_kmem_allocator.cc",
+     "segundos": 0.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memory/memory_allocator.cc",
+     "segundos": 6.78,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/alloc_tracker.cc",
+     "segundos": 0.43,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/hash_linklist_rep.cc",
+     "segundos": 10.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/hash_skiplist_rep.cc",
+     "segundos": 3.97,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/skiplistrep.cc",
+     "segundos": 11.89,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/vectorrep.cc",
+     "segundos": 5.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/memtable/write_buffer_manager.cc",
+     "segundos": 2.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/histogram.cc",
+     "segundos": 1.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/histogram_windowing.cc",
+     "segundos": 1.44,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/in_memory_stats_history.cc",
+     "segundos": 4.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/instrumented_mutex.cc",
+     "segundos": 0.9,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/iostats_context.cc",
+     "segundos": 3.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/perf_context.cc",
+     "segundos": 2.54,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/perf_level.cc",
+     "segundos": 0.19,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/persistent_stats_history.cc",
+     "segundos": 3.03,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/statistics.cc",
+     "segundos": 5.71,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/thread_status_impl.cc",
+     "segundos": 0.43,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/thread_status_updater.cc",
+     "segundos": 2.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/thread_status_util.cc",
+     "segundos": 0.89,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/monitoring/thread_status_util_debug.cc",
+     "segundos": 1.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/cf_options.cc",
+     "segundos": 40.15,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/configurable.cc",
+     "segundos": 32.97,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/customizable.cc",
+     "segundos": 1.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/db_options.cc",
+     "segundos": 17.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/offpeak_time_info.cc",
+     "segundos": 0.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/options.cc",
+     "segundos": 16.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/options_helper.cc",
+     "segundos": 55.63,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/options/options_parser.cc",
+     "segundos": 14.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/port/mmap.cc",
+     "segundos": 0.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/port/stack_trace.cc",
+     "segundos": 0.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/adaptive/adaptive_table_factory.cc",
+     "segundos": 6.45,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/binary_search_index_reader.cc",
+     "segundos": 2.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block.cc",
+     "segundos": 30.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_based_table_builder.cc",
+     "segundos": 70.64,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_based_table_factory.cc",
+     "segundos": 15.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_based_table_iterator.cc",
+     "segundos": 40.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_based_table_reader.cc",
+     "segundos": 187.4,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_builder.cc",
+     "segundos": 2.06,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_cache.cc",
+     "segundos": 2.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_prefetcher.cc",
+     "segundos": 5.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/block_prefix_index.cc",
+     "segundos": 5.79,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/data_block_hash_index.cc",
+     "segundos": 0.68,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/data_block_footer.cc",
+     "segundos": 0.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/filter_block_reader_common.cc",
+     "segundos": 1.81,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/filter_policy.cc",
+     "segundos": 34.87,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/flush_block_policy.cc",
+     "segundos": 4.27,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/full_filter_block.cc",
+     "segundos": 2.31,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/hash_index_reader.cc",
+     "segundos": 6.06,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/index_builder.cc",
+     "segundos": 6.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/index_reader_common.cc",
+     "segundos": 1.84,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/parsed_full_filter_block.cc",
+     "segundos": 2.34,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/partitioned_filter_block.cc",
+     "segundos": 23.52,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/partitioned_index_iterator.cc",
+     "segundos": 16.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/partitioned_index_reader.cc",
+     "segundos": 6.58,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/reader_common.cc",
+     "segundos": 4.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_based/uncompression_dict_reader.cc",
+     "segundos": 1.98,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/block_fetcher.cc",
+     "segundos": 9.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/cuckoo/cuckoo_table_builder.cc",
+     "segundos": 11.6,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/cuckoo/cuckoo_table_factory.cc",
+     "segundos": 1.74,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/cuckoo/cuckoo_table_reader.cc",
+     "segundos": 16.52,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/format.cc",
+     "segundos": 10.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/get_context.cc",
+     "segundos": 9.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/iterator.cc",
+     "segundos": 1.24,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/merging_iterator.cc",
+     "segundos": 31.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/compaction_merging_iterator.cc",
+     "segundos": 11.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/meta_blocks.cc",
+     "segundos": 23.71,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/persistent_cache_helper.cc",
+     "segundos": 2.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_bloom.cc",
+     "segundos": 1.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_builder.cc",
+     "segundos": 9.14,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_factory.cc",
+     "segundos": 21.0,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_index.cc",
+     "segundos": 3.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_key_coding.cc",
+     "segundos": 12.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/plain/plain_table_reader.cc",
+     "segundos": 25.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/sst_file_dumper.cc",
+     "segundos": 25.27,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/sst_file_reader.cc",
+     "segundos": 22.14,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/sst_file_writer.cc",
+     "segundos": 65.39,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/table_factory.cc",
+     "segundos": 3.8,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/table_properties.cc",
+     "segundos": 2.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/two_level_iterator.cc",
+     "segundos": 18.33,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/table/unique_id.cc",
+     "segundos": 1.48,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/test_util/sync_point.cc",
+     "segundos": 1.71,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/test_util/sync_point_impl.cc",
+     "segundos": 3.28,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/test_util/testutil.cc",
+     "segundos": 31.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/test_util/transaction_test_util.cc",
+     "segundos": 21.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/block_cache_analyzer/block_cache_trace_analyzer.cc",
+     "segundos": 0.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/dump/db_dump_tool.cc",
+     "segundos": 7.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/io_tracer_parser_tool.cc",
+     "segundos": 0.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/ldb_cmd.cc",
+     "segundos": 175.89,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/ldb_tool.cc",
+     "segundos": 6.18,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/sst_dump_tool.cc",
+     "segundos": 5.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/tools/trace_analyzer_tool.cc",
+     "segundos": 0.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/block_cache_tracer.cc",
+     "segundos": 4.37,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/io_tracer.cc",
+     "segundos": 7.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/trace_record_handler.cc",
+     "segundos": 8.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/trace_record_result.cc",
+     "segundos": 0.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/trace_record.cc",
+     "segundos": 0.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/trace_replay/trace_replay.cc",
+     "segundos": 6.89,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/async_file_reader.cc",
+     "segundos": 0.01,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/cleanable.cc",
+     "segundos": 0.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/coding.cc",
+     "segundos": 0.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/compaction_job_stats_impl.cc",
+     "segundos": 0.24,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/comparator.cc",
+     "segundos": 7.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/compression.cc",
+     "segundos": 0.68,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/compression_context_cache.cc",
+     "segundos": 1.73,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/concurrent_task_limiter_impl.cc",
+     "segundos": 0.65,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/crc32c.cc",
+     "segundos": 0.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/data_structure.cc",
+     "segundos": 0.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/dynamic_bloom.cc",
+     "segundos": 1.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/hash.cc",
+     "segundos": 1.06,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/murmurhash.cc",
+     "segundos": 0.26,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/random.cc",
+     "segundos": 0.96,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/rate_limiter.cc",
+     "segundos": 5.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/ribbon_config.cc",
+     "segundos": 0.48,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/slice.cc",
+     "segundos": 10.86,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/file_checksum_helper.cc",
+     "segundos": 11.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/status.cc",
+     "segundos": 0.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/stderr_logger.cc",
+     "segundos": 0.58,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/string_util.cc",
+     "segundos": 1.78,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/thread_local.cc",
+     "segundos": 0.93,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/threadpool_imp.cc",
+     "segundos": 8.01,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/udt_util.cc",
+     "segundos": 9.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/write_batch_util.cc",
+     "segundos": 0.69,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/util/xxhash.cc",
+     "segundos": 0.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/agg_merge/agg_merge.cc",
+     "segundos": 3.3,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/backup/backup_engine.cc",
+     "segundos": 109.72,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_compaction_filter.cc",
+     "segundos": 8.42,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_db.cc",
+     "segundos": 6.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_db_impl.cc",
+     "segundos": 120.96,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_db_impl_filesnapshot.cc",
+     "segundos": 5.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_dump_tool.cc",
+     "segundos": 7.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/blob_db/blob_file.cc",
+     "segundos": 8.92,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cache_dump_load.cc",
+     "segundos": 2.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cache_dump_load_impl.cc",
+     "segundos": 25.08,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cassandra/cassandra_compaction_filter.cc",
+     "segundos": 1.09,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cassandra/format.cc",
+     "segundos": 15.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/cassandra/merge_operator.cc",
+     "segundos": 1.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/checkpoint/checkpoint_impl.cc",
+     "segundos": 26.39,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/compaction_filters.cc",
+     "segundos": 9.91,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/compaction_filters/remove_emptyvalue_compactionfilter.cc",
+     "segundos": 0.84,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/counted_fs.cc",
+     "segundos": 7.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/debug.cc",
+     "segundos": 14.75,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/env_mirror.cc",
+     "segundos": 2.16,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/env_timed.cc",
+     "segundos": 4.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/fault_injection_env.cc",
+     "segundos": 31.82,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/fault_injection_fs.cc",
+     "segundos": 47.13,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/fault_injection_secondary_cache.cc",
+     "segundos": 14.42,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/leveldb_options/leveldb_options.cc",
+     "segundos": 8.73,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/memory/memory_util.cc",
+     "segundos": 8.64,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators.cc",
+     "segundos": 24.64,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/bytesxor.cc",
+     "segundos": 1.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/max.cc",
+     "segundos": 1.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/put.cc",
+     "segundos": 1.85,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/sortlist.cc",
+     "segundos": 2.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/string_append/stringappend.cc",
+     "segundos": 2.55,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/string_append/stringappend2.cc",
+     "segundos": 2.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/merge_operators/uint64add.cc",
+     "segundos": 1.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/object_registry.cc",
+     "segundos": 31.06,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/option_change_migration/option_change_migration.cc",
+     "segundos": 42.1,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/options/options_util.cc",
+     "segundos": 16.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/block_cache_tier.cc",
+     "segundos": 20.84,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/block_cache_tier_file.cc",
+     "segundos": 16.42,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/block_cache_tier_metadata.cc",
+     "segundos": 7.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/persistent_cache_tier.cc",
+     "segundos": 10.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/persistent_cache/volatile_tier_impl.cc",
+     "segundos": 5.8,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/simulator_cache/cache_simulator.cc",
+     "segundos": 12.77,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/simulator_cache/sim_cache.cc",
+     "segundos": 22.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/table_properties_collectors/compact_for_tiering_collector.cc",
+     "segundos": 3.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/table_properties_collectors/compact_on_deletion_collector.cc",
+     "segundos": 6.69,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/trace/file_trace_reader_writer.cc",
+     "segundos": 4.29,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/trace/replayer_impl.cc",
+     "segundos": 5.23,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/lock_manager.cc",
+     "segundos": 1.69,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/point/point_lock_tracker.cc",
+     "segundos": 3.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/point/point_lock_manager.cc",
+     "segundos": 25.41,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/range_tree_lock_manager.cc",
+     "segundos": 11.47,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/range_tree_lock_tracker.cc",
+     "segundos": 1.25,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/optimistic_transaction_db_impl.cc",
+     "segundos": 5.67,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/optimistic_transaction.cc",
+     "segundos": 10.74,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/pessimistic_transaction.cc",
+     "segundos": 55.02,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/pessimistic_transaction_db.cc",
+     "segundos": 25.59,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/snapshot_checker.cc",
+     "segundos": 5.76,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/transaction_base.cc",
+     "segundos": 17.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/transaction_db_mutex_impl.cc",
+     "segundos": 0.57,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/transaction_util.cc",
+     "segundos": 8.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/write_prepared_txn.cc",
+     "segundos": 12.71,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/write_prepared_txn_db.cc",
+     "segundos": 31.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/write_unprepared_txn.cc",
+     "segundos": 54.0,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/write_unprepared_txn_db.cc",
+     "segundos": 11.63,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/types_util.cc",
+     "segundos": 1.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/ttl/db_ttl_impl.cc",
+     "segundos": 17.51,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/wal_filter.cc",
+     "segundos": 4.86,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/write_batch_with_index/write_batch_with_index.cc",
+     "segundos": 32.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/write_batch_with_index/write_batch_with_index_internal.cc",
+     "segundos": 34.01,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/concurrent_tree.cc",
+     "segundos": 0.21,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/keyrange.cc",
+     "segundos": 0.42,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/lock_request.cc",
+     "segundos": 18.05,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/locktree.cc",
+     "segundos": 9.46,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/manager.cc",
+     "segundos": 13.5,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/range_buffer.cc",
+     "segundos": 0.14,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/treenode.cc",
+     "segundos": 7.88,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/txnid_set.cc",
+     "segundos": 5.04,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/locktree/wfg.cc",
+     "segundos": 6.37,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/standalone_port.cc",
+     "segundos": 0.11,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/util/dbt.cc",
+     "segundos": 0.09,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/utilities/transactions/lock/range/range_tree/lib/util/memarena.cc",
+     "segundos": 0.17,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/port/port_posix.cc",
+     "segundos": 0.62,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/env_posix.cc",
+     "segundos": 1.7,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/fs_posix.cc",
+     "segundos": 14.32,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb/env/io_posix.cc",
+     "segundos": 27.53,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    },
+    {
+     "file": "/work/build/real/rocksdb-build/build_version.cc",
+     "segundos": 1.22,
+     "codigo": 0,
+     "error": "",
+     "avisos": []
+    }
+   ]
+  }
+ }
+}

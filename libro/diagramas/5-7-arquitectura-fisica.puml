@@ -1,0 +1,38 @@
+@startuml
+!include _estilo.iuml
+
+node "Estación del desarrollador (Ubuntu 24.04)" as host {
+  folder "repositorio checker/" as repo {
+    artifact "plugin/ (C++)\nnorma/matriz.json\ntest/corpus.cpp + corpus_truth.json\nbench/*.py\nlibro/ + corpus_book/" as src
+  }
+  node "Contenedor Docker «checker:llvm21»" as dock {
+    component "clang 21\n(driver + CSA)" as clang
+    artifact "libContainerInvalidation.so\n(plugin)" as so
+    component "CMake + Ninja" as cm
+    component "Python 3.12\n(arnés)" as py
+    folder "test/experimento/ + test/codigo_real/" as res {
+      artifact "ejecucion.json\ncotejo.json\nmetricas.json"
+      artifact "avisos.json\ninyeccion.json"
+    }
+  }
+  component "mdbook\n(+ PlantUML jar)" as mdb
+}
+
+cloud "GitHub" as gh {
+  artifact "repositorio remoto\n(tags por experimento)" as remote
+  node "GitHub Actions runner" as ci {
+    component "misma imagen Docker"
+  }
+}
+
+repo --> dock : volumen montado
+cm --> so : construye
+py --> clang : subprocess(args separados)\nSARIF por stdout
+clang --> so : carga con -load
+py --> res : normaliza, coteja, agrega
+mdb --> res : lee
+repo -[hidden]down- dock
+host -[hidden]down- gh
+repo --> remote : git push
+remote --> ci : push / PR
+@enduml

@@ -1,0 +1,53 @@
+@startuml
+!include _estilo.iuml
+left to right direction
+
+component "TablaNormativa" as tab
+component "NucleoInvalidacion" as core
+component "ReconocedorClang" as acl
+component "CheckerCSA" as shell
+component "RegistroPlugin" as reg
+component "GeneradorBanco" as gen
+component "Ejecutor" as run
+component "Normalizador" as norm
+component "Cotejador" as match
+component "Agregador" as agg
+component "ValidadorDinamico" as din
+component "GeneradorLibro" as book
+component "CodigoReal" as real
+
+interface "effect(c, op, cat, rel)" as IEffect
+interface "obtain / apply / onUse" as IDecide
+interface "recognize(CallEvent)" as IRecognize
+interface "Checker<…>" as ICsa
+interface "corpus.cpp +\ncorpus_truth.json" as ICases
+interface "Run (json)" as IRun
+interface "Warning (SARIF\nnormalizado)" as IWarn
+interface "cotejo.json" as IMatch
+interface "metricas.json" as IMetrics
+
+tab - IEffect
+core - IDecide
+acl - IRecognize
+shell - ICsa
+gen - ICases
+run - IRun
+norm - IWarn
+match - IMatch
+agg - IMetrics
+
+core ..> IEffect
+shell ..> IDecide
+shell ..> IRecognize
+acl ..> IDecide : construye valores
+reg ..> ICsa
+run ..> ICases
+run ..> ICsa : clang -load
+norm ..> IRun
+match ..> IWarn
+match ..> ICases
+agg ..> IMatch
+din ..> ICases
+book ..> IMetrics
+real ..> ICsa : clang -load\npor unidad
+@enduml

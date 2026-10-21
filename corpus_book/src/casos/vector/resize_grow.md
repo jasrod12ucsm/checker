@@ -4,21 +4,25 @@ Mutación: `c.resize(c.size()+100);`
 
 - Iterador retenido: 🟡 `POLICY`
 - Referencia/puntero retenido: 🟡 `POLICY`
-- Casos `UB` detectados estáticamente: 0/3
+- Casos `UB` detectados estáticamente: 0/0
+
+**En palabras:** después de `c.resize(c.size()+100);` sobre un `std::vector`, un iterador guardado **puede** quedar inválido según el estado del contenedor (capacidad o factor de carga); una referencia o puntero guardado **puede** quedar inválido según el estado del contenedor (capacidad o factor de carga).
+
+Mapa de los 12 casos. Cada celda muestra la respuesta correcta (etiqueta) y, debajo, lo que hizo el analizador estático de Clang. Clic para ir al caso. Ver [Cómo leer este libro](../../guia.md).
 
 | | `recto` | `guarda` | `bucle` | `llamada` |
 |---|---|---|---|---|
-| **iterador** | [🟡 calla](#f_vector_resize_grow_it_recto) | [🟡 calla](#f_vector_resize_grow_it_guarda) | [🔴 calla](#f_vector_resize_grow_it_bucle) | [🟡 calla](#f_vector_resize_grow_it_llamada) |
-| **referencia** | [🟡 calla](#f_vector_resize_grow_ref_recto) | [🟡 calla](#f_vector_resize_grow_ref_guarda) | [🔴 calla](#f_vector_resize_grow_ref_bucle) | [🟡 calla](#f_vector_resize_grow_ref_llamada) |
-| **puntero** | [🟡 calla](#f_vector_resize_grow_ptr_recto) | [🟡 calla](#f_vector_resize_grow_ptr_guarda) | [🔴 calla](#f_vector_resize_grow_ptr_bucle) | [🟡 calla](#f_vector_resize_grow_ptr_llamada) |
+| **iterador** | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_it_recto) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_it_guarda) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_it_bucle) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_it_llamada) |
+| **referencia** | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_ref_recto) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_ref_guarda) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_ref_bucle) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_ref_llamada) |
+| **puntero** | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_ptr_recto) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_ptr_guarda) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_ptr_bucle) | [🟡 `POLICY`<br>⚪ sin aviso (depende del estado)](#f_vector_resize_grow_ptr_llamada) |
 
 ## Handle: iterador
 
 ### f_vector_resize_grow_it_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `recto` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `recto` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_it_recto(std::vector<int>& c) {
@@ -31,13 +35,13 @@ void f_vector_resize_grow_it_recto(std::vector<int>& c) {
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
 | `force` | capacidad agotada antes de la mutación | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr libstdc++ Debug · <code>force</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:352:
+/usr/include/c++/13/debug/safe_iterator.h:298:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::reference 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator*() 
@@ -48,10 +52,10 @@ In function:
 Error: attempt to dereference a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7ffc4e54a8f0 {
+    iterator "this" @ 0x7ffe29b9f680 {
       type = gnu_cxx::normal_iterator<int*, std::vector<int, std::allocator<int> > > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7ffc4e54a980
+      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7ffe29b9f710
     }
 ````
 
@@ -61,41 +65,40 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-61fd52  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cd52) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x56346761fcfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x56346761f5cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x563467626f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x56346760d23d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5634675389f0  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2259f0) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5634675cd74d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2ba74d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7f9c79a27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7f9c79a278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x5634673b32c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+/bits/stl_vector.h:390:4
+    #4 0x647b7da0ce38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x647b7d9f632d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x647b7d9225bc in f_vector_resize_grow_it_recto(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:831:5
+    #7 0x647b7d9b32f0 in main /work/test/runtime_runner.cpp:623:5
+    #8 0x7dd11dd961c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x7dd11dd9628a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x647b7d81f4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x563467518fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x56346761fb37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x56346761f27f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x56346760d650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5634675b2f17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5634675cd740  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2ba740) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7f9c79a27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7f9c79a278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x5634673b32c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x647b7d908d31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x647b7da08c77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x647b7da0850f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x647b7da0850f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x647b7d9f6720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x647b7d996187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x647b7d9b32e3 in main /work/test/runtime_runner.cpp:622:26
+    #7 0x7dd11dd961c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x7dd11dd9628a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x647b7d81f4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x225ad2) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:832:8 in f_vector_resize_grow_it_recto(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7bcc78bdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bcc78bdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bcc78bdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bcc78bdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bcc78bdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7bcc78be0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7bcc78be0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bcc78be0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bcc78be0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bcc78be0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bcc78be0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7a011cfdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7a011cfdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7a011cfdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7a011cfdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7a011cfdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7a011cfe0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x7a011cfe0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7a011cfe0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7a011cfe0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7a011cfe0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7a011cfe0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -115,16 +118,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==211==ABORTING
+==346==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_it_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `guarda` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `guarda` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_it_guarda(std::vector<int>& c) {
@@ -138,13 +141,13 @@ void f_vector_resize_grow_it_guarda(std::vector<int>& c) {
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
 | `force` | capacidad agotada antes de la mutación | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr libstdc++ Debug · <code>force</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:352:
+/usr/include/c++/13/debug/safe_iterator.h:298:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::reference 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator*() 
@@ -155,10 +158,10 @@ In function:
 Error: attempt to dereference a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7fff22dba2f0 {
+    iterator "this" @ 0x7fff1c7a6080 {
       type = gnu_cxx::normal_iterator<int*, std::vector<int, std::allocator<int> > > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7fff22dba3b0
+      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7fff1c7a6140
     }
 ````
 
@@ -168,41 +171,40 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-9add52  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cd52) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x558b9e9adcfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x558b9e9ad5cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x558b9e9b4f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x558b9e99b23d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x558b9e8c6f14  (/tmp/mi-linter-runtime-validation/runtime_asan+0x225f14) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x558b9e95b8c3  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2ba8c3) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7fc14f427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7fc14f4278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x558b9e7412c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+its/stl_vector.h:390:4
+    #4 0x6482d965be38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x6482d964532d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x6482d9571867 in f_vector_resize_grow_it_guarda(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:837:5
+    #7 0x6482d9602466 in main /work/test/runtime_runner.cpp:628:5
+    #8 0x7b23e16f91c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x7b23e16f928a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x6482d946e4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x558b9e8a6fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x558b9e9adb37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x558b9e9ad27f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x558b9e99b650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x558b9e940f17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x558b9e95b8b6  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2ba8b6) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7fc14f427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7fc14f4278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x558b9e7412c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x6482d9557d31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x6482d9657c77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x6482d965750f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x6482d965750f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x6482d9645720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x6482d95e5187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x6482d9602459 in main /work/test/runtime_runner.cpp:627:26
+    #7 0x7b23e16f91c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x7b23e16f928a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x6482d946e4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x225ffc) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:838:8 in f_vector_resize_grow_it_guarda(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7bf14e5dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bf14e5dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bf14e5dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bf14e5dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bf14e5dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7bf14e5e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7bf14e5e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bf14e5e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bf14e5e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bf14e5e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bf14e5e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7753e09dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7753e09dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7753e09dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7753e09dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7753e09dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7753e09e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x7753e09e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7753e09e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7753e09e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7753e09e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7753e09e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -222,16 +224,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==215==ABORTING
+==351==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_it_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `bucle` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `bucle` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_it_bucle(std::vector<int>& c) {
@@ -243,17 +245,16 @@ void f_vector_resize_grow_it_bucle(std::vector<int>& c) {
 }
 ```
 
-> **Causa del falso negativo:** 4. La invalidacion por insercion/realojamiento no esta modelada
-
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
+| `force` | capacidad agotada antes de la mutación | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
-<summary>stderr libstdc++ Debug · <code>natural</code></summary>
+<summary>stderr libstdc++ Debug · <code>force</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:352:
+/usr/include/c++/13/debug/safe_iterator.h:298:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::reference 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator*() 
@@ -264,54 +265,53 @@ In function:
 Error: attempt to dereference a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7ffc6bfc0f80 {
+    iterator "this" @ 0x7fff51445770 {
       type = gnu_cxx::normal_iterator<int*, std::vector<int, std::allocator<int> > > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7ffc6bfc1040
+      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7fff51445830
     }
 ````
 
 </details>
 
 <details>
-<summary>stderr ASan/UBSan · <code>natural</code></summary>
+<summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-bc5cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5606f29c3f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5606f29aa23d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5606f28d6504  (/tmp/mi-linter-runtime-validation/runtime_asan+0x226504) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5606f296aa39  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2baa39) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7ffb2a227780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7ffb2a2278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x5606f27502c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+bits/stl_vector.h:390:4
+    #4 0x5d16294f9e38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x5d16294e332d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x5d162940fb92 in f_vector_resize_grow_it_bucle(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:843:7
+    #7 0x5d16294a05dc in main /work/test/runtime_runner.cpp:633:5
+    #8 0x796b04e731c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x796b04e7328a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x5d162930c4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x5606f28b5fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x5606f29bcb37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5606f29bc27f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5606f29bb097  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30b097) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5606f29a9416  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2f9416) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5606f29a8dfc  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2f8dfc) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5606f29501a2  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a01a2) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5606f296aa2c  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2baa2c) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7ffb2a227780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7ffb2a2278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x5606f27502c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x5d16293f5d31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x5d16294f5c77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x5d16294f550f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x5d16294f550f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x5d16294e3720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x5d1629483187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x5d16294a05cf in main /work/test/runtime_runner.cpp:632:26
+    #7 0x796b04e731c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x796b04e7328a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x5d162930c4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x2265ef) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:844:10 in f_vector_resize_grow_it_bucle(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7c1b293dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c1b293dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c1b293dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c1b293dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c1b293dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7c1b293e0000: fa fa fd fa fa fa fd fa fa fa[fd]fd fa fa fa fa
-  0x7c1b293e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c1b293e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c1b293e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c1b293e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c1b293e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x759b041dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x759b041dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x759b041dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x759b041dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x759b041dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x759b041e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x759b041e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x759b041e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x759b041e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x759b041e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x759b041e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -331,16 +331,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==219==ABORTING
+==356==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_it_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| iterador | `llamada` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| iterador | `llamada` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_it_llamada(std::vector<int>& c) {
@@ -354,13 +354,13 @@ void f_vector_resize_grow_it_llamada(std::vector<int>& c) {
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
 | `force` | capacidad agotada antes de la mutación | 🛑 attempt to dereference a singular iterator | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr libstdc++ Debug · <code>force</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:352:
+/usr/include/c++/13/debug/safe_iterator.h:298:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::reference 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator*() 
@@ -371,10 +371,10 @@ In function:
 Error: attempt to dereference a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7fff5dd10980 {
+    iterator "this" @ 0x7ffd6baaed20 {
       type = gnu_cxx::normal_iterator<int*, std::vector<int, std::allocator<int> > > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7fff5dd10a40
+      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7ffd6baaede0
     }
 ````
 
@@ -384,41 +384,40 @@ Objects involved in the operation:
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-66cfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55aac99665cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55aac996df58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55aac995423d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55aac98626be  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2086be) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55aac9880b0f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x226b0f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55aac9914baf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2babaf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7f2111a27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7f2111a278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x55aac96fa2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x5ed16ed2932d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x5ed16ec3db2e in mutar_vector_resize_grow(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:21:56
+    #7 0x5ed16ec55e1c in f_vector_resize_grow_it_llamada(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:850:3
+    #8 0x5ed16ece6752 in main /work/test/runtime_runner.cpp:638:5
+    #9 0x78d7d2a4f1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x78d7d2a4f28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #11 0x5ed16eb524b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x55aac985ffe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x55aac9966b37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x55aac996627f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55aac9954650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55aac98f9f17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55aac9914ba2  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2baba2) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7f2111a27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7f2111a278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x55aac96fa2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x5ed16ec3bd31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x5ed16ed3bc77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x5ed16ed3b50f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x5ed16ed3b50f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x5ed16ed29720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x5ed16ecc9187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x5ed16ece6745 in main /work/test/runtime_runner.cpp:637:26
+    #7 0x78d7d2a4f1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x78d7d2a4f28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x5ed16eb524b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x226bf7) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:851:8 in f_vector_resize_grow_it_llamada(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7b5110bdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b5110bdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b5110bdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b5110bdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b5110bdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b5110be0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7b5110be0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b5110be0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b5110be0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b5110be0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b5110be0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7507d1ddfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7507d1ddfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7507d1ddfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7507d1ddff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7507d1ddff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7507d1de0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x7507d1de0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7507d1de0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7507d1de0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7507d1de0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7507d1de0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -438,7 +437,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==221==ABORTING
+==361==ABORTING
 ````
 
 </details>
@@ -447,9 +446,9 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 
 ### f_vector_resize_grow_ref_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `recto` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `recto` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_ref_recto(std::vector<int>& c) {
@@ -462,48 +461,47 @@ void f_vector_resize_grow_ref_recto(std::vector<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `force` | capacidad agotada antes de la mutación | — (código 0) | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `force` | capacidad agotada antes de la mutación | sin detección | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-3a9d52  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cd52) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5644ce3a9cfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5644ce3a95cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5644ce3b0f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5644ce39723d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5644ce2c3ecd  (/tmp/mi-linter-runtime-validation/runtime_asan+0x226ecd) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5644ce357d25  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bad25) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7f4653427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7f46534278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x5644ce13d2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+its/stl_vector.h:390:4
+    #4 0x62bd60e5fe38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x62bd60e4932d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x62bd60d760a5 in f_vector_resize_grow_ref_recto(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:856:5
+    #7 0x62bd60e068c8 in main /work/test/runtime_runner.cpp:643:5
+    #8 0x78aafcd9a1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x78aafcd9a28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x62bd60c724b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x5644ce2a2fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x5644ce3a9b37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5644ce3a927f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5644ce397650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5644ce33cf17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5644ce357d18  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bad18) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7f4653427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7f46534278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x5644ce13d2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x62bd60d5bd31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x62bd60e5bc77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x62bd60e5b50f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x62bd60e5b50f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x62bd60e49720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x62bd60de9187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x62bd60e068bb in main /work/test/runtime_runner.cpp:642:26
+    #7 0x78aafcd9a1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x78aafcd9a28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x62bd60c724b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x226f05) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:857:8 in f_vector_resize_grow_ref_recto(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7b76525dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b76525dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b76525dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b76525dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b76525dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b76525e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7b76525e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b76525e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b76525e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b76525e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b76525e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74dafbfdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74dafbfdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74dafbfdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74dafbfdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74dafbfdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x74dafbfe0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x74dafbfe0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74dafbfe0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74dafbfe0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74dafbfe0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74dafbfe0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -523,16 +521,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==225==ABORTING
+==366==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_ref_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `guarda` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `guarda` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_ref_guarda(std::vector<int>& c) {
@@ -546,48 +544,47 @@ void f_vector_resize_grow_ref_guarda(std::vector<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `force` | capacidad agotada antes de la mutación | — (código 0) | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `force` | capacidad agotada antes de la mutación | sin detección | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-9e1d52  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cd52) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5653a99e1cfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5653a99e15cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5653a99e8f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5653a99cf23d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5653a98fc421  (/tmp/mi-linter-runtime-validation/runtime_asan+0x227421) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5653a998fe9b  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bae9b) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7f5df5e27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7f5df5e278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x5653a97752c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+s/stl_vector.h:390:4
+    #4 0x61b674950e38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x61b67493a32d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x61b67486735a in f_vector_resize_grow_ref_guarda(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:863:5
+    #7 0x61b6748f7a3e in main /work/test/runtime_runner.cpp:648:5
+    #8 0x7fb6a92031c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x7fb6a920328a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x61b6747634b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x5653a98dafe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x5653a99e1b37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5653a99e127f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5653a99cf650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5653a9974f17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5653a998fe8e  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bae8e) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7f5df5e27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7f5df5e278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x5653a97752c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x61b67484cd31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x61b67494cc77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x61b67494c50f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x61b67494c50f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x61b67493a720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x61b6748da187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x61b6748f7a31 in main /work/test/runtime_runner.cpp:647:26
+    #7 0x7fb6a92031c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x7fb6a920328a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x61b6747634b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x227459) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:864:8 in f_vector_resize_grow_ref_guarda(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7b8df4fdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b8df4fdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b8df4fdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b8df4fdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b8df4fdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b8df4fe0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7b8df4fe0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b8df4fe0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b8df4fe0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b8df4fe0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b8df4fe0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be6a85dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7be6a85dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7be6a85dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7be6a85dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7be6a85dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7be6a85e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x7be6a85e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be6a85e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be6a85e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be6a85e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7be6a85e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -607,16 +604,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==229==ABORTING
+==371==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_ref_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `bucle` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `bucle` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_ref_bucle(std::vector<int>& c) {
@@ -629,17 +626,16 @@ void f_vector_resize_grow_ref_bucle(std::vector<int>& c) {
 }
 ```
 
-> **Causa del falso negativo:** 1. El dominio de referencias y punteros no esta modelado
-
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | 🛑 attempt to increment a singular iterator | 🛑 heap-use-after-free |
+| `force` | capacidad agotada antes de la mutación | 🛑 attempt to increment a singular iterator | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
-<summary>stderr libstdc++ Debug · <code>natural</code></summary>
+<summary>stderr libstdc++ Debug · <code>force</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:392:
+/usr/include/c++/13/debug/safe_iterator.h:326:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>& 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator++() 
@@ -650,54 +646,53 @@ In function:
 Error: attempt to increment a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7ffeb46d4fb0 {
+    iterator "this" @ 0x7fff84946570 {
       type = gnu_cxx::normal_iterator<int*, std::vector<int, std::allocator<int> > > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7ffeb46d5070
+      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7fff84946630
     }
 ````
 
 </details>
 
 <details>
-<summary>stderr ASan/UBSan · <code>natural</code></summary>
+<summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-7b5cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5560f3182f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5560f316923d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5560f3096a0e  (/tmp/mi-linter-runtime-validation/runtime_asan+0x227a0e) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5560f312a011  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb011) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7fbade227780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7fbade2278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x5560f2f0f2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+ts/stl_vector.h:390:4
+    #4 0x5fb2b81ede38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x5fb2b81d732d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x5fb2b8104695 in f_vector_resize_grow_ref_bucle(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:870:7
+    #7 0x5fb2b8194bb4 in main /work/test/runtime_runner.cpp:653:5
+    #8 0x73db9cd901c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x73db9cd9028a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x5fb2b80004b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x5560f3074fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x5560f317bb37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x5560f317b27f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x5560f317a097  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30b097) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x5560f3168416  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2f9416) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x5560f3167dfc  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2f8dfc) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x5560f310f1a2  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a01a2) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x5560f312a004  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb004) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7fbade227780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7fbade2278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x5560f2f0f2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x5fb2b80e9d31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x5fb2b81e9c77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x5fb2b81e950f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x5fb2b81e950f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x5fb2b81d7720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x5fb2b8177187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x5fb2b8194ba7 in main /work/test/runtime_runner.cpp:652:26
+    #7 0x73db9cd901c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x73db9cd9028a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x5fb2b80004b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x227a46) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:871:10 in f_vector_resize_grow_ref_bucle(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7bdadd3dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bdadd3dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bdadd3dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bdadd3dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bdadd3dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7bdadd3e0000: fa fa fd fa fa fa fd fa fa fa[fd]fd fa fa fa fa
-  0x7bdadd3e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bdadd3e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bdadd3e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bdadd3e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bdadd3e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x700b9bfdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x700b9bfdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x700b9bfdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x700b9bfdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x700b9bfdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x700b9bfe0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x700b9bfe0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x700b9bfe0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x700b9bfe0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x700b9bfe0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x700b9bfe0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -717,16 +712,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==233==ABORTING
+==376==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_ref_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| referencia | `llamada` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| referencia | `llamada` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_ref_llamada(std::vector<int>& c) {
@@ -740,48 +735,47 @@ void f_vector_resize_grow_ref_llamada(std::vector<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `force` | capacidad agotada antes de la mutación | — (código 0) | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `force` | capacidad agotada antes de la mutación | sin detección | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-0fcfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x557d5ab0f5cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x557d5ab16f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x557d5aafd23d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x557d5aa0b6be  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2086be) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x557d5aa2b018  (/tmp/mi-linter-runtime-validation/runtime_asan+0x228018) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x557d5aabe187  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb187) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7f5655627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7f56556278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x557d5a8a32c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+r/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x650cb14d732d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x650cb13ebb2e in mutar_vector_resize_grow(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:21:56
+    #7 0x650cb1404935 in f_vector_resize_grow_ref_llamada(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:878:3
+    #8 0x650cb1494d2a in main /work/test/runtime_runner.cpp:658:5
+    #9 0x78a2cb3d01c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x78a2cb3d028a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #11 0x650cb13004b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x557d5aa08fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x557d5ab0fb37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x557d5ab0f27f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x557d5aafd650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x557d5aaa2f17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x557d5aabe17a  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb17a) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7f5655627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7f56556278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x557d5a8a32c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x650cb13e9d31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x650cb14e9c77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x650cb14e950f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x650cb14e950f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x650cb14d7720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x650cb1477187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x650cb1494d1d in main /work/test/runtime_runner.cpp:657:26
+    #7 0x78a2cb3d01c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x78a2cb3d028a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x650cb13004b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x22804d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:879:8 in f_vector_resize_grow_ref_llamada(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7b86547dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b86547dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b86547dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b86547dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b86547dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b86547e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7b86547e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b86547e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b86547e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b86547e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b86547e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74d2ca7dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74d2ca7dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74d2ca7dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74d2ca7dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x74d2ca7dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x74d2ca7e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x74d2ca7e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74d2ca7e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74d2ca7e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74d2ca7e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x74d2ca7e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -801,7 +795,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==235==ABORTING
+==381==ABORTING
 ````
 
 </details>
@@ -810,9 +804,9 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 
 ### f_vector_resize_grow_ptr_recto
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `recto` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `recto` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_ptr_recto(std::vector<int>& c) {
@@ -825,48 +819,47 @@ void f_vector_resize_grow_ptr_recto(std::vector<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `force` | capacidad agotada antes de la mutación | — (código 0) | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `force` | capacidad agotada antes de la mutación | sin detección | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-19ad52  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cd52) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x559b1b19acfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x559b1b19a5cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x559b1b1a1f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x559b1b18823d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x559b1b0b6301  (/tmp/mi-linter-runtime-validation/runtime_asan+0x228301) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x559b1b1492fd  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb2fd) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7f2741627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7f27416278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x559b1af2e2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+its/stl_vector.h:390:4
+    #4 0x5bfb2b30ee38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x5bfb2b2f832d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x5bfb2b225b62 in f_vector_resize_grow_ptr_recto(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:884:5
+    #7 0x5bfb2b2b5ea0 in main /work/test/runtime_runner.cpp:663:5
+    #8 0x7b6b532891c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x7b6b5328928a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x5bfb2b1214b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x559b1b093fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x559b1b19ab37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x559b1b19a27f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x559b1b188650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x559b1b12df17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x559b1b1492f0  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb2f0) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7f2741627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7f27416278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x559b1af2e2c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x5bfb2b20ad31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x5bfb2b30ac77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x5bfb2b30a50f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x5bfb2b30a50f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x5bfb2b2f8720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x5bfb2b298187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x5bfb2b2b5e93 in main /work/test/runtime_runner.cpp:662:26
+    #7 0x7b6b532891c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x7b6b5328928a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x5bfb2b1214b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x228365) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:885:8 in f_vector_resize_grow_ptr_recto(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7b57407dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b57407dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b57407dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b57407dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b57407dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b57407e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7b57407e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b57407e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b57407e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b57407e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b57407e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x779b525dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x779b525dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x779b525dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x779b525dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x779b525dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x779b525e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x779b525e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x779b525e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x779b525e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x779b525e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x779b525e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -886,16 +879,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==239==ABORTING
+==386==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_ptr_guarda
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `guarda` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `guarda` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_ptr_guarda(std::vector<int>& c) {
@@ -909,48 +902,47 @@ void f_vector_resize_grow_ptr_guarda(std::vector<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `force` | capacidad agotada antes de la mutación | — (código 0) | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `force` | capacidad agotada antes de la mutación | sin detección | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-04fd52  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cd52) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x562c2204fcfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x562c2204f5cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x562c22056f58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x562c2203d23d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x562c21f6b855  (/tmp/mi-linter-runtime-validation/runtime_asan+0x228855) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x562c21ffe473  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb473) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7fd341827780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7fd3418278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x562c21de32c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+s/stl_vector.h:390:4
+    #4 0x5587c5314e38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x5587c52fe32d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x5587c522be17 in f_vector_resize_grow_ptr_guarda(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:891:5
+    #7 0x5587c52bc016 in main /work/test/runtime_runner.cpp:668:5
+    #8 0x71101d88f1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x71101d88f28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x5587c51274b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x562c21f48fe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x562c2204fb37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x562c2204f27f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x562c2203d650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x562c21fe2f17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x562c21ffe466  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb466) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7fd341827780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7fd3418278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x562c21de32c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x5587c5210d31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x5587c5310c77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x5587c531050f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x5587c531050f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x5587c52fe720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x5587c529e187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x5587c52bc009 in main /work/test/runtime_runner.cpp:667:26
+    #7 0x71101d88f1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x71101d88f28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x5587c51274b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x2288b9) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:892:8 in f_vector_resize_grow_ptr_guarda(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7c03409dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c03409dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c03409dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c03409dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7c03409dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7c03409e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7c03409e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c03409e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c03409e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c03409e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7c03409e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d401cbdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d401cbdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d401cbdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d401cbdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6d401cbdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x6d401cbe0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x6d401cbe0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d401cbe0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d401cbe0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d401cbe0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6d401cbe0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -970,16 +962,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==243==ABORTING
+==391==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_ptr_bucle
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `bucle` | 🔴 `UB` | ❌ falso negativo |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `bucle` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_ptr_bucle(std::vector<int>& c) {
@@ -992,17 +984,16 @@ void f_vector_resize_grow_ptr_bucle(std::vector<int>& c) {
 }
 ```
 
-> **Causa del falso negativo:** 1. El dominio de referencias y punteros no esta modelado
-
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `natural` | estado inicial ordinario | 🛑 attempt to increment a singular iterator | 🛑 heap-use-after-free |
+| `force` | capacidad agotada antes de la mutación | 🛑 attempt to increment a singular iterator | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
-<summary>stderr libstdc++ Debug · <code>natural</code></summary>
+<summary>stderr libstdc++ Debug · <code>force</code></summary>
 
 ````text
-/usr/include/c++/16/debug/safe_iterator.h:392:
+/usr/include/c++/13/debug/safe_iterator.h:326:
 In function:
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>& 
     gnu_debug::_Safe_iterator<_Iterator, _Sequence, _Category>::operator++() 
@@ -1013,54 +1004,53 @@ In function:
 Error: attempt to increment a singular iterator.
 
 Objects involved in the operation:
-    iterator "this" @ 0x7fff1f0d8190 {
+    iterator "this" @ 0x7fff970b6720 {
       type = gnu_cxx::normal_iterator<int*, std::vector<int, std::allocator<int> > > (mutable iterator);
       state = singular;
-      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7fff1f0d8250
+      references sequence with type 'std::debug::vector<int, std::allocator<int> >' @ 0x7fff970b67e0
     }
 ````
 
 </details>
 
 <details>
-<summary>stderr ASan/UBSan · <code>natural</code></summary>
+<summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-d45cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55f1a78dbf58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55f1a78c223d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55f1a77f0e42  (/tmp/mi-linter-runtime-validation/runtime_asan+0x228e42) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55f1a78835e9  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb5e9) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7f78a8827780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7f78a88278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x55f1a76682c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+ts/stl_vector.h:390:4
+    #4 0x5706250c4e38 in std::vector<int, std::allocator<int>>::_M_default_append(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x5706250ae32d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x570624fdc152 in f_vector_resize_grow_ptr_bucle(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:898:7
+    #7 0x57062506c18c in main /work/test/runtime_runner.cpp:673:5
+    #8 0x79cafab001c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x79cafab0028a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x570624ed74b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x55f1a77cdfe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x55f1a78d4b37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x55f1a78d427f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55f1a78d3097  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30b097) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55f1a78c1416  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2f9416) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55f1a78c0dfc  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2f8dfc) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55f1a78681a2  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2a01a2) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55f1a78835dc  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb5dc) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x7f78a8827780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #9 0x7f78a88278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x55f1a76682c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x570624fc0d31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x5706250c0c77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x5706250c050f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x5706250c050f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x5706250ae720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x57062504e187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x57062506c17f in main /work/test/runtime_runner.cpp:672:26
+    #7 0x79cafab001c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x79cafab0028a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x570624ed74b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x228ea6) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:899:10 in f_vector_resize_grow_ptr_bucle(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7b98a79dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b98a79dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b98a79dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b98a79dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7b98a79dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7b98a79e0000: fa fa fd fa fa fa fd fa fa fa[fd]fd fa fa fa fa
-  0x7b98a79e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b98a79e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b98a79e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b98a79e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7b98a79e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75faf9ddfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75faf9ddfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75faf9ddfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75faf9ddff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x75faf9ddff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x75faf9de0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x75faf9de0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75faf9de0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75faf9de0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75faf9de0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x75faf9de0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -1080,16 +1070,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==247==ABORTING
+==396==ABORTING
 ````
 
 </details>
 
 ### f_vector_resize_grow_ptr_llamada
 
-| Handle | Forma | Etiqueta | Análisis estático |
-|---|---|---|---|
-| puntero | `llamada` | 🟡 `POLICY` | silencio (optimista) |
+| Handle | Forma | Etiqueta | CSA | Plugin (`Possibly`) |
+|---|---|---|---|---|
+| puntero | `llamada` | 🟡 `POLICY` | ⚪ sin aviso (depende del estado) | ⚪ aviso posible |
 
 ```cpp
 void f_vector_resize_grow_ptr_llamada(std::vector<int>& c) {
@@ -1103,48 +1093,47 @@ void f_vector_resize_grow_ptr_llamada(std::vector<int>& c) {
 
 | Escenario | Precondición | libstdc++ Debug | ASan/UBSan |
 |---|---|---|---|
-| `force` | capacidad agotada antes de la mutación | — (código 0) | 🛑 heap-use-after-free |
-| `preserve` | capacidad 256, suficiente para size()+100 | — (código 0) | — (código 0) |
+| `force` | capacidad agotada antes de la mutación | sin detección | 🛑 heap-use-after-free |
+| `preserve` | capacidad 512, suficiente para size()+100 tres veces | sin detección | sin detección |
 
 <details>
 <summary>stderr ASan/UBSan · <code>force</code></summary>
 
 ````text
-93cfb  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30ccfb) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55dd641935cf  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c5cf) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55dd6419af58  (/tmp/mi-linter-runtime-validation/runtime_asan+0x313f58) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55dd6418123d  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa23d) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x55dd6408f6be  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2086be) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #7 0x55dd640b044c  (/tmp/mi-linter-runtime-validation/runtime_asan+0x22944c) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #8 0x55dd6414275f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb75f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #9 0x7fa82b627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #10 0x7fa82b6278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #11 0x55dd63f272c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+r/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:703:8
+    #5 0x5f918e14632d in std::vector<int, std::allocator<int>>::resize(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:1016:4
+    #6 0x5f918e05ab2e in mutar_vector_resize_grow(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:21:56
+    #7 0x5f918e0743e9 in f_vector_resize_grow_ptr_llamada(std::vector<int, std::allocator<int>>&) /work/test/corpus.cpp:906:3
+    #8 0x5f918e104302 in main /work/test/runtime_runner.cpp:678:5
+    #9 0x7d426b6c71c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #10 0x7d426b6c728a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #11 0x5f918df6f4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
 previously allocated by thread T0 here:
-    #0 0x55dd6408cfe1  (/tmp/mi-linter-runtime-validation/runtime_asan+0x205fe1) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #1 0x55dd64193b37  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30cb37) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #2 0x55dd6419327f  (/tmp/mi-linter-runtime-validation/runtime_asan+0x30c27f) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #3 0x55dd64181650  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2fa650) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #4 0x55dd64126f17  (/tmp/mi-linter-runtime-validation/runtime_asan+0x29ff17) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #5 0x55dd64142752  (/tmp/mi-linter-runtime-validation/runtime_asan+0x2bb752) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
-    #6 0x7fa82b627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #7 0x7fa82b6278b8  (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
-    #8 0x55dd63f272c4  (/tmp/mi-linter-runtime-validation/runtime_asan+0xa02c4) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53)
+    #0 0x5f918e058d31 in operator new(unsigned long) (/work/build/runtime/runtime_asan+0x18fd31) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
+    #1 0x5f918e158c77 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/new_allocator.h:151:27
+    #2 0x5f918e15850f in std::allocator_traits<std::allocator<int>>::allocate(std::allocator<int>&, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/alloc_traits.h:482:20
+    #3 0x5f918e15850f in std::_Vector_base<int, std::allocator<int>>::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_vector.h:381:20
+    #4 0x5f918e146720 in std::vector<int, std::allocator<int>>::reserve(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/vector.tcc:79:22
+    #5 0x5f918e0e6187 in make_vector(Mode, std::basic_string_view<char, std::char_traits<char>>) /work/test/runtime_runner.cpp:40:7
+    #6 0x5f918e1042f5 in main /work/test/runtime_runner.cpp:677:26
+    #7 0x7d426b6c71c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #8 0x7d426b6c728a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #9 0x5f918df6f4b4 in _start (/work/build/runtime/runtime_asan+0xa64b4) (BuildId: 83eaeac8831fc63ea553834d30adc07a420d58fd)
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/tmp/mi-linter-runtime-validation/runtime_asan+0x2294b0) (BuildId: 1f3ed25c3f43f7562b7f5aa4a6b3d2b532436d53) 
+SUMMARY: AddressSanitizer: heap-use-after-free /work/test/corpus.cpp:907:8 in f_vector_resize_grow_ptr_llamada(std::vector<int, std::allocator<int>>&)
 Shadow bytes around the buggy address:
-  0x7bd82a7dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bd82a7dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bd82a7dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bd82a7dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7bd82a7dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7bd82a7e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
-  0x7bd82a7e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bd82a7e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bd82a7e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bd82a7e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
-  0x7bd82a7e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x79726a9dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x79726a9dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x79726a9dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x79726a9dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x79726a9dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x79726a9e0000: fa fa 00 00 00 fa fa fa[fd]fd fd fd fa fa fa fa
+  0x79726a9e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x79726a9e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x79726a9e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x79726a9e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x79726a9e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -1164,7 +1153,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   ASan internal:           fe
   Left alloca redzone:     ca
   Right alloca redzone:    cb
-==249==ABORTING
+==401==ABORTING
 ````
 
 </details>

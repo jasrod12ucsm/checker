@@ -1,0 +1,4 @@
+# Estilo del plugin: LLVM, con líneas de 110 columnas (el código ya está escrito así).
+BasedOnStyle: LLVM
+ColumnLimit: 110
+AllowShortCaseLabelsOnASingleLine: true

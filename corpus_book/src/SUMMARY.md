@@ -2,10 +2,68 @@
 
 [Introducción](README.md)
 
+# Guía de uso
+
+- [En dos minutos](uso/index.md)
+  - [Levantar el checker](uso/checker.md)
+  - [Correr los bench](uso/bench.md)
+  - [Usar el corpus](uso/corpus.md)
+  - [Libro, informe y artículo](uso/documentos.md)
+  - [Dónde se valida cada requerimiento](uso/requerimientos.md)
+
+# El corpus y su lectura
+
+- [Cómo leer este libro](guia.md)
+  - [Las herramientas de ejecución](herramientas.md)
 - [Metodología](metodologia.md)
+
+# Diseño del checker
+
+- [Por qué se rehízo el diseño](diseno/critica.md)
+- [La lógica de la detección](diseno/logica.md)
+- [Modelo del dominio (DSL)](diseno/dsl/index.md)
+  - [Norma](diseno/dsl/norma.md)
+  - [Detección](diseno/dsl/deteccion.md)
+  - [Evaluación](diseno/dsl/evaluacion.md)
+  - [Validación dinámica](diseno/dsl/validacion-dinamica.md)
+- [Significado y leyes](diseno/leyes.md)
+- [Decisiones de diseño](diseno/decisiones.md)
+- [Dónde va cada cosa](diseno/donde-va.md)
+- [Capítulo 4 — Requerimientos](diseno/cap4/index.md)
+  - [4.1 Funcionales](diseno/cap4/4-1-funcionales.md)
+  - [4.2 No funcionales](diseno/cap4/4-2-no-funcionales.md)
+- [Capítulo 5 — Arquitectura](diseno/cap5/index.md)
+  - [5.1 Casos de uso](diseno/cap5/5-1-casos-de-uso.md)
+  - [5.2 Colaboración](diseno/cap5/5-2-colaboracion.md)
+  - [5.3 Paquetes](diseno/cap5/5-3-paquetes.md)
+  - [5.4 Clases](diseno/cap5/5-4-clases.md)
+  - [5.5 Estados](diseno/cap5/5-5-estados.md)
+  - [5.6 Arquitectura lógica](diseno/cap5/5-6-arquitectura-logica.md)
+  - [5.7 Arquitectura física](diseno/cap5/5-7-arquitectura-fisica.md)
+- [Capítulo 7 — Construcción](construccion/index.md)
+  - [7.1 Código](construccion/7-1-codigo.md)
+  - [7.2 Base de datos](construccion/7-2-datos.md)
+  - [7.3 Control de versiones](construccion/7-3-versiones.md)
+  - [7.4 Calidad](construccion/7-4-calidad.md)
+  - [7.5 Componentes](construccion/7-5-componentes.md)
+  - [7.6 Plan de incrementos](construccion/7-6-incrementos.md)
+  - [7.7 Estado actual](construccion/7-7-estado.md)
+
+# Artículo
+
+- [Estructura y fuentes](articulo/index.md)
+  - [Trabajos relacionados y aporte](articulo/aportes.md)
+  - [El modelo en una figura](articulo/modelo.md)
+
+# El banco
+
+- [Reglas y escenarios](banco/reglas-escenarios.md)
+- [Protocolo de validación dinámica](banco/protocolo-dinamico.md)
 
 # Resultados
 
+- [Experimento: CSA frente al plugin](resultados/experimento.md)
+- [Código real](resultados/codigo-real.md)
 - [Análisis estático](resultados/estatico.md)
   - [Catálogo de falsos negativos](resultados/fallos.md)
 - [Validación dinámica](resultados/dinamica.md)
@@ -90,3 +148,4 @@
     - [`erase_begin`](casos/umap/erase_begin.md)
     - [`clear`](casos/umap/clear.md)
     - [`rehash`](casos/umap/rehash.md)
+  - [Buen uso (garantías)](casos/garantias.md)

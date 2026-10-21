@@ -1,0 +1,111 @@
+@startuml
+!include _estilo.iuml
+hide empty members
+
+package "dominio (C++17, sin Clang)" {
+  enum ContainerKind {
+    Vector
+    Deque
+    List
+    ForwardList
+    Set
+    Multiset
+    Map
+    Multimap
+    UnorderedSet
+    UnorderedMap
+  }
+  enum HandleCategory <<de la norma>> {
+    Iterator
+    Reference
+    Pointer
+  }
+  enum HandleKind <<del estado>> {
+    IteratorObject
+    Element
+  }
+  enum Mutation <<101 mutaciones, generado>> {
+    VectorPushBack
+    VectorEraseBegin
+    DequePushFront
+    ...
+  }
+  class ContainerId <<valor>> {
+    -opaque : const void*
+    +operator==()
+  }
+  class Position <<variant>> {
+    First | Last | PastEnd
+    Offset{base, n}
+    Unknown{reason}
+  }
+  enum Relation {
+    Same
+    Before
+    After
+    Unknown
+  }
+  class Effect <<variant>> {
+    Preserves
+    Invalidates{clause}
+    DependsOn{Capacity | LoadFactor}
+  }
+  class Validity <<variant, semirretículo>> {
+    Valid
+    Unresolved{reason}
+    Invalidated{cause : MutationEvent}
+    +join(Validity) : Validity
+  }
+  class HandleState <<valor inmutable>> {
+    -container : ContainerId
+    -kind : HandleKind
+    -position : Position
+    -validity : Validity
+    -origin : SourceRef
+    +Profile(FoldingSetNodeID&)
+  }
+  class MutationEvent <<valor>> {
+    -container : ContainerId
+    -mutation : Mutation
+    -point : Position
+    -at : SourceRef
+  }
+  class Decisions <<funciones puras>> {
+    {static} obtain(Origin) : HandleState
+    {static} relate(Position, Position) : Relation
+    {static} apply(MutationEvent, HandleState, NormTable) : Step
+    {static} onUse(HandleState) : UseVerdict
+    {static} escape(HandleState) : HandleState
+  }
+  class Step <<valor>> {
+    +state : HandleState
+    +note : optional<Note>
+  }
+  class UseVerdict <<variant>> {
+    Fine
+    Confirmed{cause}
+    Unresolved{reason}
+  }
+  class NormTable <<generada, constexpr>> {
+    +effect(ContainerKind, Mutation,\n  HandleCategory, Relation) : Effect
+  }
+}
+
+HandleState *-- ContainerId
+HandleState *-- HandleKind
+NormTable ..> HandleCategory
+HandleState *-- Position
+HandleState *-- Validity
+MutationEvent *-- Mutation
+MutationEvent *-- Position
+Validity ..> MutationEvent
+Decisions ..> HandleState
+Decisions ..> MutationEvent
+Decisions ..> NormTable : consulta
+Decisions ..> Step
+Decisions ..> UseVerdict
+NormTable ..> Effect
+NormTable ..> ContainerKind
+NormTable ..> Relation
+Mutation ..> ContainerKind : pertenece a
+@enduml
