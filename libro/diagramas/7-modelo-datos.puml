@@ -2,6 +2,7 @@
 !include _estilo.iuml
 hide circle
 skinparam linetype ortho
+title Datos de la evaluación del motor (archivos JSON)
 
 entity "Mutacion\n(norma/matriz.json)" as mut {
   * id : «vector.push_back.back»

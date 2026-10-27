@@ -1,6 +1,33 @@
 # 5.5 Estados
 
-## Ciclo de vida de un handle (en un camino)
+## Servicio: ciclo de vida de una revisión
+
+![Estados de una revisión](../../diagramas/sistema-estados-revision.svg)
+
+Tabla: Estados de una revisión
+
+| Estado | Significa | Sale por |
+|---|---|---|
+| `Pendiente` | en la cola, esperando al trabajador | `iniciar` |
+| `EnAnalisis` | el trabajador descargó el código y corre `clang` | `publicar` o `fallar` |
+| `Publicada` | comentarios y estado del commit en GitHub; veredicto `Aprobada` o `ConProblemas` | `reintentar` |
+| `Fallida` | `clang`, GitHub o el proceso fallaron; guarda el motivo | `reintentar` |
+
+## Servicio: estados de un usuario
+
+![Estados de un usuario](../../diagramas/sistema-estados-usuario.svg)
+
+Tabla: Estados de un usuario
+
+| Estado | Significa | Sale por |
+|---|---|---|
+| `Pendiente` | se registró y espera la aprobación de un administrador; no ingresa | aprobar (`Activo`, con su rol) o rechazar (`Desactivado`) |
+| `Activo` | ingresa y hace lo que su rol permite | desactivar (se cierran sus sesiones) |
+| `Desactivado` | rechazado o desactivado; no ingresa | reactivar (`Activo`) |
+
+Nadie vuelve a `Pendiente`, y nadie cambia su propio estado ni su rol.
+
+## Motor: ciclo de vida de un handle (en un camino)
 
 ![Estados del handle](../../diagramas/5-5-estados-handle.svg)
 
@@ -20,7 +47,7 @@
 **Re-obtener no revive.** `h = *c.begin()` después de un `clear` crea otra
 región y, por lo tanto, otro handle (leyes, contradicción 2).
 
-## Lo que depende del estado: crédito de garantía
+## Motor: lo que depende del estado
 
 ![Crédito de garantía](../../diagramas/5-5-estados-capacidad.svg)
 

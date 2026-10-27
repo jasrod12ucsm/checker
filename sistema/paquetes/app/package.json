@@ -1,0 +1,16 @@
+{
+  "name": "@centinela/app",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@centinela/kernel": "*",
+    "@centinela/producto": "*",
+    "@centinela/sqlite": "*",
+    "@centinela/http": "*",
+    "@centinela/github": "*",
+    "@centinela/analizador": "*", "@centinela/cripto": "*",
+    "zod": "4.6.7"
+  }
+}

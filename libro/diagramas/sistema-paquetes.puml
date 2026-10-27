@@ -1,0 +1,44 @@
+@startuml
+!include _estilo.iuml
+
+package "app\n(raíz de composición)" as app
+package "adaptadores" {
+  package "http\n(Fastify)" as http
+  package "sqlite\n(better-sqlite3)" as sqlite
+  package "github\n(fetch + tar)" as github
+  package "analizador\n(clang + plugin)" as analizador
+  package "cripto\n(scrypt, HMAC)" as cripto
+}
+package "producto\n(casos de uso y puertos)" as producto
+package "contextos" {
+  package "identidad" as identidad
+  package "repositorios" as repositorios
+  package "revisiones" as revisiones
+}
+package "kernel\n(Resultado, marcas, valores)" as kernel
+
+app ..> http
+app ..> sqlite
+app ..> github
+app ..> analizador
+app ..> cripto
+http ..> producto
+sqlite ..> producto
+github ..> producto
+analizador ..> producto
+cripto ..> producto
+producto ..> revisiones
+producto ..> repositorios
+producto ..> identidad
+revisiones ..> repositorios
+revisiones ..> identidad
+repositorios ..> identidad
+identidad ..> kernel
+repositorios ..> kernel
+revisiones ..> kernel
+
+note bottom of kernel
+  Las flechas son las únicas importaciones permitidas:
+  pruebas/arquitectura.test.ts falla si aparece otra.
+end note
+@enduml

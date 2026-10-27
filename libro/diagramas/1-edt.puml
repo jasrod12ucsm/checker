@@ -1,0 +1,26 @@
+@startmindmap
+!include _estilo.iuml
+* Centinela C++ y checker\nucsm.ContainerInvalidation
+-- E1 Perfil y planificación\n40 h
+--- Problema, objetivos, alcance
+--- Requisitos, costos y plan
+-- E2 Banco y referencia\n80 h
+--- Norma como datos (matriz.json)
+--- 750 casos y validación dinámica
+--- Medición de CSA
+-- E3 Checker\n120 h
+--- Imagen LLVM 21 y registro (I0)
+--- Núcleo, ACL y checker (I1–I5)
+--- Pruebas gtest y lit
+** E4 Evaluación\n50 h
+*** Arnés y cotejo por sitio
+*** Experimento 4 condiciones
+*** Código real y defectos sembrados
+** E5 Servicio Centinela C++\n150 h
+*** Backend: identidad, repositorios,\nrevisiones, webhook, trabajador (I7)
+*** Mockups y panel web
+*** Pruebas y despliegue Docker
+** E6 Entrega\n30 h
+*** Libro, informe y artículo
+*** Guía de 2 minutos y CI
+@endmindmap

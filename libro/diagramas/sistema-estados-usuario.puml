@@ -1,0 +1,28 @@
+@startuml
+!include _estilo.iuml
+hide empty description
+
+[*] --> Activo : registrar\n(primera cuenta: administrador)
+[*] --> Pendiente : registrar\n(las siguientes: desarrollador)
+[*] --> Activo : crearUsuario\n(lo hace un administrador)
+Pendiente --> Activo : aprobar\n(estado Activo + rol)
+Pendiente --> Desactivado : rechazar\n(estado Desactivado)
+Activo --> Desactivado : desactivar\n(cierra sus sesiones)
+Desactivado --> Activo : reactivar
+
+note right of Pendiente
+  No ingresa: «Tu cuenta espera
+  la aprobación de un administrador».
+  Nadie vuelve a Pendiente: el tipo
+  Decision lo excluye.
+end note
+note right of Desactivado
+  No ingresa: «Tu cuenta está
+  desactivada: pide a un
+  administrador que la reactive».
+end note
+note bottom of Activo
+  Nadie cambia su propio
+  estado ni su rol.
+end note
+@enduml

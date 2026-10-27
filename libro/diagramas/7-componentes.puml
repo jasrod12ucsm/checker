@@ -2,6 +2,30 @@
 !include _estilo.iuml
 left to right direction
 
+package "Servicio Centinela C++" {
+  component "API HTTP" as http
+  component "Producto\n(casos de uso)" as prod
+  component "Identidad" as ident
+  component "Repositorios" as repos
+  component "Revisiones" as revs
+  component "Almacén SQLite" as bd
+  component "Cliente GitHub" as gh
+  component "Analizador" as an
+  interface "/api/* y\n/webhooks/github" as IApi
+  interface "puertos\n(Almacen, GitHub,\nAnalizador…)" as IPuertos
+}
+http - IApi
+prod - IPuertos
+http ..> prod
+prod ..> ident
+prod ..> repos
+prod ..> revs
+bd ..> IPuertos
+gh ..> IPuertos
+an ..> IPuertos
+
+package "Motor de análisis" {
+
 component "TablaNormativa" as tab
 component "NucleoInvalidacion" as core
 component "ReconocedorClang" as acl
@@ -15,6 +39,8 @@ component "Agregador" as agg
 component "ValidadorDinamico" as din
 component "GeneradorLibro" as book
 component "CodigoReal" as real
+
+}
 
 interface "effect(c, op, cat, rel)" as IEffect
 interface "obtain / apply / onUse" as IDecide
@@ -50,4 +76,5 @@ agg ..> IMatch
 din ..> ICases
 book ..> IMetrics
 real ..> ICsa : clang -load\npor unidad
+an ..> ICsa : clang -load\npor archivo cambiado
 @enduml

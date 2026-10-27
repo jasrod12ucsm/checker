@@ -2,52 +2,53 @@
 
 ![Casos de uso](../../diagramas/5-1-casos-de-uso.svg)
 
-Hay **tres partes** (el checker dentro de `clang`, el banco y el arnés, la
-construcción y la norma) y tres actores. El checker no es un actor: es parte
-del sistema que analiza. Cada caso de uso se ejecuta hoy con una orden
-concreta y cubre los requisitos del capítulo 4.
+El sistema es **Centinela C++**, un servicio web. Sus actores son quienes lo
+usan: el **administrador** y el **desarrollador** del equipo cliente, y
+**GitHub**, que avisa de cada *pull request*. El administrador hereda lo
+que hace el desarrollador. El checker no es un actor: es la parte del
+sistema que analiza el código (caso incluido en CU-S04).
 
 | Caso | Actor | Flujo principal | Requisitos |
 |---|---|---|---|
-| **CU-01** Analizar un archivo | Desarrollador | 1. ejecuta `clang++ --analyze -Xclang -load -Xclang libContainerInvalidation.so -Xclang -analyzer-checker=ucsm.ContainerInvalidation archivo.cpp`; 2. CSA explora cada función y el checker sigue los iteradores, referencias y punteros; 3. ante cada mutación aplica la regla de la norma; 4. al usar un handle inválido emite el aviso en consola (o en plist/SARIF) | RF-01, RF-02, RF-05 a RF-11 |
-| **CU-02** Analizar un proyecto | Desarrollador | 1. genera `compile_commands.json` con CMake; 2. ejecuta `bench/codigo_real.py` (o su propio bucle) que invoca CU-01 una vez por unidad de traducción, con `inlining-mode=all`; 3. recibe los avisos por unidad y la lista de unidades que no compilaron | RF-03 |
-| **CU-03** Elegir la política ante lo que depende del estado | Desarrollador | agrega `-analyzer-config ucsm.ContainerInvalidation:PolicyMode=Possibly`; en las mutaciones que dependen de la capacidad o del factor de carga recibe un aviso **posible** que dice qué garantía falta; con `Silent` (por omisión) sólo ve confirmados | RF-04, RF-09 |
-| **CU-04** Seguir la ruta de un diagnóstico | Desarrollador | abre la salida `-analyzer-output=text` o SARIF y sigue las notas del checker: *obtención → mutación → uso* | RF-11, RF-12 |
-| **CU-05** Generar y validar el banco | Evaluador | 1. `bench/gen_corpus.py` escribe `test/corpus.cpp` y `test/corpus_truth.json` desde `norma/matriz.json`; 2. `bench/run_runtime_validation.py` ejecuta cada caso con libstdc++ Debug y ASan/UBSan; 3. una contradicción entre la etiqueta y la ejecución detiene el proceso | RF-15 |
-| **CU-06** Ejecutar el experimento | Evaluador | 1. `bench/experimento.py` comprueba versiones y sha256 del plugin y del banco; 2. corre cada caso en las cuatro condiciones (una invocación por caso); 3. normaliza el SARIF, atribuye cada aviso a su sitio y coteja con la etiqueta; 4. escribe `test/experimento/{ejecucion,cotejo,metricas}.json`; 5. `bench/gen_book.py` publica las tablas | RF-13, RF-14 |
-| **CU-07** Construir y verificar el plugin | Mantenedor | `docker compose run --rm plugin`: CMake genera la tabla desde la norma, compila el núcleo y el plugin, corre los gtests y las pruebas `lit` | RF-16 |
-| **CU-08** Corregir o ampliar la norma | Mantenedor | 1. edita una regla en `norma/matriz.json` (con su cláusula); 2. ejecuta CU-07: `gen_tabla.py` comprueba las leyes de la norma y regenera `NormTable.inc`; 3. regenera el banco (CU-05) y repite el experimento (CU-06) | RF-17 |
+| **CU-S01** Registrarse e iniciar sesión | Desarrollador, Administrador | 1. abre Centinela y se registra con correo, nombre y clave; 2. si es la primera cuenta, queda como administradora y entra; si no, queda pendiente de aprobación; 3. ya aprobada, escribe su correo y su clave; 4. el sistema verifica la clave y abre una sesión de 8 horas; 5. ve el panel con las opciones de su rol y al salir cierra la sesión | RF-S01 |
+| **CU-S02** Aprobar y gestionar usuarios | Administrador | 1. abre «Usuarios» y ve los registros pendientes; 2. aprueba a cada uno con un rol, o lo rechaza (queda `Desactivado` y se puede reactivar después); 3. puede desactivar a un usuario (sus sesiones se cierran), reactivarlo, cambiarle el rol o crear uno directamente | RF-S01 |
+| **CU-S03** Conectar y configurar un repositorio | Administrador | 1. abre «Repositorios» y escribe `propietario/nombre`; 2. elige la política (`Silent`: solo confirmados; `Possibly`: también posibles) y si un problema bloquea el merge; 3. el sistema muestra la URL y el secreto del *webhook*; 4. el administrador los pega en GitHub (*Settings → Webhooks*, evento *Pull requests*) | RF-S02 |
+| **CU-S04** Revisar un pull request automáticamente | GitHub | 1. un desarrollador abre o actualiza un *pull request*; 2. GitHub envía el *webhook* firmado; 3. el sistema verifica la firma, encola la revisión y marca el commit como `pending`; 4. analiza con `clang` y el checker cada archivo C++ cambiado; 5. comenta cada hallazgo en su línea con la ruta del defecto; 6. marca el commit `success` o `failure` | RF-S03, RF-01 a RF-12 |
+| **CU-S05** Solicitar o reintentar una revisión | Desarrollador | 1. en el panel elige un repositorio y un número de PR («revisar ahora»), o abre una revisión fallida o ya publicada y pulsa «reintentar»; 2. el sistema la encola y sigue como CU-S04 desde el paso 4 | RF-S03 |
+| **CU-S06** Consultar revisiones y hallazgos | Desarrollador | 1. abre el panel y filtra por repositorio; 2. elige una revisión; 3. ve su estado, el veredicto, el resumen y cada hallazgo con su archivo, línea, clase, mensaje y ruta; 4. sigue el enlace al *pull request* | RF-S04, RF-11, RF-12 |
+| **CU-S07** Clasificar un hallazgo | Desarrollador | 1. en el detalle de una revisión marca un hallazgo como confirmado o como falso positivo; 2. el sistema guarda la clasificación con quién la hizo y cuándo; 3. un falso positivo deja de comentarse y de bloquear en las revisiones siguientes del repositorio | RF-S05 |
 
 ## Relaciones
 
 | Relación | Por qué |
 |---|---|
-| CU-02 incluye CU-01 | un proyecto se analiza archivo por archivo |
-| CU-03 y CU-04 extienden CU-01 | son opciones de la misma invocación |
-| CU-06 incluye CU-01 y CU-05 | el experimento ejecuta el checker sobre el banco generado |
-| CU-08 incluye CU-07 | una regla nueva sólo existe después de construir |
+| CU-S04 incluye «Analizar el código» | el análisis lo hace el checker dentro de `clang`, un archivo por invocación |
+| CU-S05 incluye CU-S04 | pedir o reintentar una revisión sigue el mismo flujo, sin esperar el *webhook* |
+| CU-S07 extiende CU-S06 | se clasifica desde el detalle de una revisión |
+| Administrador hereda de Desarrollador | el administrador también consulta, clasifica y pide revisiones |
 
 ## Criterios de aceptación
 
 | Caso de uso | Criterio (dado, cuando, entonces) | Comprobado |
 |---|---|---|
-| CU-01 | Dado un caso `UB` del banco, cuando se analiza con el checker, entonces hay un aviso confirmado sobre el handle inválido; dado un caso `SAFE`, ninguno | 342/342 UB; 0/306 SAFE |
-| CU-02 | Dado un proyecto con `compile_commands.json`, cuando se analiza unidad por unidad, entonces ninguna unidad aborta `clang` y las que no compilan quedan registradas | 781 unidades de 4 proyectos, 0 caídas |
-| CU-03 | Dado un caso `POLICY`, cuando se analiza con `PolicyMode=Possibly`, entonces hay un aviso posible; con `Silent`, ninguno | 102/102 y 0/102 |
-| CU-04 | Dado un aviso, cuando se pide `-analyzer-output=text` o SARIF, entonces la ruta trae la nota de la obtención y la de la mutación que invalidó | `lit` `rutas.cpp` (9 notas) |
-| CU-05 | Dado el banco generado, cuando se ejecuta cada caso con libstdc++ Debug y ASan/UBSan, entonces ninguna ejecución contradice su etiqueta | 852 ejecuciones, 0 contradicciones |
-| CU-06 | Dado el banco y las cuatro condiciones registradas, cuando el arnés termina, entonces los conteos se reconstruyen desde los cotejos y los incidentes van aparte | 3 000 ejecuciones; 11 leyes |
-| CU-07 | Dada la imagen `checker:llvm21`, cuando se ejecuta `docker compose run --rm plugin`, entonces el plugin se construye y las pruebas pasan | 40 gtests, 5 `lit` |
-| CU-08 | Dada una regla sin cláusula en la norma, cuando se construye, entonces `gen_tabla.py` termina con error | leyes de la norma |
+| CU-S01 | Dada una instancia nueva, cuando alguien se registra, entonces queda como administrador y entra; cuando otro se registra después, queda pendiente y no puede entrar. Dado un usuario activo, cuando ingresa con su clave, entonces recibe una cookie de sesión `httpOnly` y `SameSite=Strict`; con una clave incorrecta o un correo inexistente recibe el mismo error, y tras 10 fallos, un bloqueo | `api.test.ts` «RF-S01 registro» y «RF-S01 autenticación» |
+| CU-S02 | Dado un registro pendiente, cuando un administrador lo aprueba, entonces puede entrar; dado un administrador, cuando intenta cambiarse su propio rol, entonces se rechaza; cuando crea un usuario con un correo en uso, entonces se rechaza; dado un desarrollador, cuando intenta crear uno, entonces recibe «sin permiso» | `casos.test.ts`, `api.test.ts` |
+| CU-S03 | Dado un repositorio conectado, cuando se pide la lista, entonces el administrador ve el secreto del *webhook* y el desarrollador no | `api.test.ts` |
+| CU-S04 | Dado un *pull request* con un uso inválido en una línea cambiada, cuando GitHub envía el *webhook* firmado, entonces el sistema comenta esa línea y pone el commit en `failure` si el repositorio bloquea el merge; con la firma mala responde 401 | `casos.test.ts`, `api.test.ts`; demostración: 2 comentarios y `failure` |
+| CU-S05 | Dada una revisión en curso, cuando se pide reintentarla, entonces se rechaza; dada una fallida, vuelve a la cola con un intento más | `casos.test.ts`, `api.test.ts` |
+| CU-S06 | Dada una revisión publicada, cuando se abre su detalle, entonces trae cada hallazgo con su ruta | `api.test.ts` |
+| CU-S07 | Dado un hallazgo marcado como falso positivo, cuando se reintenta la revisión, entonces queda suprimido y el veredicto es «aprobada» | `casos.test.ts`, `producto-sqlite.test.ts` |
 
 ## Excepciones relevantes
 
 | Caso | Excepción | Qué pasa |
 |---|---|---|
-| CU-01 | `clang` no carga el plugin (versión de API distinta) | error al cargar; el análisis **no** corre en silencio sin el checker |
-| CU-01 | el uso depende del estado (capacidad, factor de carga) | ningún aviso confirmado; aviso **posible** sólo con `PolicyMode=Possibly` (CU-03) |
-| CU-01 | el contenedor escapa a una función opaca | el checker olvida los handles válidos; uno ya inválido sigue avisando |
-| CU-02 | una unidad no compila fuera de su sistema de construcción | se registra como fallo de la unidad, no como «sin avisos» |
-| CU-05 | la ejecución contradice la etiqueta | el banco no se publica hasta corregir la norma o el caso |
-| CU-06 | compilación fallida, caída o tiempo agotado | incidente registrado; **no** cuenta como verdadero negativo (RN-005) |
-| CU-08 | la norma nueva rompe una ley (falta la cláusula, efecto fuera del dominio) | `gen_tabla.py` termina con error y no se genera la tabla |
+| CU-S01 | sesión vencida (8 horas) o usuario desactivado mientras tenía sesión | la API responde 401 y el panel vuelve al ingreso |
+| CU-S01 | cuenta pendiente de aprobación | no entra (403): «Tu cuenta espera la aprobación de un administrador.» |
+| CU-S01 | cuenta desactivada o rechazada | no entra (403): «Tu cuenta está desactivada: pide a un administrador que la reactive.» |
+| CU-S03 | el repositorio ya está conectado | se informa; desconectarlo conserva sus revisiones |
+| CU-S04 | el mismo commit llega dos veces (por ejemplo, `synchronize` repetido) | se ignora: un commit se revisa una sola vez (RN-S02) |
+| CU-S04 | un archivo no compila (faltan cabeceras generadas) | se informa como no analizado en el resumen; no se da por limpio (RN-S05) |
+| CU-S04 | `clang` o GitHub fallan, o el proceso se cae a mitad | la revisión queda `Fallida` con su motivo y el commit en `error`; se puede reintentar (CU-S05) |
+| CU-S04 | un hallazgo cae fuera de las líneas del diff | GitHub no acepta comentarios ahí: va en el resumen de la revisión |
+| CU-S05 | GitHub no encuentra el *pull request* | el panel muestra el error de GitHub (502) |

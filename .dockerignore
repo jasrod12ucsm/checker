@@ -3,3 +3,12 @@ build/
 *.o
 *.so
 compile_commands.json
+**/node_modules
+sistema/datos
+sistema/coverage
+sistema/frontend/dist
+book
+corpus_book
+articulo
+datos_validacion*
+*.plist

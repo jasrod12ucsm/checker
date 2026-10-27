@@ -1,0 +1,38 @@
+@startuml
+!include _estilo.iuml
+skinparam ParticipantBorderColor #34495E
+skinparam ParticipantBackgroundColor #F2F6FA
+skinparam SequenceLifeLineBorderColor #34495E
+autonumber
+
+actor "Autor del PR" as autor
+participant "GitHub" as gh
+participant "API\n(Fastify)" as api
+participant "Casos de uso\n(producto)" as uc
+database "SQLite" as bd
+participant "Trabajador" as tr
+participant "clang +\nucsm.ContainerInvalidation" as cl
+
+autor -> gh : abre o actualiza el PR
+gh -> api : POST /webhooks/github\n(X-Hub-Signature-256)
+api -> uc : recibirWebhook(evento)
+uc -> bd : repositorio por nombre
+uc -> uc : firma válida con el secreto del repositorio
+uc -> bd : revisión Pendiente + trabajo\n(una transacción)
+uc -> gh : estado del commit: pending
+api --> gh : 202 Encolada
+
+tr -> bd : tomar el siguiente trabajo
+tr -> uc : procesarSiguiente()
+uc -> bd : revisión EnAnalisis
+uc -> gh : archivos cambiados y líneas del diff
+uc -> gh : tarball del commit
+uc -> cl : un .cpp por invocación\n(PolicyMode del repositorio)
+cl --> uc : avisos con su ruta
+uc -> bd : huellas descartadas del repositorio
+uc -> uc : publicar: hallazgos, veredicto
+uc -> gh : revisión con comentarios en línea
+uc -> bd : revisión Publicada + hallazgos\n(una transacción)
+uc -> gh : estado del commit: success | failure
+gh --> autor : comentarios y merge\nbloqueado si hay problemas
+@enduml

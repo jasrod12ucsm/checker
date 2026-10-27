@@ -11,6 +11,19 @@
   - [Libro, informe y artículo](uso/documentos.md)
   - [Dónde se valida cada requerimiento](uso/requerimientos.md)
 
+# Sistema: Centinela C++
+
+- [Qué es y cómo probarlo](sistema/index.md)
+  - [Requerimientos y casos de uso](sistema/requerimientos.md)
+  - [Modelo funcional del dominio](sistema/modelado.md)
+  - [Arquitectura](sistema/arquitectura.md)
+  - [Tipos que impiden errores](sistema/tipos.md)
+  - [Dónde va cada cosa](sistema/donde-va.md)
+  - [API HTTP](sistema/api.md)
+  - [Base de datos](sistema/datos.md)
+  - [Pruebas](sistema/pruebas.md)
+  - [Ponerlo en marcha con GitHub](sistema/despliegue.md)
+
 # El corpus y su lectura
 
 - [Cómo leer este libro](guia.md)
@@ -29,6 +42,11 @@
 - [Significado y leyes](diseno/leyes.md)
 - [Decisiones de diseño](diseno/decisiones.md)
 - [Dónde va cada cosa](diseno/donde-va.md)
+- [Casos de uso del motor](diseno/casos-de-uso-motor.md)
+- [Portada, resumen y abstract](informe/portada.md)
+- [Capítulo 1 — Introducción y objetivos](informe/cap1.md)
+- [Capítulo 2 — Marco teórico, metodología y plan](informe/cap2.md)
+- [Capítulo 3 — Costo beneficio](informe/cap3.md)
 - [Capítulo 4 — Requerimientos](diseno/cap4/index.md)
   - [4.1 Funcionales](diseno/cap4/4-1-funcionales.md)
   - [4.2 No funcionales](diseno/cap4/4-2-no-funcionales.md)
@@ -40,6 +58,16 @@
   - [5.5 Estados](diseno/cap5/5-5-estados.md)
   - [5.6 Arquitectura lógica](diseno/cap5/5-6-arquitectura-logica.md)
   - [5.7 Arquitectura física](diseno/cap5/5-7-arquitectura-fisica.md)
+- [Capítulo 6 — Interfaces y datos](diseno/cap6/index.md)
+  - [6.1 Interfaz de usuario](diseno/cap6/6-1-interfaz.md)
+  - [6.2 Navegación](diseno/cap6/6-2-navegacion.md)
+  - [6.3 Mockups](diseno/cap6/6-3-mockups.md)
+  - [6.4 Descripción de la interfaz](diseno/cap6/6-4-descripcion-ui.md)
+  - [6.5 Interfaz de servicios](diseno/cap6/6-5-servicios.md)
+  - [6.6 Diagrama de servicios](diseno/cap6/6-6-diagrama-servicios.md)
+  - [6.7 Descripción de los servicios](diseno/cap6/6-7-descripcion-servicios.md)
+  - [6.8 Servicios consumidos](diseno/cap6/6-8-consumidos.md)
+  - [6.9 Modelo de base de datos](diseno/cap6/6-9-datos.md)
 - [Capítulo 7 — Construcción](construccion/index.md)
   - [7.1 Código](construccion/7-1-codigo.md)
   - [7.2 Base de datos](construccion/7-2-datos.md)
@@ -48,6 +76,8 @@
   - [7.5 Componentes](construccion/7-5-componentes.md)
   - [7.6 Plan de incrementos](construccion/7-6-incrementos.md)
   - [7.7 Estado actual](construccion/7-7-estado.md)
+- [Glosario](informe/glosario.md)
+- [Referencias](informe/referencias.md)
 
 # Artículo
 

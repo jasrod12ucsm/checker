@@ -1,3 +1,13 @@
 build/
 __pycache__/
 .mypy_cache/
+# Salidas de clang --analyze en la raíz
+*.plist
+# El libro generado (mdbook build); la fuente es libro/ y corpus_book/src
+corpus_book/book/
+# Centinela C++
+node_modules/
+sistema/coverage/
+sistema/datos/
+*.db
+.env

@@ -1,0 +1,34 @@
+@startuml
+!include _estilo.iuml
+hide empty description
+left to right direction
+
+state "Registro" as Registro
+state "Pendiente de aprobación" as Pendiente
+state "Ingreso" as Ingreso
+state "Panel (sesión iniciada)" as Panel {
+  state "Revisiones" as Revisiones
+  state "Detalle de una revisión" as Detalle
+  state "Repositorios" as Repos
+  state "Usuarios\n(solo administrador)" as Usuarios
+  state "Revisar un PR ahora" as MRevisar <<choice>>
+  Revisiones --> Detalle : elegir una revisión
+  Detalle --> Revisiones : ruta de navegación
+  Revisiones --> Repos : menú
+  Revisiones --> Usuarios : menú
+  Repos --> Usuarios : menú
+  Revisiones --> MRevisar : «Revisar un PR ahora»
+  MRevisar --> Detalle : revisión creada
+  Repos --> Repos : modales Conectar,\nWebhook y secreto,\nEditar, Desconectar
+  Usuarios --> Usuarios : modales Crear usuario,\nDesactivar; aprobar y rol
+}
+
+[*] --> Registro : instalación nueva\n(no hay usuarios)
+[*] --> Ingreso : ya hay usuarios
+Registro --> Revisiones : primera cuenta\n(administrador)
+Registro --> Pendiente : cuentas siguientes
+Pendiente --> Ingreso : volver al ingreso
+Ingreso --> Registro : «Regístrate»
+Ingreso --> Revisiones : correo y clave válidos
+Panel --> Ingreso : cerrar sesión\no sesión vencida (8 h)
+@enduml

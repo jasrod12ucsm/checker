@@ -14,7 +14,7 @@ rectangle "Norma (fuente única)" as norma #FFF8E6 {
 
 rectangle "Evaluación (fuera de clang)" as eval #EDF7EE {
   rectangle "generar banco" as g
-  rectangle "ejecutar\nreferencia | experimental" as e
+  rectangle "ejecutar\n4 condiciones" as e
   rectangle "normalizar\nplist/SARIF → Aviso" as n
   rectangle "cotejar\nAviso ↔ Sitio" as m
   rectangle "agregar\nConteos (monoide)\n→ métricas al final" as a

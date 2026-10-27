@@ -1,20 +1,27 @@
-@startgantt
-!pragma layout smetana
-printscale weekly zoom 2
-Project starts 2026-10-19
-[I0 Entorno y plugin vacío registrado] lasts 7 days
-[I1 Núcleo + tabla normativa + leyes] lasts 10 days
-[I1 Núcleo + tabla normativa + leyes] starts at [I0 Entorno y plugin vacío registrado]'s end
-[I2 Referencias y punteros desde *it] lasts 14 days
-[I2 Referencias y punteros desde *it] starts at [I1 Núcleo + tabla normativa + leyes]'s end
-[I3 Iteradores propios + posiciones] lasts 14 days
-[I3 Iteradores propios + posiciones] starts at [I2 Referencias y punteros desde *it]'s end
-[I4 Capacidad y factor de carga (POLICY)] lasts 10 days
-[I4 Capacidad y factor de carga (POLICY)] starts at [I3 Iteradores propios + posiciones]'s end
-[I5 Notas de ruta y mensajes] lasts 7 days
-[I5 Notas de ruta y mensajes] starts at [I4 Capacidad y factor de carga (POLICY)]'s end
-[I6 Evaluación congelada y redacción] lasts 10 days
-[I6 Evaluación congelada y redacción] starts at [I5 Notas de ruta y mensajes]'s end
-[Arnés: normalizador + cotejo + métricas] lasts 21 days
-[Arnés: normalizador + cotejo + métricas] starts at [I0 Entorno y plugin vacío registrado]'s end
-@endgantt
+@startuml
+!include _estilo.iuml
+title Incrementos: el motor (I0 a I6) y el servicio Centinela C++ (I7)
+start
+partition "Motor de análisis" {
+  :I0 Entorno Docker y plugin vacío registrado;
+  :I1 Norma (matriz.json) + núcleo + leyes;
+  fork
+    :I2 Referencias y punteros desde *it, c[i], front();
+    :I3 Iteradores propios, posiciones y erase de rango;
+    :I4 Crédito de reserve, PolicyMode y escape;
+    :I5 Notas de ruta y mensajes;
+  fork again
+    :Arnés: ejecutar → normalizar →\ncotejar → agregar (SARIF);
+  end fork
+  :I6 Banco sellado (banco-1), experimento final\ny código real (781 unidades);
+}
+partition "Servicio Centinela C++" {
+  :I7 Registro, sesiones y roles (RF-S01);
+  :I7 Repositorios y webhook firmado (RF-S02);
+  :I7 Trabajador: clang + plugin, comentarios\ny estado del commit (RF-S03);
+  :I7 Consultar y clasificar hallazgos (RF-S04, RF-S05);
+  :I7 Mockups del panel web;
+  #EEEEEE:I7 Panel web (por programar);
+}
+stop
+@enduml

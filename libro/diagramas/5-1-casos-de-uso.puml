@@ -2,38 +2,31 @@
 !include _estilo.iuml
 left to right direction
 
-actor "Desarrollador\nde C++" as dev
-actor "Evaluador" as eva
-actor "Mantenedor" as man
+actor "Administrador" as adm
+actor "Desarrollador" as dev
+actor "GitHub\n<<sistema externo>>" as gh
+adm --|> dev
 
-rectangle "clang --analyze + plugin ucsm.ContainerInvalidation" {
-  usecase "CU-01\nAnalizar un archivo" as cu1
-  usecase "CU-02\nAnalizar un proyecto\ncon compile_commands.json" as cu2
-  usecase "CU-03\nElegir la política ante\nlo que depende del estado" as cu3
-  usecase "CU-04\nSeguir la ruta\nde un diagnóstico" as cu4
-}
-
-rectangle "Banco y arnés (Python, imagen checker:llvm21)" {
-  usecase "CU-05\nGenerar y validar\nel banco desde la norma" as cu5
-  usecase "CU-06\nEjecutar el experimento\n(4 condiciones)" as cu6
-}
-
-rectangle "Construcción y norma" {
-  usecase "CU-07\nConstruir y verificar\nel plugin" as cu7
-  usecase "CU-08\nCorregir o ampliar\nla norma" as cu8
+rectangle "Centinela C++ (servicio web)" {
+  usecase "CU-S01\nRegistrarse e\niniciar sesión" as cu1
+  usecase "CU-S02\nAprobar y gestionar\nusuarios" as cu2
+  usecase "CU-S03\nConectar y configurar\nun repositorio" as cu3
+  usecase "CU-S04\nRevisar un pull request\nautomáticamente" as cu4
+  usecase "CU-S05\nSolicitar o reintentar\nuna revisión" as cu5
+  usecase "CU-S06\nConsultar revisiones\ny hallazgos" as cu6
+  usecase "CU-S07\nClasificar un hallazgo" as cu7
+  usecase "Analizar el código con\nclang + ucsm.ContainerInvalidation" as an
 }
 
 dev --> cu1
-dev --> cu2
-eva --> cu5
-eva --> cu6
-man --> cu7
-man --> cu8
+dev --> cu5
+dev --> cu6
+dev --> cu7
+adm --> cu2
+adm --> cu3
+gh --> cu4
 
-cu2 .> cu1 : <<include>>
-cu1 <.. cu3 : <<extend>>
-cu1 <.. cu4 : <<extend>>
-cu6 ..> cu1 : <<include>>
-cu6 .> cu5 : <<include>>
-cu8 .> cu7 : <<include>>
+cu4 ..> an : <<include>>
+cu5 ..> cu4 : <<include>>
+cu7 ..> cu6 : <<extend>>
 @enduml

@@ -19,9 +19,9 @@ node "Estación del desarrollador (Ubuntu 24.04)" as host {
 }
 
 cloud "GitHub" as gh {
-  artifact "repositorio remoto\n(tags por experimento)" as remote
+  artifact "repositorio remoto\n(tags banco-1, v1.0.0)" as remote
   node "GitHub Actions runner" as ci {
-    component "misma imagen Docker"
+    component "misma imagen Docker\n(motor y Centinela C++)"
   }
 }
 

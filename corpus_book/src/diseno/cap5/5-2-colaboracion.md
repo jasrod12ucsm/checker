@@ -1,13 +1,29 @@
 # 5.2 Colaboración
 
-## Diagrama de comunicación
+## Servicio: revisión de un pull request
+
+![Secuencia de una revisión](../../diagramas/sistema-secuencia-pr.svg)
+
+El *webhook* solo encola: verifica la firma, guarda la revisión `Pendiente`
+y el trabajo **en la misma transacción** y responde 202. El análisis lo hace
+el trabajador después, así GitHub no espera a `clang`. Cada caso de uso sigue
+el mismo orden: **cargar** lo que necesita del almacén, **decidir** con una
+función pura del dominio y aplicar los **efectos** (guardar, llamar a GitHub).
+
+| Paso | Quién decide | Función del dominio |
+|---|---|---|
+| encolar | `revisiones` | `solicitar(repo, existenteDelSha, solicitud, ahora)` |
+| empezar | `revisiones` | `iniciar(Revision<Pendiente>)` |
+| resultado | `revisiones` | `publicar(Revision<EnAnalisis>, analisis, descartadas, …)` o `fallar(…)` |
+| estado del commit | `revisiones` | `estadoCommit(repo, revision)` |
+
+## Motor: diagrama de comunicación
 
 ![Colaboración](../../diagramas/5-2-colaboracion.svg)
 
 El **motor de CSA conserva el control**. El checker no recorre el programa:
-recibe eventos de un camino y responde con un estado nuevo. Lo que el
-diagrama del informe anterior no decía es **qué eventos** y **qué hace cada
-capa** con ellos:
+recibe eventos de un camino y responde con un estado nuevo. La tabla dice
+**qué eventos** recibe y **qué hace cada capa** con ellos:
 
 | Mensaje | De → a | Qué es en la API de CSA |
 |---|---|---|
@@ -20,7 +36,7 @@ capa** con ellos:
 | 2.7 | cáscara → `ProgramState` | `C.addTransition(State', NoteTag)`: el estado nunca se muta en el sitio |
 | 2.8 | cáscara → `BugReporter` | `C.generateNonFatalErrorNode()` + `emitReport(PathSensitiveBugReport)` |
 
-## Secuencia de un caso del banco
+## Motor: secuencia de un caso del banco
 
 `f_vector_erase_begin_ref_recto`:
 

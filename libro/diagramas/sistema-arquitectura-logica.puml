@@ -1,0 +1,43 @@
+@startuml
+!include _estilo.iuml
+left to right direction
+
+rectangle "Entradas" {
+  component "Navegador\n(panel web)" as nav
+  component "Webhook\nde GitHub" as wh
+  component "Trabajador\n(cola en SQLite)" as tr
+}
+rectangle "Adaptador HTTP" {
+  component "esquemas zod\n(validar la entrada)" as zod
+  component "errores.ts\n(dominio → código HTTP)" as err
+}
+rectangle "Producto (casos de uso)" {
+  component "cargar → decidir → efectos" as cu
+}
+rectangle "Dominio puro" {
+  component "identidad" as id
+  component "repositorios" as rp
+  component "revisiones" as rv
+}
+rectangle "Puertos implementados por adaptadores" {
+  component "Almacen (SQLite)" as al
+  component "GitHub (REST)" as gh
+  component "Fuentes (tarball)" as fu
+  component "Analizador (clang)" as an
+  component "Claves y Secretos" as cr
+}
+
+nav --> zod
+wh --> zod
+zod --> cu
+tr --> cu
+cu --> id
+cu --> rp
+cu --> rv
+cu --> al
+cu --> gh
+cu --> fu
+cu --> an
+cu --> cr
+cu ..> err : Resultado con error
+@enduml

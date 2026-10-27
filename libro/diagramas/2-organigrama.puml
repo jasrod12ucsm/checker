@@ -1,0 +1,11 @@
+@startwbs
+!include _estilo.iuml
+* Asesoría\nRamírez Valdez, Oscar Alberto
+** Coordinación\nRodríguez Chávez, Jason Sebastián
+*** Checker y motor de análisis\nRodríguez Chávez
+*** Servicio Centinela C++ (backend)\nRodríguez Chávez
+** Calidad y evaluación\nAranibar Zegovia, Mayerly Katrina
+*** Banco y etiquetas\nAranibar Zegovia
+*** Interfaz y mockups del panel\nAranibar Zegovia
+*** Documentación e informe\nambas personas
+@endwbs

@@ -1,12 +1,25 @@
 # 5.4 Clases
 
-Tres diagramas, uno por capa, porque cada una obedece a reglas distintas.
+## Servicio: modelo del dominio
 
-## Dominio: tipos que no admiten estados ilegales
+![Clases del servicio](../../diagramas/sistema-clases.svg)
+
+`Revision<E>` lleva su estado en el tipo: `iniciar` recibe una
+`Revision<Pendiente>` y devuelve una `Revision<EnAnalisis>`, y pasarle otra
+no compila. `Autorizado<P>` es un testigo: solo lo crea `Autorizado.para`
+cuando el usuario está activo y su rol tiene el permiso `P`, y cada operación
+que lo exige lo recibe como primer argumento. Los identificadores y valores
+(`Email`, `NombreRepo`, `Huella`) son tipos con marca: un `string`
+cualquiera no pasa por uno de ellos.
+
+El motor tiene tres diagramas, uno por capa (dominio, cáscara y evaluación),
+porque cada una obedece a reglas distintas.
+
+## Motor: tipos que no admiten estados ilegales
 
 ![Clases del dominio](../../diagramas/5-4-clases-dominio.svg)
 
-| Regla (de `rust-trinity` y `modelado-funcional`, traducida a C++) | Cómo se ve aquí |
+| Principio (Wlaschin, 2018), en C++ | Cómo se ve aquí |
 |---|---|
 | Nada de primitivos sueltos ni texto para estados | `enum class` para `ContainerKind`, `HandleKind`, `Relation`; `std::variant` para `Position`, `Effect`, `Validity`, `UseVerdict` |
 | Un tipo OR se recorre entero | `std::visit` con un *overload* por alternativa; `switch` **sin `default:`** y `-Werror=switch` para que agregar una variante rompa la compilación donde falte |
@@ -20,7 +33,7 @@ Tres diagramas, uno por capa, porque cada una obedece a reglas distintas.
 (`const void*`). El dominio puede comparar identidades sin saber que existe
 `MemRegion`.
 
-## Cáscara y anticorrupción: lo que toca CSA
+## Motor: cáscara y anticorrupción
 
 ![Clases de la cáscara](../../diagramas/5-4-clases-cascara.svg)
 
@@ -40,7 +53,7 @@ Tres diagramas, uno por capa, porque cada una obedece a reglas distintas.
 - Dos `BugType`: *uso de handle invalidado* y *uso de handle posiblemente
   invalidado*.
 
-## Evaluación: el arnés como modelo
+## Motor: el arnés como modelo
 
 ![Clases de la evaluación](../../diagramas/5-4-clases-evaluacion.svg)
 

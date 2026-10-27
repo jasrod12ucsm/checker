@@ -1,9 +1,10 @@
-"""Genera Proyecto_Fin_de_Carrera_V4 sobre la V2: capítulos 4, 5 y 7 desde el libro
-(libro/diseno/cap4, cap5, libro/construccion) y las síntesis de los capítulos 1 y 2
-(1.4.3, 1.11, 2.5.5) con los mismos códigos de requisitos y casos de uso."""
-import os, re, struct, sys, shutil
+"""Genera el Word del proyecto sobre la V2 de la universidad: portada, resumen, índices, los capítulos 1 a 7, el glosario y las referencias salen del libro (libro/informe, libro/diseno/cap4 a cap6, libro/construccion).
+De la V2 quedan solo el formato, la portada institucional y los títulos de capítulo."""
+import json, os, re, struct, sys, shutil
 sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from split import split, text, style
+from fragmentos import fragmento
 
 REPO = os.path.expanduser("~/Documents/tesis/checker")
 LIB = os.path.join(REPO, "libro")
@@ -32,7 +33,13 @@ SUBS = [
     (r"(?<!!)\[([^\]]+)\]\(\.\./[^)]*dinamica[^)]*\)", r"\1 (libro del proyecto)"),
     (r"(?<!!)\[([^\]]+)\]\((?!http)[^)]*\)", r"\1"),          # el resto de enlaces: sólo el texto
 ]
+def codigo(m):
+    "Una línea {{codigo RUTA SÍMBOLO}} del libro: en el informe va el fragmento, sin enlace."
+    _, cuerpo = fragmento(os.path.join(REPO, m.group(1)), m.group(2).strip())
+    return "```\n" + "\n".join(cuerpo) + "\n```"
+
 def adaptar(md):
+    md = re.sub(r"^\{\{codigo (\S+) (.+?)\}\}$", codigo, md, flags=re.M)
     for a, b in SUBS:
         md = re.sub(a, b, md)
     return md
@@ -75,9 +82,8 @@ def par(inner, ppr='<w:jc w:val="both"/>', st=None):
 def heading(st, t, extra=""):
     return f'<w:p><w:pPr><w:pStyle w:val="{st}"/>{extra}<w:rPr>{LANG}</w:rPr></w:pPr>{runs(t)}</w:p>'
 
-def caption(t): return par(runs(t), "", "Descripcin").replace('<w:pPr><w:pStyle w:val="Descripcin"/>',
-                                                              '<w:pPr><w:pStyle w:val="Descripcin"/><w:keepNext/>', 1)
-def caption_fig(t): return par(runs(t), '<w:keepNext w:val="0"/>', "Descripcin")
+def caption(t): return par(runs(t), "<w:keepNext/>", "LeyendaTabla")
+def caption_fig(t): return par(runs(t), '<w:keepNext w:val="0"/>', "LeyendaFigura")
 SPACER = '<w:p><w:pPr><w:spacing w:after="40"/></w:pPr></w:p>'
 
 def code_block(lines):
@@ -136,8 +142,12 @@ def png_size(p):
         f.read(16); w, h = struct.unpack(">II", f.read(8))
     return w, h
 
+MOCKUPS = os.path.join(LIB, "mockups")
+
 def image(name):
     src = os.path.join(PNG, name + ".png")
+    if not os.path.exists(src):
+        src = os.path.join(MOCKUPS, name + ".png")
     state["rid"] += 1; state["docpr"] += 1
     rid, dp = f"rId{state['rid']}", state["docpr"]
     shutil.copy(src, os.path.join(U, "word", "media", f"v4_{name}.png"))
@@ -164,7 +174,8 @@ def new_numbered():
 
 # ---------------------------------------------------------------- markdown → OOXML
 class Cap:
-    def __init__(self, n): self.n, self.tab, self.fig, self.h2, self.h3 = n, 0, 0, 0, 0
+    def __init__(self, n): self.n, self.tab, self.fig, self.h2, self.h3, self.usados = n, 0, 0, 0, 0, set()
+    def num(self, k): return "" if self.n is None else f"{self.n}.{k} "
 
 def convert(md, cap, h1_as=None, skip_tables=()):
     """h1_as: texto del Ttulo2 que reemplaza al '# …' de la página (None = omitir)."""
@@ -179,6 +190,9 @@ def convert(md, cap, h1_as=None, skip_tables=()):
     while i < len(L):
         l = L[i]
         if not l.strip(): i += 1; continue
+        m = re.match(r"Tabla: (.*)", l)
+        if m:
+            pend[0] = m.group(1).strip(); i += 1; continue
         m = re.match(r"(#+) (.*)", l)
         if m:
             lvl, t = len(m.group(1)), m.group(2).strip(); i += 1
@@ -211,13 +225,17 @@ def convert(md, cap, h1_as=None, skip_tables=()):
             if rows[0][0] in skip_tables: continue
             cap.tab += 1
             tit = pend[0] or TITULOS.get(rows[0][0] + '|' + rows[0][1], last_head); pend[0] = None
-            out.append(caption(f"Tabla {cap.n}.{cap.tab} {tit}"))
+            tit = re.sub(r"^([a-z]\)|[\d.]+) ", "", tit)
+            if tit in cap.usados and last_head and last_head != tit:
+                tit = f"{tit}: {re.sub(r'^([a-z]\)|[\d.]+) ', '', last_head)}"
+            cap.usados.add(tit)
+            out.append(caption(f"Tabla {cap.num(cap.tab)}{tit}" if cap.n is not None else tit))
             out.append(table(rows)); continue
         m = re.match(r"!\[([^\]]*)\]\(([^)]*)\)", l)
         if m:
             i += 1; cap.fig += 1
             out.append(image(os.path.splitext(os.path.basename(m.group(2)))[0]))
-            out.append(caption_fig(f"Figura {cap.n}.{cap.fig} {m.group(1)}")); continue
+            out.append(caption_fig(f"Figura {cap.num(cap.fig)}{m.group(1)}")); continue
         if l.startswith(">"):
             buf = []
             while i < len(L) and L[i].startswith(">"):
@@ -242,6 +260,14 @@ def convert(md, cap, h1_as=None, skip_tables=()):
                     out.append(par(runs(t), '<w:jc w:val="both"/>', "Listaconvietas2" if ind else "Listaconvietas"))
             continue
         out.append(par(runs(para_lines())))
+    return "".join(out)
+
+def convert_capitulo(md, cap):
+    secciones = re.split(r"^## ", md, flags=re.M)
+    out = [convert(re.sub(r"^# .*\n", "", secciones[0]), cap, None)]
+    for sec in secciones[1:]:
+        titulo, _, cuerpo = sec.partition("\n")
+        out.append(convert("# x\n" + re.sub(r"^### ", "## ", cuerpo, flags=re.M), cap, titulo.strip()))
     return "".join(out)
 
 TITULOS = {
@@ -284,6 +310,38 @@ TITULOS = {
     "Componente|Responsabilidad única": "Componentes del sistema",
     "Inc.|Entrega": "Incrementos de construcción",
     "Pieza|Estado": "Estado actual del proyecto",
+    "Usuario|Pantallas": "Usuarios, pantallas y casos de uso",
+    "Elemento|Dónde": "Elementos de la interfaz y sus reglas",
+    "Método y ruta|Cuerpo": "Rutas de la API HTTP y del webhook",
+    "Evento|Respuesta": "Respuestas del webhook",
+    "Servicio|Para qué": "Servicios consumidos por el sistema",
+    "Tabla|Clave": "Tablas de la base de datos",
+    "Regla|Cómo": "Reglas de integridad de la base de datos",
+    "Nivel (servicio)|Qué prueba": "Pruebas del servicio",
+    "Almacén|Para qué": "Almacenes de datos del proyecto",
+    "Ruta|Método": "Rutas de la API y caso de uso que atienden",
+    "Paso|Quién decide": "Pasos de la revisión de un pull request",
+    "Nodo|Software": "Nodos del despliegue del servicio",
+    "Decisión|Por qué": "Decisiones del diseño físico",
+    "Casos|Antes": "Contradicción 6: antes y ahora",
+    "Proyecto|*Commit*": "Proyectos reales analizados",
+    "Síntoma en código real|Causa": "Errores que destapó el código real",
+    "Id|Proyecto": "Defectos sembrados",
+    "Nivel (motor)|Qué prueba": "Pruebas del motor",
+    "Regla de codificación|Cómo se cumple": "Estándares de codificación del servicio",
+    "Paso|Servicio": "Pasos de la integración continua",
+    "Qué|Dónde": "Documentación del código",
+    "Refactorización|Por qué": "Refactorizaciones",
+    "Forma|Cómo se cumple": "Normalización del esquema",
+    "Tipo de prueba|Qué se hizo": "Pruebas de rendimiento, recuperación y seguridad",
+    "Carpeta|Contiene": "Estructura del repositorio",
+    "Tag|Qué marca": "Etiquetas de versión",
+    "Situación|Qué se hace": "Mantenimiento y gestión de incidentes",
+    "Característica|Servicio Centinela C++": "Características de los componentes",
+    "Condición|VP": "Precisión, exhaustividad y F1 por condición",
+    "Condición|UB por caso": "Resultados del banco por condición",
+    "Contexto|Leyes escritas": "Leyes y pruebas por contexto",
+    "Estado|Significa": "Estados de una revisión y de un usuario",
 }
 
 rd = lambda p: open(os.path.join(LIB, p)).read()
@@ -293,14 +351,6 @@ c5 = Cap(5); x5 = []
 intro = rd("diseno/cap5/index.md")
 intro = re.sub(r"^> Versión rehecha.*?\n\n", "", intro, flags=re.S | re.M)
 x5.append(convert(intro, c5, None, skip_tables=("Sección",)))
-x5.append(par(runs("Esta versión reemplaza la propuesta anterior del capítulo. Aquella usaba clases conceptuales "
-                   "con estados escritos como texto (`validez: String`), una capacidad guardada como entero y "
-                   "métodos `void`, que no pueden existir dentro de CSA; y el prototipo `mi-linter` se apoyaba en "
-                   "*AST matchers*, que no ven qué ocurrió antes en el mismo camino de ejecución. El corpus ya "
-                   "ejecutado fija además el alcance: sobre el handle que cada caso sostiene, el analizador de referencia "
-                   "detecta el 37.5 % de los usos inválidos de iteradores (48 de 128) y el 0 % de los de referencias "
-                   "y punteros (0 de 200). Las decisiones se resumen en "
-                   "la sección 5.8 y las leyes del modelo en la sección 5.9.")))
 for f, t in [("5-1-casos-de-uso", "5.1 Diagramas de casos de uso"), ("5-2-colaboracion", "5.2 Diagrama de colaboración"),
              ("5-3-paquetes", "5.3 Diagramas de paquetes"), ("5-4-clases", "5.4 Diagramas de clases"),
              ("5-5-estados", "5.5 Diagramas de estado"), ("5-6-arquitectura-logica", "5.6 Arquitectura lógica"),
@@ -319,46 +369,29 @@ x4.append(convert(intro4, c4, None))
 x4.append(convert(rd("diseno/cap4/4-1-funcionales.md"), c4, "4.1 Requerimientos funcionales"))
 x4.append(convert(rd("diseno/cap4/4-2-no-funcionales.md"), c4, "4.2 Requerimientos no funcionales"))
 
-# ---------------------------------------------------------------- síntesis de los capítulos 1 y 2
-def md_table(md, primera):
-    """Filas de la tabla del libro cuya cabecera empieza por `primera`."""
-    L = md.split("\n"); k = next(j for j, l in enumerate(L) if l.startswith("| " + primera + " |"))
-    rows = []
-    while k < len(L) and L[k].startswith("|"):
-        cells = [c.strip() for c in L[k].strip().split("|")[1:-1]]
-        if not all(re.fullmatch(r":?-+:?", c) for c in cells): rows.append(cells)
-        k += 1
-    return rows
-cu = rd("diseno/cap5/5-1-casos-de-uso.md")
-nombres = {r[0].split("**")[1]: r[0].replace("**", "") for r in md_table(cu, "Caso")[1:]}
-actores = {r[0].split("**")[1]: r[1] for r in md_table(cu, "Caso")[1:]}
-reqs = {r[0].split("**")[1]: r[3] for r in md_table(cu, "Caso")[1:]}
-crit = md_table(cu, "Caso de uso")
-T110 = [["Caso de uso", "Actor", "Requisitos", "Criterio (dado, cuando, entonces)"]] + \
-       [[nombres[r[0]], actores[r[0]], reqs[r[0]], r[1]] for r in crit[1:]]
-S111 = ("Los requisitos completos se desarrollan en el capítulo 4 y los casos de uso en la sección 5.1. "
-        "El sistema tiene tres partes: el checker ucsm.ContainerInvalidation, que se carga en clang como "
-        "plugin; la norma de C++17 escrita como datos, de la que se generan el checker y las etiquetas; y el "
-        "banco con su arnés, que mide al checker frente a Clang Static Analyzer. Los actores son el "
-        "desarrollador de C++, el evaluador y el mantenedor. El docente y la asesoría supervisan el proyecto, "
-        "pero no son actores del software. Cada caso de uso se ejecuta con una orden concreta y tiene un "
-        "criterio de aceptación comprobado.")
-grupos = md_table(rd("diseno/cap4/4-1-funcionales.md"), "Grupo")
-OBJ = {"Analizar código": "OE2", "Seguir handles": "OE2", "Aplicar la norma": "OE2", "Diagnosticar": "OE2",
-       "Medir": "OE1 y OE3", "Mantener": "OE1 y OE2"}
-T212 = [["Necesidad", "Requisitos", "Casos de uso", "Objetivo"]] + [[g[0], g[1], g[2], OBJ[g[0]]] for g in grupos[1:]]
-S255 = ("Los códigos RF-01 a RF-17, RNF-01 a RNF-08, RN-001 a RN-007 e INT-001 a INT-006 se definen una sola "
-        "vez en el capítulo 4 y se reutilizan en los casos de uso (sección 5.1), en los componentes (sección 7.5) "
-        "y en el plan de incrementos (sección 7.6). Cada requisito declara cómo se demuestra con el analizador "
-        "estático y la evidencia registrada; un cambio de requisito sigue el procedimiento de 2.5.6 y se refleja "
-        "en las pruebas lit, los gtests o el experimento que lo demuestran.")
-T13 = [["Objetivo", "Resultado", "Capítulo que lo desarrolla"],
-       ["OE1", "Banco de 750 casos etiquetado desde la norma, validado dinámicamente (852 ejecuciones, 0 contradicciones) y medición de referencia de CSA.",
-        "2: metodología; 4: RF-13 a RF-15; 6: datos; 7: construcción del banco y del arnés."],
-       ["OE2", "Checker ucsm.ContainerInvalidation construido como plugin de CSA (LLVM 21) y probado.",
-        "4: RF-01 a RF-12, RF-16 y RF-17; 5: arquitectura; 7: construcción del código."],
-       ["OE3", "Comparación en cuatro condiciones con cotejo por sitio y métricas reproducibles.",
-        "2: protocolo; 4: RF-13, RF-14, RNF-01 a RNF-05; 7: estado y resultados."]]
+# ---------------------------------------------------------------- capítulos 1 a 3, glosario y referencias
+c1, c2, c3 = Cap(1), Cap(2), Cap(3)
+x1 = convert_capitulo(rd("informe/cap1.md"), c1)
+x2 = convert_capitulo(rd("informe/cap2.md"), c2)
+x3 = convert_capitulo(rd("informe/cap3.md"), c3)
+xg = convert(rd("informe/glosario.md"), Cap(None), None)
+REFS = [l.strip() for l in rd("informe/referencias.md").split("\n") if l.strip() and not l.startswith("#")]
+def referencia(t):
+    return (f'<w:p><w:pPr><w:keepLines/><w:spacing w:line="252" w:lineRule="auto"/><w:ind w:left="340" w:hanging="340"/>'
+            f'<w:rPr>{LANG}</w:rPr></w:pPr>{runs(t)}</w:p>')
+portada = rd("informe/portada.md")
+def bloque(titulo):
+    return re.search(r"^## " + titulo + r"\n\n(.*?)(?=\n## |\Z)", portada, re.S | re.M).group(1).strip()
+
+# ---------------------------------------------------------------- capítulo 6
+c6 = Cap(6); x6 = []
+x6.append(convert(rd("diseno/cap6/index.md"), c6, None, skip_tables=("Sección",)))
+for f, t in [("6-1-interfaz", "6.1 Interfaz de usuario del sistema"), ("6-2-navegacion", "6.2 Diagrama de navegación del sistema"),
+             ("6-3-mockups", "6.3 Esquemas de interfaz mockups y wireframes"), ("6-4-descripcion-ui", "6.4 Descripción de la interfaz de usuario"),
+             ("6-5-servicios", "6.5 Interfaz de servicios del sistema"), ("6-6-diagrama-servicios", "6.6 Diagrama de interfaz de servicios"),
+             ("6-7-descripcion-servicios", "6.7 Descripción de la interfaz de servicios"), ("6-8-consumidos", "6.8 Servicios consumidos por el sistema"),
+             ("6-9-datos", "6.9 Modelo de base de datos")]:
+    x6.append(convert(rd(f"diseno/cap6/{f}.md"), c6, t))
 
 # ---------------------------------------------------------------- capítulo 7
 c7 = Cap(7); x7 = [heading("Ttulo1", "Capítulo 7 Construcción del software", "<w:pageBreakBefore/>")]
@@ -373,61 +406,76 @@ for f, t in [("7-1-codigo", "7.1 Construcción del código"), ("7-2-datos", "7.2
 doc = os.path.join(U, "word", "document.xml")
 head, P, tail = split(open(doc).read())
 
-def donde(st, empieza):
-    return next(i for i, p in enumerate(P) if style(p) == st and text(p).startswith(empieza))
-def sig(i, pred):
-    return next(k for k in range(i + 1, len(P)) if pred(P[k]))
-es_tabla = lambda p: p.startswith("<w:tbl")
-es_cap = lambda p: style(p) == "Descripcin"
-# Tabla 1.2: el banco real tiene un quinto eje, la garantía (D-20)
-def fila_como(tr, celdas):
-    out = tr
-    for vieja, nueva in zip(re.findall(r"<w:tc>.*?</w:tc>", tr, re.S), celdas):
-        ts = list(re.finditer(r"(<w:t[^>]*>)[^<]*(</w:t>)", vieja))
-        c = vieja[:ts[0].start()] + ts[0].group(1) + esc(nueva) + ts[0].group(2) + "".join(
-            vieja[a.end():b.start()] + b.group(1) + b.group(2) for a, b in zip(ts, ts[1:])) + vieja[ts[-1].end():]
-        out = out.replace(vieja, c, 1)
+def con_texto(p, nuevo_runs):
+    """El mismo párrafo (su pPr) con otro contenido."""
+    m = re.match(r"(<w:p[ >].*?</w:pPr>)", p, re.S)
+    return (m.group(1) if m else "<w:p>") + nuevo_runs + "</w:p>"
+titulo1 = lambda empieza: next(i for i, p in enumerate(P) if style(p) == "Ttulo1" and text(p).startswith(empieza))
+i1, i2, i3, i4, i5, i6 = (titulo1(f"Capítulo {n}") for n in range(1, 7))
+ig, ir = titulo1("Glosario"), titulo1("Referencias")
+it = next(i for i, p in enumerate(P) if style(p) == "Ttulo" and text(p).startswith("Implementacion"))
+irs = next(i for i, p in enumerate(P) if style(p) == "Ttulo" and text(p) == "Resumen")
+iab = next(i for i, p in enumerate(P) if style(p) == "Ttulo" and text(p) == "Abstract")
+iix = next(i for i, p in enumerate(P) if style(p) == "Ttulo" and text(p).startswith("Índice"))
+
+# portada, resumen y abstract
+P[it] = con_texto(P[it], runs(bloque("Título")))
+res, clave = bloque("Resumen").split("\n\n")
+P[irs + 1] = con_texto(P[irs + 1], runs(res)); P[irs + 2] = con_texto(P[irs + 2], runs(clave))
+abs_, key = bloque("Abstract").split("\n\n")
+P[iab + 1] = con_texto(P[iab + 1], runs(abs_)); P[iab + 2] = con_texto(P[iab + 2], runs(key))
+
+cuerpo = ([P[i1], x1, P[i2], x2, P[i3], x3, P[i4], "".join(x4), P[i5], "".join(x5), P[i6], "".join(x6), "".join(x7),
+           P[ig], xg, P[ir]] + [referencia(r) for r in REFS])
+assert "sectPr" in P[-1]
+
+# índices: el general (Ttulo1 a Ttulo3), el de tablas y el de figuras, como campos TOC de Word.
+# Se llenan con los números de página de una primera pasada (PAGINAS) y Word los actualiza al abrir.
+PAG = json.load(open(os.environ["PAGINAS"])) if os.environ.get("PAGINAS") else {}
+def entradas(estilos):
+    out = []
+    for m in re.finditer(r"<w:p[ >].*?</w:p>", "".join(cuerpo), re.S):
+        st = style(m.group(0))
+        if st in estilos: out.append((estilos[st], text(m.group(0)).strip()))
     return out
-k = next(i for i, p in enumerate(P) if es_cap(p) and text(p).startswith("Tabla 1.2 ")); t = sig(k, es_tabla)
-ultima = re.findall(r"<w:tr[ >].*?</w:tr>", P[t], re.S)[-1]
-P[t] = P[t].replace(ultima, ultima + fila_como(ultima, [
-    "E", "Garantía previa: ninguna, reserve suficiente o handle devuelto por la mutación",
-    "Medir falsas alarmas en el buen uso de operaciones que pueden invalidar."]))
-# 1.4.3
-k = donde("Ttulo3", "1.4.3"); P[sig(k, es_tabla)] = table(T13)
-# 1.11
-k = donde("Ttulo2", "1.11"); P[k + 1] = par(runs(S111))
-P[sig(k, es_cap)] = caption("Tabla 1.10 Casos de uso y criterios de aceptación"); P[sig(k, es_tabla)] = table(T110)
-# 2.5.5
-k = donde("Ttulo3", "2.5.5"); P[k + 1] = par(runs(S255))
-P[sig(k, es_cap)] = caption("Tabla 2.12 Requisitos por necesidad, caso de uso y objetivo"); P[sig(k, es_tabla)] = table(T212)
-i4 = next(i for i, p in enumerate(P) if style(p) == "Ttulo1" and text(p).startswith("Capítulo 4"))
-i5 = next(i for i, p in enumerate(P) if style(p) == "Ttulo1" and text(p).startswith("Capítulo 5"))
-i6 = next(i for i, p in enumerate(P) if style(p) == "Ttulo1" and text(p).startswith("Capítulo 6"))
-ig = next(i for i, p in enumerate(P) if style(p) == "Ttulo1" and text(p).startswith("Glosario"))
-ir = next(i for i, p in enumerate(P) if style(p) == "Ttulo1" and text(p).startswith("Referencias"))
+def indice(instr, items, estilo="TDC"):
+    ps = []
+    for k, (nivel, t) in enumerate(items):
+        ini = (f'<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve">{instr}</w:instrText></w:r>'
+               f'<w:r><w:fldChar w:fldCharType="separate"/></w:r>') if k == 0 else ""
+        fin = '<w:r><w:fldChar w:fldCharType="end"/></w:r>' if k == len(items) - 1 else ""
+        ps.append(f'<w:p><w:pPr><w:pStyle w:val="{estilo}{nivel}"/><w:rPr>{LANG}</w:rPr></w:pPr>{ini}'
+                  f'<w:r><w:rPr>{LANG}</w:rPr><w:t xml:space="preserve">{esc(t)}</w:t></w:r>'
+                  f'<w:r><w:tab/><w:t>{PAG.get(t, "")}</w:t></w:r>{fin}</w:p>')
+    return "".join(ps)
+SALTO = '<w:p><w:r><w:br w:type="page"/></w:r></w:p>'
+def titulo_indice(t): return con_texto(P[iix], f'<w:r><w:t>{t}</w:t></w:r>')
+indices = (indice(' TOC \\o "1-3" \\h \\z \\u ', entradas({"Ttulo1": 1, "Ttulo2": 2, "Ttulo3": 3})) + SALTO
+           + titulo_indice("Índice de tablas") + indice(' TOC \\o "8-8" \\h \\z \\u ', entradas({"LeyendaTabla": 1}), "IndiceIlustraciones") + SALTO
+           + titulo_indice("Índice de figuras") + indice(' TOC \\o "9-9" \\h \\z \\u ', entradas({"LeyendaFigura": 1}), "IndiceIlustraciones"))
+fin_indice = i1 - 1                       # el párrafo vacío (con el salto) antes del capítulo 1
+nuevo = P[:iix + 1] + [indices] + P[fin_indice:i1] + cuerpo + [P[-1]]
+open(doc, "w").write(head + "".join(nuevo) + tail)
+open(os.path.join(U, "entradas.json"), "w").write(json.dumps(
+    [t for _, t in entradas({"Ttulo1": 1, "Ttulo2": 2, "Ttulo3": 3, "LeyendaTabla": 1, "LeyendaFigura": 1})], ensure_ascii=False))
 
-def ref(texto, cursiva):
-    a, b = texto.split(cursiva)
-    return (f'<w:p><w:pPr><w:keepLines/><w:spacing w:line="252" w:lineRule="auto"/><w:ind w:left="340" w:hanging="340"/></w:pPr>'
-            f'<w:r><w:t xml:space="preserve">{esc(a)}</w:t></w:r><w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">{esc(cursiva)}</w:t></w:r>'
-            f'<w:r><w:t xml:space="preserve">{esc(b)}</w:t></w:r></w:p>')
-EVANS = ref("Evans, E. (2003). Domain-driven design: Tackling complexity in the heart of software. Addison-Wesley.",
-            "Domain-driven design: Tackling complexity in the heart of software")
-WLAS = ref("Wlaschin, S. (2018). Domain modeling made functional: Tackle software complexity with domain-driven design and F#. Pragmatic Bookshelf.",
-           "Domain modeling made functional: Tackle software complexity with domain-driven design and F#")
-refs = P[ir + 1:]
-pos_e = next(k for k, p in enumerate(refs) if text(p) > "Evans" and text(p).strip())
-refs.insert(pos_e, EVANS)
-pos_w = max(k for k, p in enumerate(refs) if text(p).strip() and text(p) < "Wlaschin") + 1
-refs.insert(pos_w, WLAS)
-
-nuevo = P[:i4 + 1] + ["".join(x4)] + P[i5:i5 + 1] + ["".join(x5)] + P[i6:ig] + ["".join(x7)] + P[ig:ir + 1] + refs
-# El DOI de Kashyap et al. en la V2 apuntaba a otro artículo (Crossref: SCAM.2019.00019 es de
-# Harrand et al.); el correcto es SCAM.2019.00020.
-cuerpo = head + "".join(nuevo) + tail
-assert cuerpo.count("10.1109/SCAM.2019.00019") == 1, "el DOI de Kashyap cambió de forma en la V2"
-open(doc, "w").write(cuerpo.replace("10.1109/SCAM.2019.00019", "10.1109/SCAM.2019.00020"))
+# estilos de las leyendas y de los índices
+ESTILOS = (
+    '<w:style w:type="paragraph" w:customStyle="1" w:styleId="LeyendaTabla"><w:name w:val="Leyenda de tabla"/><w:basedOn w:val="Descripcin"/>'
+    '<w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:outlineLvl w:val="7"/></w:pPr></w:style>'
+    '<w:style w:type="paragraph" w:customStyle="1" w:styleId="LeyendaFigura"><w:name w:val="Leyenda de figura"/><w:basedOn w:val="Descripcin"/>'
+    '<w:next w:val="Normal"/><w:qFormat/><w:pPr><w:outlineLvl w:val="8"/></w:pPr></w:style>'
+    + "".join(f'<w:style w:type="paragraph" w:styleId="TDC{n}"><w:name w:val="toc {n}"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/>'
+              f'<w:uiPriority w:val="39"/><w:unhideWhenUsed/><w:pPr><w:tabs><w:tab w:val="right" w:leader="dot" w:pos="8901"/></w:tabs>'
+              f'<w:spacing w:after="40" w:line="240" w:lineRule="auto"/><w:ind w:left="{(n - 1) * 220}"/></w:pPr>'
+              f'<w:rPr>{"<w:b/>" if n == 1 else ""}<w:sz w:val="19"/></w:rPr></w:style>' for n in (1, 2, 3))
+    + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="IndiceIlustraciones1"><w:name w:val="Índice de ilustraciones"/><w:basedOn w:val="Normal"/>'
+      '<w:pPr><w:tabs><w:tab w:val="right" w:leader="dot" w:pos="8901"/></w:tabs><w:spacing w:after="40" w:line="240" w:lineRule="auto"/></w:pPr>'
+      '<w:rPr><w:sz w:val="19"/></w:rPr></w:style>')
+sty = os.path.join(U, "word", "styles.xml")
+s_ = open(sty).read()
+if "LeyendaTabla" not in s_:
+    open(sty, "w").write(s_.replace("</w:styles>", ESTILOS + "</w:styles>"))
 
 rels = os.path.join(U, "word", "_rels", "document.xml.rels")
 s = open(rels).read(); open(rels, "w").write(s.replace("</Relationships>", "".join(RELS) + "</Relationships>"))
@@ -441,4 +489,4 @@ if "w:updateFields" not in s:
     m = re.search(r"<w:(hdrShapeDefaults|footnotePr|endnotePr|compat|docVars|rsids)\b", s)
     s = s[:m.start()] + '<w:updateFields w:val="true"/>' + s[m.start():]
     open(st, "w").write(s)
-print(f"cap4: {c4.tab} tablas; cap5: {c5.tab} tablas, {c5.fig} figuras; cap7: {c7.tab} tablas, {c7.fig} figuras; imágenes {len(RELS)}")
+print(f"cap1: {c1.tab} tablas, {c1.fig} figuras; cap2: {c2.tab}/{c2.fig}; cap3: {c3.tab}; cap6: {c6.tab} tablas, {c6.fig} figuras; cap4: {c4.tab} tablas; cap5: {c5.tab} tablas, {c5.fig} figuras; cap7: {c7.tab} tablas, {c7.fig} figuras; imágenes {len(RELS)}")
