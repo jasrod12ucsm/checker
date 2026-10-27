@@ -1,0 +1,25 @@
+@startuml
+!include _estilo.iuml
+left to right direction
+
+actor "Administrador /\nDesarrollador" as U
+cloud "GitHub" as GH
+
+node "Centinela C++" {
+  component "Panel web\n(navegador)" as Web
+  component "API HTTP\n/api/*" as API
+  component "Receptor de webhooks\nPOST /webhooks/github" as WH
+  component "Trabajador de revisiones" as Trab
+  component "Analizador\nclang + ucsm.ContainerInvalidation" as An
+  database "SQLite" as BD
+}
+
+U --> Web : HTTPS
+Web --> API : JSON + cookie de sesión
+GH --> WH : evento pull_request\nfirmado (HMAC-SHA256)
+API --> BD
+WH --> BD : revisión + trabajo\n(misma transacción)
+Trab --> BD : toma el trabajo
+Trab --> GH : REST v3: datos del PR, archivos,\ntarball, review, status
+Trab --> An : execFile (sin shell)
+@enduml

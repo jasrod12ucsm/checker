@@ -1,11 +1,14 @@
 # Capítulo 5 — Arquitectura del proyecto
 
-> Versión rehecha el 2026-10-18. Reemplaza al capítulo 5 del informe y al
-> libro de diagramas de `mi-linter`. El porqué está en
-> [Por qué se rehízo el diseño](../critica.md).
+El sistema es **Centinela C++**: un servicio web en TypeScript que recibe
+los *pull requests* de GitHub, los analiza con el checker y publica el
+resultado. Cada sección muestra primero el servicio y después el **motor de
+análisis** (el checker), que conserva su diseño propio.
 
-La arquitectura tiene **cuatro contextos** con una dependencia común, la
-**norma**:
+El servicio tiene tres contextos (identidad, repositorios y revisiones),
+una capa de casos de uso y adaptadores para HTTP, SQLite, GitHub, el
+analizador y la criptografía (sección 5.3). El motor de análisis tiene
+**cuatro contextos** con una dependencia común, la **norma**:
 
 | Contexto | Corre en | Hace |
 |---|---|---|
@@ -26,10 +29,10 @@ CMake**, no una convención:
 
 | Sección | Diagramas |
 |---|---|
-| [5.1 Casos de uso](5-1-casos-de-uso.md) | casos de uso |
-| [5.2 Colaboración](5-2-colaboracion.md) | comunicación + secuencia |
-| [5.3 Paquetes](5-3-paquetes.md) | paquetes |
-| [5.4 Clases](5-4-clases.md) | dominio, cáscara, evaluación |
-| [5.5 Estados](5-5-estados.md) | ciclo del handle + crédito de garantía |
-| [5.6 Arquitectura lógica](5-6-arquitectura-logica.md) | capas y flujo |
-| [5.7 Arquitectura física](5-7-arquitectura-fisica.md) | despliegue |
+| [5.1 Casos de uso](5-1-casos-de-uso.md) | casos de uso del servicio |
+| [5.2 Colaboración](5-2-colaboracion.md) | secuencia de una revisión; comunicación y secuencia del motor |
+| [5.3 Paquetes](5-3-paquetes.md) | paquetes del servicio y del motor |
+| [5.4 Clases](5-4-clases.md) | dominio del servicio; dominio, cáscara y evaluación del motor |
+| [5.5 Estados](5-5-estados.md) | ciclo de una revisión; ciclo del handle y crédito de garantía |
+| [5.6 Arquitectura lógica](5-6-arquitectura-logica.md) | capas del servicio y del motor |
+| [5.7 Arquitectura física](5-7-arquitectura-fisica.md) | despliegue del servicio y del motor |

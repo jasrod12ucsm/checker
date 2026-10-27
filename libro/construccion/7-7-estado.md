@@ -1,23 +1,25 @@
-# 7.7 Estado actual (2026-10-20)
+# 7.7 Estado actual (2026-10-27)
 
 | Pieza | Estado | Dónde |
 |---|---|---|
 | Banco de 750 casos con etiquetas C++17 | **hecho**: 27 etiquetas corregidas (D-18) y 66 casos de buen uso (D-20) | `test/corpus.cpp`, `test/corpus_truth.json`, `bench/gen_corpus.py`, `bench/etiquetar.py` |
-| Medición de CSA (condición de referencia) | **hecho**: 80 de 342 UB por caso (23.4 %), 48 sobre el handle sostenido (14.6 %), 0 FP, con libstdc++ 13 | `bench/experimento.py`, [Experimento](../resultados/experimento.md) |
+| Medición de CSA (condición de referencia) | **hecho**: 80 de 342 UB por caso (23,4 %), 48 sobre el handle sostenido (14,6 %), 0 FP, con libstdc++ 13 | `bench/experimento.py`, [Experimento](../resultados/experimento.md) |
 | Validación dinámica de las etiquetas | **hecho**: 852 ejecuciones, 0 contradicciones | `bench/run_runtime_validation.py`, [Validación dinámica](../resultados/dinamica.md) |
 | Libro único (mdbook) | **hecho** | `corpus_book/` (generado) + `libro/` |
 | Diseño del checker (capítulos 5 y 7, DSL, lógica) | **hecho** | `libro/diseno/` |
 | **I0** imagen `checker:llvm21`, plugin registrado, `lit` | **hecho** | `Dockerfile`, `plugin/registro/`, `plugin/tests/lit/registro.cpp` |
-| **I1** `norma/matriz.json` + `gen_tabla.py` + núcleo + leyes | **hecho**: 101 mutaciones, 348 reglas, 40 pruebas en verde; 92.5 % de líneas del núcleo cubiertas | `norma/`, `plugin/dominio/`, `plugin/tests/dominio/` |
+| **I1** `norma/matriz.json` + `gen_tabla.py` + núcleo + leyes | **hecho**: 101 mutaciones, 348 reglas, 40 pruebas en verde; 92,5 % de líneas del núcleo cubiertas | `norma/`, `plugin/dominio/`, `plugin/tests/dominio/` |
 | **I2** referencias y punteros desde `*it`, `c[i]`, `front()` | **hecho** | `plugin/acl/`, `plugin/checker/` |
 | **I3** posiciones, anclas, `++it`, copia, `it = c.erase(it)`, `erase(first, last)` (D-23) | **hecho**, probado en código real | `plugin/tests/lit/iteradores.cpp` |
 | **I4** crédito de `reserve`, `PolicyMode=Possibly`, escape (D-21) | **hecho** | `plugin/tests/lit/garantias.cpp` |
 | **I5** notas de ruta | **hecho**: nota en la obtención y en la mutación (obtención → mutación → uso) | `plugin/checker/Messages.cpp`, `plugin/tests/lit/rutas.cpp` |
+| **I7** servicio Centinela C++ (backend): RF-S01 a RF-S05 | **hecho**: 140 pruebas en verde en la imagen Docker, 97,6 % de líneas; demostración con GitHub simulado y `clang` real: una revisión de dos archivos en 0,28 s | `sistema/` |
+| **I7** panel web | *mockups* terminados (sección 6.3); **falta programarlo** sobre la API existente | `sistema/frontend/` (previsto) |
 | Código real con defectos sembrados | **hecho**: 10 de 10 semillas con D-22; 4 proyectos, 781 unidades | `bench/codigo_real.py`, `bench/inyeccion.py`, [Código real](../resultados/codigo-real.md) |
 | Arnés por etapas con SARIF y cotejo por sitio | **hecho** (D-24, D-25): 750 casos × 4 condiciones, 11 leyes probadas | `bench/experimento.py`, `bench/pruebas_evaluacion.py` |
-| CI en GitHub Actions | **hecho**: plugin, calidad (formato, `mypy`, cobertura) y banco con regla de regresión; los tres pasos pasan con la misma imagen en local | `.github/workflows/ci.yml`, `docker-compose.yml`, `bench/regresion.py` |
+| CI en GitHub Actions | **hecho**: plugin, calidad (formato, `mypy`, cobertura) y banco con regla de regresión pasaron en GitHub Actions el 21-10-2026; con I7 el *workflow* construye además la imagen de Centinela y corre `sistema-pruebas` y la demostración de punta a punta | `.github/workflows/ci.yml`, `docker-compose.yml`, `bench/regresion.py` |
 | Verificación de los requerimientos en un paso | **hecho**: `docker compose run --rm verificar` construye el plugin y demuestra RF-01 a RF-17, RNF-01 a RNF-08 y RN-001 a RN-007 en unos 30 s; `--completo` corre el banco entero y la validación dinámica. RNF-04 y RNF-05 tienen ahora su comprobación automática | `verificar.sh`, `bench/rendimiento.py`, [Dónde se valida cada requerimiento](../uso/requerimientos.md) |
-| Banco congelado `banco-1` | **hecho**: sello sha256 en `test/banco-1.json`, verificado en cada experimento; falta el visto bueno del asesor a D-18 y D-20 | `test/banco-1.json` |
+| Banco congelado `banco-1` | **hecho**: sello sha256 en `test/banco-1.json`, verificado en cada experimento; *tag* `banco-1` | `test/banco-1.json` |
 
 ## El banco corregido
 
@@ -26,10 +28,24 @@ SARIF, cotejo por sitio (D-24). Imagen `checker:llvm21`:
 
 | Condición | UB por caso | UB sobre el sostenido | FP sobre SAFE | `POLICY` con aviso posible | posibles sobre SAFE |
 |---|---:|---:|---:|---:|---:|
-| CSA (referencia) | 80/342 (23.4 %) | 48/328 (14.6 %) | 0 | — | — |
+| CSA (referencia) | 80/342 (23,4 %) | 48/328 (14,6 %) | 0 | — | — |
 | base + plugin, `Silent` | **342/342** | **328/328** | **0** | 0 de 102 | 0 |
 | base + plugin, `Possibly` | **342/342** | **328/328** | **0** | **102 de 102** | **0** |
 | plugin sin `alpha.cplusplus` (D-25) | **342/342** | **328/328** | **0** | **102 de 102** | **0** |
+
+Las cuatro condiciones son `Reference` (CSA con `core`, `cplusplus` y los cinco
+`alpha.cplusplus` de iteradores y contenedores), `Experimental-Silent` y
+`Experimental-Possibly` (lo mismo más el checker) y `Plugin-Possibly` (el
+checker sin los `alpha.cplusplus`); la comparación principal es `Reference`
+frente a `Experimental-Possibly`. Precisión, exhaustividad y F1 por caso
+(`test/experimento/metricas.json`; los `POLICY` no entran en la precisión):
+
+| Condición | VP | FP | FN | VN | Precisión | Exhaustividad | F1 | Exhaustividad sobre el sostenido |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `Reference` | 80 | 0 | 262 | 306 | 100 % | 23,4 % | 37,9 % | 14,6 % |
+| `Experimental-Silent` | 342 | 0 | 0 | 306 | 100 % | 100 % | 100 % | 100 % |
+| `Experimental-Possibly` | 342 | 0 | 0 | 306 | 100 % | 100 % | 100 % | 100 % |
+| `Plugin-Possibly` | 342 | 0 | 0 | 306 | 100 % | 100 % | 100 % | 100 % |
 
 Los 66 casos de buen uso (54 con `reserve(c.size() + k)`, 12 con el iterador
 devuelto) no reciben ningún aviso, ni siquiera posible.
@@ -85,6 +101,11 @@ Las corridas en código real destaparon errores que el banco no tenía:
 
 Cada semilla cambia unas pocas líneas de un proyecto real. Se analiza el
 archivo antes y después, y se atribuye el aviso **nuevo**:
+
+La columna «Mecanismo» indica cómo se invalida el handle: **M1** reubicación
+del búfer (`vector` sin capacidad), **M3** destrucción del elemento en su
+sitio (`pop_back`, `erase` del propio elemento) y **M5** liberación del nodo
+(contenedores de nodos y *unordered*, y los extremos de `deque`).
 
 | Id | Proyecto | Mecanismo | Espera | `noredundancy` | `all` |
 |---|---|---|---|---|---|

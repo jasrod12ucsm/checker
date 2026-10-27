@@ -1,0 +1,39 @@
+@startuml
+!include _estilo.iuml
+left to right direction
+
+actor "Desarrollador\nde C++" as dev
+actor "Evaluador" as eva
+actor "Mantenedor" as man
+
+rectangle "clang --analyze + plugin ucsm.ContainerInvalidation" {
+  usecase "CU-01\nAnalizar un archivo" as cu1
+  usecase "CU-02\nAnalizar un proyecto\ncon compile_commands.json" as cu2
+  usecase "CU-03\nElegir la política ante\nlo que depende del estado" as cu3
+  usecase "CU-04\nSeguir la ruta\nde un diagnóstico" as cu4
+}
+
+rectangle "Banco y arnés (Python, imagen checker:llvm21)" {
+  usecase "CU-05\nGenerar y validar\nel banco desde la norma" as cu5
+  usecase "CU-06\nEjecutar el experimento\n(4 condiciones)" as cu6
+}
+
+rectangle "Construcción y norma" {
+  usecase "CU-07\nConstruir y verificar\nel plugin" as cu7
+  usecase "CU-08\nCorregir o ampliar\nla norma" as cu8
+}
+
+dev --> cu1
+dev --> cu2
+eva --> cu5
+eva --> cu6
+man --> cu7
+man --> cu8
+
+cu2 .> cu1 : <<include>>
+cu1 <.. cu3 : <<extend>>
+cu1 <.. cu4 : <<extend>>
+cu6 ..> cu1 : <<include>>
+cu6 .> cu5 : <<include>>
+cu8 .> cu7 : <<include>>
+@enduml

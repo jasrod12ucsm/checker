@@ -1,0 +1,89 @@
+@startuml
+!include _estilo.iuml
+hide circle
+skinparam linetype ortho
+
+entity usuarios {
+  * id : TEXT <<PK>>
+  --
+  * email : TEXT <<UNIQUE>>
+  * nombre : TEXT
+  * rol : TEXT
+  * hash_clave : TEXT
+  * estado : TEXT (Pendiente, Activo, Desactivado)
+  * creado_en : INTEGER
+}
+entity sesiones {
+  * token_hash : TEXT <<PK>>
+  --
+  * usuario_id : TEXT <<FK>>
+  * creada : INTEGER
+  * expira : INTEGER
+}
+entity repositorios {
+  * id : TEXT <<PK>>
+  --
+  * nombre : TEXT <<UNIQUE>>
+  * politica : TEXT
+  * bloquear_merge : INTEGER
+  * secreto_webhook : TEXT
+  * activo : INTEGER
+  * conectado_por : TEXT <<FK>>
+  * conectado_en : INTEGER
+}
+entity revisiones {
+  * id : TEXT <<PK>>
+  --
+  * repositorio_id : TEXT <<FK>>
+  * numero_pr : INTEGER
+  * titulo, autor, sha_cabeza : TEXT
+  * origen : TEXT
+  solicitada_por : TEXT <<FK>>
+  * creada_en, intentos : INTEGER
+  * estado : TEXT
+  * desde : INTEGER
+  veredicto : TEXT
+  archivos, no_compilados : INTEGER
+  confirmados, posibles, suprimidos : INTEGER
+  motivo : TEXT
+  ..
+  UNIQUE (repositorio_id, numero_pr, sha_cabeza)
+}
+entity hallazgos {
+  * id : TEXT <<PK>>
+  --
+  * revision_id : TEXT <<FK>>
+  * archivo : TEXT
+  * linea, columna : INTEGER
+  * clase : TEXT
+  * mensaje : TEXT
+  * ruta : TEXT (JSON)
+  * huella : TEXT
+  * clasificacion : TEXT
+  clasificado_por : TEXT <<FK>>
+  clasificado_en : INTEGER
+}
+entity descartes {
+  * repositorio_id : TEXT <<PK, FK>>
+  * huella : TEXT <<PK>>
+  --
+  * por : TEXT <<FK>>
+  * en : INTEGER
+}
+entity trabajos {
+  * revision_id : TEXT <<PK, FK>>
+  --
+  * encolado_en : INTEGER
+  * tomado : INTEGER
+}
+
+usuarios ||--o{ sesiones
+usuarios ||--o{ repositorios : conecta
+usuarios |o--o{ revisiones : solicita
+repositorios ||--o{ revisiones
+revisiones ||--o{ hallazgos
+repositorios ||--o{ descartes
+usuarios ||--o{ descartes : marca
+usuarios |o--o{ hallazgos : clasifica
+revisiones ||--o| trabajos
+@enduml

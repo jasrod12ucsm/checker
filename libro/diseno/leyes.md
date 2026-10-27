@@ -1,21 +1,27 @@
 # Significado y leyes
 
-> Método: `modelado-funcional` §16–§18 (Elliott y Maguire). Primero **qué ES**
-> cada pieza, en una línea. Después **las igualdades que se cumplen siempre**.
-> Después se buscan **contradicciones** llevando una misma expresión por dos
-> caminos. Las tres contradicciones de abajo se encontraron así, y cambiaron
-> el diseño **antes** de escribir código.
+> Método: primero **qué ES** cada pieza, en una línea (Wlaschin, 2018).
+> Después **las igualdades que se cumplen siempre**. Después se buscan
+> **contradicciones** llevando una misma expresión por dos caminos. Las seis
+> contradicciones de abajo se encontraron así: las tres primeras cambiaron el
+> diseño del motor antes de escribir su código; las tres últimas corrigieron
+> el banco antes de sellarlo.
+
+Esta sección es del motor de análisis. En el servicio, el mismo método se
+aplicó a sus tipos: `Revision<E>` no admite un estado ilegal y
+`Autorizado<P>` no admite una operación sin permiso, y lo que **no** debe
+compilar se prueba con `@ts-expect-error` (sección 7.1.3).
 
 ## 1. Qué ES cada cosa
 
 ```
-meaning NormTable   = function from (ContainerKind, Mutation, Category, Relation) to Effect
-meaning Validity    = a point in the chain  Valid ⊑ Unresolved ⊑ Invalidated
-meaning HandleState = the fold (JOIN) of the effects of every mutation of its
-                      container since the handle was obtained, along ONE path
-meaning Diagnosis   = (use site, handle, the mutation that caused it)
-meaning Counts      = multiset of verdicts, observed only through its four counts
-meaning Metric      = function of Counts; undefined where the denominator is 0
+NormTable   ES una función de (ContainerKind, Mutation, Category, Relation) en Effect
+Validity    ES un punto de la cadena  Valid ⊑ Unresolved ⊑ Invalidated
+HandleState ES el pliegue (JOIN) de los efectos de cada mutación de su
+            contenedor desde que se obtuvo el handle, a lo largo de UN camino
+Diagnosis   ES (sitio de uso, handle, la mutación que lo causó)
+Counts      ES un multiconjunto de veredictos, observado solo por sus cuatro conteos
+Metric      ES una función de Counts; indefinida donde el denominador es 0
 ```
 
 Dos consecuencias inmediatas:
@@ -39,22 +45,22 @@ Dos consecuencias inmediatas:
 
 ## 3. Las leyes
 
-Las leyes viven en el DSL de cada contexto, junto a sus datos, para que el
-tipo y su ley se lean juntos:
+Las leyes están escritas en la especificación de cada contexto, junto a sus
+datos, y se comprueban con pruebas automáticas:
 
-| Contexto | Leyes | Dónde |
+| Contexto | Leyes escritas | Pruebas que las comprueban |
 |---|---:|---|
-| Norma | 9 | [DSL — Norma §5](dsl/norma.md#5-leyes) |
-| Detección | 15 | [DSL — Detección §5](dsl/deteccion.md#5-leyes) |
-| Evaluación | 13 | [DSL — Evaluación §5](dsl/evaluacion.md#5-leyes) |
-| Validación dinámica | 6 | [DSL — Validación dinámica §4](dsl/validacion-dinamica.md#4-leyes) |
+| Norma | 9 | 4 comprobaciones al generar la tabla (`norma/gen_tabla.py`, `check_leyes`: la generación falla si una no vale) y 4 gtests `Norma.*` |
+| Detección | 25 | 24 gtests `Deteccion.*`, 9 `Posicion.*` y 2 `Lenguaje.*`; las leyes de categoría, uso y muerte de regiones, que dependen de Clang, con los `lit` del checker |
+| Evaluación | 13 | 11 leyes en `bench/pruebas_evaluacion.py` y el gtest `Banco.ElVeredictoDelNucleoEsLaEtiqueta` |
+| Validación dinámica | 6 | `bench/run_runtime_validation.py`: 852 ejecuciones, 0 contradicciones |
 
-Esta página guarda **el razonamiento**: qué contradicciones aparecieron al
+Lo que sigue es **el razonamiento**: qué contradicciones aparecieron al
 llevar las leyes por dos caminos y cómo cambiaron el diseño.
 
 ## 4. Contradicciones encontradas y cómo se resolvieron
 
-Procedimiento (Maguire): tomar una expresión chica, reescribirla con las leyes
+Procedimiento: tomar una expresión chica, reescribirla con las leyes
 por dos caminos y ver si dan lo mismo. Si no, **no se agrega una ley
 parche**: se quita una ley o se cambia el tipo de una observación.
 
@@ -202,19 +208,24 @@ Por la ley «la etiqueta es el JOIN de sus handles», la etiqueta es
 `JOIN(SAFE, POLICY) = POLICY`. El generador dice `SAFE`, porque su regla del
 bucle sólo mira la categoría declarada cuando el iterador no es `UB`.
 
-| Casos | Hoy | Por la norma | El checker da |
+| Casos | Antes | Por la norma | El checker da |
 |---:|---|---|---|
 | 6 | `SAFE` | `POLICY` | aviso **posible** sobre el iterador del `for` |
+
+**Resolución:** las 6 etiquetas pasan a `POLICY` (D-18). Con las 21 de la
+contradicción 4 son las 27 etiquetas corregidas antes de sellar `banco-1`.
 
 ## 5. De las leyes al código
 
 | Ley | Prueba | Dónde |
 |---|---|---|
-| las de la norma | `pytest` sobre `matriz.json` al generar la tabla; la construcción falla si una no vale | `norma/tests/test_leyes.py` |
-| las de la detección | una prueba por ley, con generadores de `HandleState` y de secuencias de `Recognized` | `plugin/tests/dominio/leyes_test.cpp` |
-| las de la evaluación y la validación dinámica | `pytest` + `hypothesis`, una función por ley | `bench/tests/test_leyes.py` |
+| las de la norma | comprobación sobre `matriz.json` al generar la tabla (la generación falla si una no vale) y gtests | `norma/gen_tabla.py` (`check_leyes`), `plugin/tests/dominio/LeyesTest.cpp` (`Norma.*`) |
+| las de la detección | una prueba de GoogleTest por ley sobre el núcleo puro | `plugin/tests/dominio/LeyesTest.cpp` (`Deteccion.*`, `Posicion.*`) |
+| las de la evaluación | una función por ley, en Python sin dependencias externas | `bench/pruebas_evaluacion.py` |
+| las de la validación dinámica | ejecución de cada caso con libstdc++ Debug y ASan | `bench/run_runtime_validation.py` |
 
-La **implementación de referencia** de la detección es la versión obvia:
-recorrer la lista de mutaciones desde la obtención y tomar el máximo. La
-versión real, que actualiza `ProgramState` evento por evento, tiene una prueba
-que la compara con la de referencia sobre secuencias al azar (§18.4).
+La etiqueta tiene **dos implementaciones**: la de referencia en Python
+(`bench/etiquetar.py`, que calcula la etiqueta desde la norma) y el núcleo en
+C++. El gtest `Banco.ElVeredictoDelNucleoEsLaEtiqueta` las compara celda por
+celda sobre las 183 celdas del banco (57 pares × 3 formas de sostener el
+handle, más 12 celdas con `reserve`).

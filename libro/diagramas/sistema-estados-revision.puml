@@ -1,0 +1,27 @@
+@startuml
+!include _estilo.iuml
+hide empty description
+
+[*] --> Pendiente : solicitar\n(webhook o «revisar ahora»)
+Pendiente --> EnAnalisis : iniciar\n(el trabajador la toma)
+EnAnalisis --> Publicada : publicar\n(análisis y GitHub sin error)
+EnAnalisis --> Fallida : fallar\n(clang, GitHub o caída del proceso)
+Publicada --> Pendiente : reintentar\n(intentos + 1)
+Fallida --> Pendiente : reintentar\n(intentos + 1)
+
+state Publicada {
+  [*] --> Aprobada : ningún hallazgo\nsin suprimir
+  [*] --> ConProblemas : algún hallazgo\nsin suprimir
+}
+
+note right of Pendiente
+  Un sha se revisa una sola vez:
+  solicitar sobre un sha con revisión
+  da RevisionEnCurso o ShaYaRevisado.
+end note
+note right of EnAnalisis
+  Cada transición es una función
+  Revision<Origen> → Revision<Destino>;
+  la equivocada no compila.
+end note
+@enduml

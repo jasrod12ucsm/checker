@@ -1,7 +1,9 @@
 # Integración continua (capítulo 7.1 e y 7.3 g): la misma imagen que en local.
 # Falla si el plugin no compila, si una prueba falla, si el formato o los tipos no
-# pasan, si la cobertura del núcleo baja de 90 %, o si el banco muestra una
-# regresión (un SAFE con aviso confirmado o un UB que deja de detectarse).
+# pasan, si la cobertura del núcleo baja de 90 %, si el banco muestra una
+# regresión (un SAFE con aviso confirmado o un UB que deja de detectarse), o si
+# las pruebas de Centinela C++ fallan, su cobertura baja de los umbrales o la
+# demostración de punta a punta no publica lo esperado.
 name: ci
 
 on:
@@ -27,6 +29,15 @@ jobs:
 
       - name: Experimento y regresión del banco (RF-13, RF-14)
         run: docker compose run --rm experimento
+
+      - name: Imagen de Centinela C++
+        run: docker compose build sistema
+
+      - name: Pruebas de Centinela C++, con clang y el checker reales (RF-S01 a RF-S05)
+        run: docker compose run --rm sistema-pruebas
+
+      - name: Demostración de punta a punta con GitHub simulado
+        run: docker compose run --rm sistema npx tsx demo/demostrar.ts --salir
 
       - name: Publicar resultados
         if: always()

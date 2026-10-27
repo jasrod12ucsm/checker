@@ -1,13 +1,272 @@
 # 7.2 Construcción de la base de datos
 
-> **No hay un SGBD**, y es una decisión, no una omisión. Los datos del
-> proyecto se escriben una vez por ejecución y se leen para cotejar. No hay
-> usuarios concurrentes ni transacciones. Lo que importa es que sean
-> **versionables, auditables y reproducibles**. Por eso son archivos JSON en
-> el repositorio, con claves estables e integridad comprobada por programa.
-> Las etapas de la práctica se aplican igual.
+El proyecto tiene **dos almacenes** con necesidades distintas:
+
+| Almacén | Para qué | Tecnología |
+|---|---|---|
+| Base del servicio | usuarios, sesiones, repositorios, revisiones, hallazgos y la cola de trabajos de Centinela; muchos usuarios a la vez y transacciones | SQLite (relacional), `sistema/paquetes/adaptadores/sqlite/src/esquema.sql` |
+| Datos de la evaluación del motor | la norma, el banco, las ejecuciones y las métricas; se escriben una vez por experimento y deben ser versionables y auditables | archivos JSON en el repositorio (sección 7.2.8) |
 
 ## a) Análisis de requisitos
+
+Tabla: Requisitos de datos del servicio
+
+| Dato | Para qué | Restricción |
+|---|---|---|
+| usuarios | ingresar y autorizar | correo único; solo el hash scrypt de la clave; rol `administrador` o `desarrollador`; estado `Pendiente`, `Activo` o `Desactivado` |
+| sesiones | recordar quién ingresó | se guarda el hash del token, nunca el token; vencen a las 8 horas |
+| repositorios | saber qué revisar y cómo | nombre único `propietario/nombre`; política `Silent` o `Possibly`; secreto del *webhook* |
+| revisiones | el resultado de cada commit revisado | un commit de un PR se revisa una sola vez; el estado decide qué columnas tienen valor |
+| hallazgos | lo que el checker encontró | pertenecen a una revisión; su ruta se guarda entera; quién lo clasificó y cuándo, los dos o ninguno |
+| descartes | falsos positivos marcados | uno por repositorio y huella |
+| trabajos | la cola del trabajador | se escribe en la misma transacción que la revisión |
+
+## b) Diseño conceptual
+
+![Modelo entidad-relación del servicio](../diagramas/sistema-er.svg)
+
+Un repositorio tiene muchas revisiones y cada revisión muchos hallazgos. Los
+descartes cuelgan del repositorio, no de la revisión: así un falso positivo
+marcado una vez vale para los commits siguientes.
+
+## c) Diseño lógico
+
+Cada agregado del dominio es una tabla. El estado de la revisión, que en el
+dominio es una unión (`Pendiente | EnAnalisis | Publicada | Fallida`), se
+guarda **aplanado**: la columna `estado` dice la variante y solo sus columnas
+tienen valor. Dos restricciones `CHECK` lo garantizan en la base: una
+revisión tiene veredicto si y solo si está publicada, y motivo si y solo si
+falló.
+
+**Normalización.** El esquema está en tercera forma normal:
+
+| Forma | Cómo se cumple |
+|---|---|
+| 1FN | cada columna guarda un solo valor; los hallazgos de una revisión son filas de `hallazgos`, no una lista dentro de la revisión |
+| 2FN | toda clave es simple (un UUID), salvo la de `descartes` (`repositorio_id`, `huella`), y su columna restante (quién y cuándo) depende de las dos |
+| 3FN | ninguna columna depende de otra que no sea la clave: el nombre del repositorio no se copia en la revisión, se une por `repositorio_id`; el resumen de una revisión publicada (archivos analizados, no compilados, confirmados, posibles, suprimidos) no se deriva de `hallazgos`: es lo que se publicó en GitHub en ese momento, y una clasificación posterior cambia el hallazgo pero no lo ya publicado; los archivos analizados y no compilados no tienen fila propia |
+
+La única excepción consciente es `hallazgos.ruta`, la secuencia de pasos
+(archivo, línea, mensaje) que explica el aviso: se guarda como JSON en una
+columna `TEXT`. Nunca se consulta por un paso, siempre se lee entera junto
+con su hallazgo y no se modifica; una tabla `pasos` sólo agregaría una
+unión en cada lectura. Al leerla se valida con zod como cualquier otra
+columna.
+
+El esquema completo:
+
+[`sistema/paquetes/adaptadores/sqlite/src/esquema.sql:1`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/esquema.sql#L1-L89)
+
+```sql
+-- Esquema de Centinela C++ (versión 2). Cada tabla es un agregado del dominio.
+-- Una base creada con una versión anterior se actualiza con migraciones.sql al abrirla.
+CREATE TABLE usuarios (
+  id          TEXT PRIMARY KEY,
+  email       TEXT NOT NULL UNIQUE,
+  nombre      TEXT NOT NULL,
+  rol         TEXT NOT NULL CHECK (rol IN ('administrador', 'desarrollador')),
+  hash_clave  TEXT NOT NULL,
+  estado      TEXT NOT NULL CHECK (estado IN ('Pendiente', 'Activo', 'Desactivado')),
+  creado_en   INTEGER NOT NULL
+);
+
+CREATE TABLE sesiones (
+  token_hash  TEXT PRIMARY KEY,
+  usuario_id  TEXT NOT NULL REFERENCES usuarios(id),
+  creada      INTEGER NOT NULL,
+  expira      INTEGER NOT NULL
+);
+CREATE INDEX sesiones_usuario ON sesiones(usuario_id);
+
+CREATE TABLE repositorios (
+  id               TEXT PRIMARY KEY,
+  nombre           TEXT NOT NULL UNIQUE,
+  politica         TEXT NOT NULL CHECK (politica IN ('Silent', 'Possibly')),
+  bloquear_merge   INTEGER NOT NULL CHECK (bloquear_merge IN (0, 1)),
+  secreto_webhook  TEXT NOT NULL,
+  activo           INTEGER NOT NULL CHECK (activo IN (0, 1)),
+  conectado_por    TEXT NOT NULL REFERENCES usuarios(id),
+  conectado_en     INTEGER NOT NULL
+);
+
+-- El estado se guarda aplanado: `estado` dice la variante y solo sus columnas tienen valor.
+CREATE TABLE revisiones (
+  id              TEXT PRIMARY KEY,
+  repositorio_id  TEXT NOT NULL REFERENCES repositorios(id),
+  numero_pr       INTEGER NOT NULL CHECK (numero_pr > 0),
+  titulo          TEXT NOT NULL,
+  autor           TEXT NOT NULL,
+  sha_cabeza      TEXT NOT NULL,
+  origen          TEXT NOT NULL CHECK (origen IN ('webhook', 'manual')),
+  solicitada_por  TEXT REFERENCES usuarios(id),
+  creada_en       INTEGER NOT NULL,
+  intentos        INTEGER NOT NULL CHECK (intentos >= 1),
+  estado          TEXT NOT NULL CHECK (estado IN ('Pendiente', 'EnAnalisis', 'Publicada', 'Fallida')),
+  desde           INTEGER NOT NULL,
+  veredicto       TEXT CHECK (veredicto IN ('Aprobada', 'ConProblemas')),
+  archivos        INTEGER,
+  no_compilados   INTEGER,
+  confirmados     INTEGER,
+  posibles        INTEGER,
+  suprimidos      INTEGER,
+  motivo          TEXT,
+  UNIQUE (repositorio_id, numero_pr, sha_cabeza),
+  CHECK ((estado = 'Publicada') = (veredicto IS NOT NULL)),
+  CHECK ((estado = 'Fallida') = (motivo IS NOT NULL))
+);
+CREATE INDEX revisiones_repo ON revisiones(repositorio_id, creada_en DESC);
+
+CREATE TABLE hallazgos (
+  id             TEXT PRIMARY KEY,
+  revision_id    TEXT NOT NULL REFERENCES revisiones(id) ON DELETE CASCADE,
+  archivo        TEXT NOT NULL,
+  linea          INTEGER NOT NULL CHECK (linea > 0),
+  columna        INTEGER NOT NULL CHECK (columna > 0),
+  clase          TEXT NOT NULL CHECK (clase IN ('Confirmado', 'Posible')),
+  mensaje        TEXT NOT NULL,
+  ruta           TEXT NOT NULL,           -- JSON: [{archivo, linea, mensaje}]
+  huella         TEXT NOT NULL,
+  clasificacion  TEXT NOT NULL CHECK (clasificacion IN ('SinRevisar', 'Confirmado', 'FalsoPositivo')),
+  clasificado_por TEXT REFERENCES usuarios(id),
+  clasificado_en  INTEGER,
+  CHECK ((clasificado_por IS NULL) = (clasificado_en IS NULL))
+);
+CREATE INDEX hallazgos_revision ON hallazgos(revision_id);
+
+CREATE TABLE descartes (
+  repositorio_id  TEXT NOT NULL REFERENCES repositorios(id),
+  huella          TEXT NOT NULL,
+  por             TEXT NOT NULL REFERENCES usuarios(id),
+  en              INTEGER NOT NULL,
+  PRIMARY KEY (repositorio_id, huella)
+);
+
+-- Cola de trabajos: se escribe en la misma transacción que la revisión.
+CREATE TABLE trabajos (
+  revision_id  TEXT PRIMARY KEY REFERENCES revisiones(id),
+  encolado_en  INTEGER NOT NULL,
+  tomado       INTEGER NOT NULL DEFAULT 0 CHECK (tomado IN (0, 1))
+);
+```
+
+## d) Diseño físico
+
+| Decisión | Por qué |
+|---|---|
+| `journal_mode = WAL` | el servidor lee mientras el trabajador escribe |
+| `foreign_keys = ON` y `busy_timeout = 5000` | integridad referencial; esperar en vez de fallar ante un bloqueo breve |
+| índices `revisiones(repositorio_id, creada_en)`, `hallazgos(revision_id)`, `sesiones(usuario_id)` | las consultas del panel y del trabajador |
+| `UNIQUE (repositorio_id, numero_pr, sha_cabeza)` | la regla RN-S02 también en la base |
+| identificadores UUID en `TEXT` e instantes en milisegundos (`INTEGER`) | los genera el servicio, no la base |
+| sin particionamiento | un equipo genera del orden de miles de revisiones al año; SQLite no particiona y, a ese volumen, los índices bastan. Si un cliente llegara a millones de hallazgos, el adaptador se cambia por PostgreSQL con particiones por fecha sin tocar el dominio |
+
+**Permisos.** SQLite no tiene usuarios ni roles: quien puede abrir el
+archivo puede leerlo todo. Por eso el control de acceso está en dos capas:
+el archivo vive en un volumen de Docker al que solo accede el proceso del
+servicio, y cada operación pasa por el permiso del rol en el dominio
+(`Autorizado<P>`, sección 5.4). El hash de la clave y el secreto del
+*webhook* nunca salen por la API sin ese permiso.
+
+## e) Implementación
+
+El esquema se aplica al abrir una base nueva y su versión se guarda en
+`PRAGMA user_version` (hoy, la 2). Una base de la versión 1 se migra sola al
+abrirla, en una transacción, con `migraciones.sql` (el `activo` booleano de
+los usuarios pasa a `estado`, y los hallazgos ganan quién y cuándo se
+clasificaron); una base de una versión desconocida no arranca. Toda fila leída pasa por un esquema zod antes de volverse un tipo
+del dominio; una fila que el dominio no admite es un error, no un valor a
+medias:
+
+[`sistema/paquetes/adaptadores/sqlite/src/filas.ts:124`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/filas.ts#L124-L159)
+
+```typescript
+export function aRevision(fila: unknown): Revision {
+  const f = leer("revisiones", revision, fila);
+  let estado: EstadoRevision;
+  switch (f.estado) {
+    case "Pendiente":
+      estado = { tipo: "Pendiente", encoladaEn: f.desde };
+      break;
+    case "EnAnalisis":
+      estado = { tipo: "EnAnalisis", iniciadaEn: f.desde };
+      break;
+    case "Fallida":
+      if (f.motivo === null) throw new FilaCorrupta("revisiones", "Fallida sin motivo");
+      estado = { tipo: "Fallida", terminadaEn: f.desde, motivo: f.motivo };
+      break;
+    case "Publicada":
+      if (f.veredicto === null || f.archivos === null || f.no_compilados === null || f.confirmados === null || f.posibles === null || f.suprimidos === null)
+        throw new FilaCorrupta("revisiones", "Publicada sin resumen");
+      estado = {
+        tipo: "Publicada",
+        terminadaEn: f.desde,
+        veredicto: f.veredicto,
+        resumen: { archivosAnalizados: f.archivos, noCompilados: f.no_compilados, confirmados: f.confirmados, posibles: f.posibles, suprimidos: f.suprimidos },
+      };
+      break;
+  }
+  return {
+    id: f.id,
+    repositorioId: f.repositorio_id,
+    pr: { numero: f.numero_pr, titulo: f.titulo, autor: f.autor, shaCabeza: f.sha_cabeza },
+    origen: f.origen,
+    solicitadaPor: f.solicitada_por,
+    creadaEn: f.creada_en,
+    intentos: f.intentos,
+    estado,
+  };
+}
+```
+
+## f) Pruebas de los datos
+
+Tabla: Pruebas de la base de datos del servicio
+
+| Prueba | Qué comprueba |
+|---|---|
+| «cada estado de la revisión se guarda y se recupera igual» | ida y vuelta de las cuatro variantes |
+| «la base no admite dos revisiones del mismo sha de un PR» | la restricción `UNIQUE` |
+| «la cola entrega en orden y no entrega dos veces lo tomado» | `UPDATE … RETURNING` atómico |
+| «una transacción que lanza no deja nada escrito» | atomicidad |
+| «una fila que el dominio no admite es un error» | lectura validada |
+
+Están en `sistema/paquetes/adaptadores/sqlite/src/almacen.test.ts`, y el
+flujo completo sobre SQLite en `sistema/pruebas/producto-sqlite.test.ts`.
+
+| Tipo de prueba | Qué se hizo | Resultado |
+|---|---|---|
+| Rendimiento | la demostración de punta a punta sobre SQLite: encolar, analizar dos archivos con `clang` y publicar | 0,28 s por revisión (tres corridas) |
+| Recuperación | «un trabajo interrumpido se marca fallido al arrancar» (`casos.test.ts`) y «una transacción que lanza no deja nada escrito» (`almacen.test.ts`) | en verde |
+| Seguridad | consultas siempre preparadas con parámetros (`db.prepare`, ningún SQL armado con texto del usuario); claves solo como hash scrypt; sesión solo como sha256 del token; pruebas de la API sin sesión (401) y con firma mala (401) | en verde |
+| Carga sostenida | no se hizo: el servicio es de un solo equipo; queda como trabajo futuro | — |
+
+## g) Despliegue y mantenimiento
+
+La base vive en el volumen `/datos` del contenedor (`centinela-datos` en
+`docker-compose.yml`). Respaldarla es copiar `centinela.db` con
+`sqlite3 centinela.db ".backup respaldo.db"`, que es seguro con el servicio en
+marcha; el respaldo es manual y se recomienda diario. Un cambio de esquema
+sube `user_version` y agrega su migración; un binario no arranca sobre una
+base de una versión más nueva que la suya.
+
+**Monitoreo.** `GET /salud` responde `{ok: true}` cuando el servidor está en
+marcha, y sirve para la comprobación de salud de Docker o de un balanceador.
+El servidor y el trabajador escriben una bitácora JSON por línea (revisión
+publicada, revisión fallida con su motivo, revisiones interrumpidas al
+arrancar), que `docker compose logs` muestra y que cualquier colector de
+bitácoras puede leer.
+
+## h) Datos de la evaluación del motor
+
+> **Aquí no hay un SGBD**, y es una decisión. Los datos de la evaluación se
+> escriben una vez por ejecución y se leen para cotejar. No hay usuarios
+> concurrentes ni transacciones. Lo que importa es que sean **versionables,
+> auditables y reproducibles**. Por eso son archivos JSON en el repositorio,
+> con claves estables e integridad comprobada por programa.
+
+### a) Análisis de requisitos
+
+Tabla: Requisitos de datos de la evaluación del motor
 
 | Dato | Para qué | Volumen hoy | Restricción |
 |---|---|---|---|
@@ -18,7 +277,7 @@
 | cotejos y métricas | resultados | uno por caso y condición | reconstruibles desde las ejecuciones |
 | código real | evidencia fuera del banco | 4 proyectos, 781 unidades | se guardan avisos y *commit*, no el código |
 
-## b) Diseño conceptual
+### b) Diseño conceptual
 
 ![Modelo de datos](../diagramas/7-modelo-datos.svg)
 
@@ -26,7 +285,7 @@
 sale de ella. `Ejecucion` registra cómo terminó `clang`; `Cotejo` admite el
 veredicto `Incident` y separa los avisos posibles (`PolicyWarned`).
 
-## c) Diseño lógico
+### c) Diseño lógico
 
 | Entidad | Archivo | Clave | Integridad |
 |---|---|---|---|
@@ -44,7 +303,7 @@ veredicto `Incident` y separa los avisos posibles (`PolicyWarned`).
 consulta por nombre. Tipos: enteros para conteos, texto controlado para
 clases, `null` explícito para lo no definido, UTF-8.
 
-## d) Diseño físico
+### d) Diseño físico
 
 ```
 norma/matriz.json                       la norma (fuente única)
@@ -65,7 +324,7 @@ banco y de las etiquetas, y la orden exacta de cada condición (RN-007). Los
 «índices» son diccionarios por clave que el arnés construye al cargar; con
 este volumen no hace falta más.
 
-## e) Implementación
+### e) Implementación
 
 - `bench/gen_corpus.py` + `bench/etiquetar.py`: escriben el banco y sus
   etiquetas desde la norma.
@@ -75,7 +334,9 @@ este volumen no hace falta más.
 - `bench/gen_book.py`: lee esos archivos y genera las tablas del libro. Ninguna
   cifra se escribe a mano.
 
-## f) Pruebas de los datos
+### f) Pruebas de los datos
+
+Tabla: Pruebas de los datos de la evaluación
 
 | Prueba | Comprueba | Dónde |
 |---|---|---|
@@ -85,10 +346,10 @@ este volumen no hace falta más.
 | incidentes visibles | ningún `Crash` o `Timeout` figura como `TN` | `bench/pruebas_evaluacion.py` |
 | métricas indefinidas | 0/0 es `null`, no 0 % | `bench/pruebas_evaluacion.py` |
 
-## g) Despliegue y mantenimiento
+### g) Despliegue y mantenimiento
 
-- Cada experimento que va al informe se publica con un **tag** y sus archivos
-  de `test/experimento/`.
+- El experimento del informe corresponde al *tag* `banco-1`: el banco
+  sellado y los archivos de `test/experimento/` del mismo *commit*.
 - Un cambio de forma en los archivos se hace junto con el cambio del arnés y
   del generador del libro, en el mismo *commit*.
 - Respaldo: el remoto de GitHub.

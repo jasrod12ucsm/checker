@@ -1,0 +1,26 @@
+@startuml
+!include _estilo.iuml
+
+node "Navegador del usuario" as nav {
+  component "Panel web (SPA)" as spa
+}
+cloud "GitHub" as gh {
+  component "Repositorio con\nprotección de rama" as repo
+  component "REST API v3" as rest
+}
+node "Servidor (Docker)" as srv {
+  node "Contenedor centinela:local\n(FROM checker:llvm21)" as cont {
+    component "Node 22 + Fastify\n:8080" as api
+    component "Trabajador" as tr
+    component "clang 21.1.8 +\nlibContainerInvalidation.so" as cl
+  }
+  database "Volumen /datos\ncentinela.db (SQLite, WAL)" as bd
+}
+
+spa --> api : HTTPS\ncookie de sesión
+repo --> api : webhook pull_request\nHMAC-SHA256
+tr --> rest : HTTPS, token\nPR, archivos, tarball,\nrevisión, estado
+api --> bd
+tr --> bd
+tr --> cl : proceso hijo\npor archivo
+@enduml

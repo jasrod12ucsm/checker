@@ -1120,6 +1120,17 @@ write("SUMMARY.md", "\n".join([
     "  - [Usar el corpus](uso/corpus.md)",
     "  - [Libro, informe y artículo](uso/documentos.md)",
     "  - [Dónde se valida cada requerimiento](uso/requerimientos.md)",
+    "", "# Sistema: Centinela C++", "",
+    "- [Qué es y cómo probarlo](sistema/index.md)",
+    "  - [Requerimientos y casos de uso](sistema/requerimientos.md)",
+    "  - [Modelo funcional del dominio](sistema/modelado.md)",
+    "  - [Arquitectura](sistema/arquitectura.md)",
+    "  - [Tipos que impiden errores](sistema/tipos.md)",
+    "  - [Dónde va cada cosa](sistema/donde-va.md)",
+    "  - [API HTTP](sistema/api.md)",
+    "  - [Base de datos](sistema/datos.md)",
+    "  - [Pruebas](sistema/pruebas.md)",
+    "  - [Ponerlo en marcha con GitHub](sistema/despliegue.md)",
     "", "# El corpus y su lectura", "", "- [Cómo leer este libro](guia.md)", "  - [Las herramientas de ejecución](herramientas.md)", "- [Metodología](metodologia.md)",
     "", "# Diseño del checker", "",
     "- [Por qué se rehízo el diseño](diseno/critica.md)",
@@ -1132,6 +1143,11 @@ write("SUMMARY.md", "\n".join([
     "- [Significado y leyes](diseno/leyes.md)",
     "- [Decisiones de diseño](diseno/decisiones.md)",
     "- [Dónde va cada cosa](diseno/donde-va.md)",
+    "- [Casos de uso del motor](diseno/casos-de-uso-motor.md)",
+    "- [Portada, resumen y abstract](informe/portada.md)",
+    "- [Capítulo 1 — Introducción y objetivos](informe/cap1.md)",
+    "- [Capítulo 2 — Marco teórico, metodología y plan](informe/cap2.md)",
+    "- [Capítulo 3 — Costo beneficio](informe/cap3.md)",
     "- [Capítulo 4 — Requerimientos](diseno/cap4/index.md)",
     "  - [4.1 Funcionales](diseno/cap4/4-1-funcionales.md)",
     "  - [4.2 No funcionales](diseno/cap4/4-2-no-funcionales.md)",
@@ -1143,6 +1159,16 @@ write("SUMMARY.md", "\n".join([
     "  - [5.5 Estados](diseno/cap5/5-5-estados.md)",
     "  - [5.6 Arquitectura lógica](diseno/cap5/5-6-arquitectura-logica.md)",
     "  - [5.7 Arquitectura física](diseno/cap5/5-7-arquitectura-fisica.md)",
+    "- [Capítulo 6 — Interfaces y datos](diseno/cap6/index.md)",
+    "  - [6.1 Interfaz de usuario](diseno/cap6/6-1-interfaz.md)",
+    "  - [6.2 Navegación](diseno/cap6/6-2-navegacion.md)",
+    "  - [6.3 Mockups](diseno/cap6/6-3-mockups.md)",
+    "  - [6.4 Descripción de la interfaz](diseno/cap6/6-4-descripcion-ui.md)",
+    "  - [6.5 Interfaz de servicios](diseno/cap6/6-5-servicios.md)",
+    "  - [6.6 Diagrama de servicios](diseno/cap6/6-6-diagrama-servicios.md)",
+    "  - [6.7 Descripción de los servicios](diseno/cap6/6-7-descripcion-servicios.md)",
+    "  - [6.8 Servicios consumidos](diseno/cap6/6-8-consumidos.md)",
+    "  - [6.9 Modelo de base de datos](diseno/cap6/6-9-datos.md)",
     "- [Capítulo 7 — Construcción](construccion/index.md)",
     "  - [7.1 Código](construccion/7-1-codigo.md)",
     "  - [7.2 Base de datos](construccion/7-2-datos.md)",
@@ -1151,6 +1177,8 @@ write("SUMMARY.md", "\n".join([
     "  - [7.5 Componentes](construccion/7-5-componentes.md)",
     "  - [7.6 Plan de incrementos](construccion/7-6-incrementos.md)",
     "  - [7.7 Estado actual](construccion/7-7-estado.md)",
+    "- [Glosario](informe/glosario.md)",
+    "- [Referencias](informe/referencias.md)",
     "", "# Artículo", "",
     "- [Estructura y fuentes](articulo/index.md)",
     "  - [Trabajos relacionados y aporte](articulo/aportes.md)",
@@ -1177,46 +1205,11 @@ write("SUMMARY.md", "\n".join([
 # el libro muestra siempre el código vigente, y si el símbolo desaparece el
 # libro no se genera.
 REPO_URL = "https://github.com/jasrod12ucsm/checker/blob/main"
-LENGUAJE = {".cpp": "cpp", ".h": "cpp", ".py": "python", ".sh": "bash", ".txt": "cmake", ".yml": "yaml", ".json": "json"}
+LENGUAJE = {".cpp": "cpp", ".h": "cpp", ".py": "python", ".sh": "bash", ".txt": "cmake", ".yml": "yaml", ".json": "json",
+            ".ts": "typescript", ".tsx": "typescript", ".sql": "sql"}
 
 
-def fragmento(ruta, simbolo):
-    lineas = open(ruta, encoding="utf-8").read().split("\n")
-    if re.fullmatch(r"\d+-\d+", simbolo):
-        ini, fin = (int(x) for x in simbolo.split("-"))
-        return ini, lineas[ini - 1:fin]
-    if simbolo.startswith('"'):  # la línea que contiene ese texto, p. ej. @prueba("…")
-        pat = re.compile(re.escape(simbolo))
-    elif ruta.endswith(".py"):
-        pat = re.compile(rf"^(\s*)(def|class) {re.escape(simbolo)}\b")
-    elif "," in simbolo:
-        pat = re.compile(rf"^TEST\({re.escape(simbolo)}\)")
-    else:
-        pat = re.compile(rf"^\S.*\b{re.escape(simbolo)}\s*\(.*[^;]\s*$")
-    for i, l in enumerate(lineas):
-        if pat.search(l) if simbolo.startswith('"') else pat.match(l):
-            break
-    else:
-        raise SystemExit(f"libro: no encuentro {simbolo!r} en {ruta}")
-    if ruta.endswith(".py"):
-        d = i
-        while lineas[d].lstrip().startswith("@"):  # decoradores: el bloque es el def que sigue
-            d += 1
-        sangria = len(lineas[d]) - len(lineas[d].lstrip())
-        j = d + 1
-        while j < len(lineas) and (not lineas[j].strip() or len(lineas[j]) - len(lineas[j].lstrip()) > sangria):
-            j += 1
-        while not lineas[j - 1].strip():
-            j -= 1
-        return i + 1, lineas[i:j]
-    prof, abierto = 0, False
-    for j in range(i, len(lineas)):
-        sin_cadenas = re.sub(r'"(\\.|[^"\\])*"|\'(\\.|[^\'\\])*\'|//.*', "", lineas[j])
-        prof += sin_cadenas.count("{") - sin_cadenas.count("}")
-        abierto = abierto or "{" in sin_cadenas
-        if abierto and prof <= 0:
-            return i + 1, lineas[i:j + 1]
-    raise SystemExit(f"libro: llaves sin cerrar en {simbolo!r} de {ruta}")
+from fragmentos import fragmento  # noqa: E402
 
 
 def con_codigo(texto):
@@ -1244,6 +1237,9 @@ for raiz, _, archivos in os.walk("libro"):
 svg = os.path.join("libro", "diagramas", "svg")
 if os.path.isdir(svg):
     shutil.copytree(svg, os.path.join(SRC, "diagramas"))
+mockups = os.path.join("libro", "mockups")
+if os.path.isdir(mockups):
+    shutil.copytree(mockups, os.path.join(SRC, "mockups"))
 
 print(f"{OUT}/src -> {len(fns)} casos, {n_pares} páginas de operación, {len(mcont)} páginas de matriz")
 print(f"  mdbook serve {OUT} --open")

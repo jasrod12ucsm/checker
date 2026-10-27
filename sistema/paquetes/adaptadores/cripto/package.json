@@ -1,0 +1,8 @@
+{
+  "name": "@centinela/cripto",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": { "@centinela/kernel": "*", "@centinela/identidad": "*", "@centinela/repositorios": "*", "@centinela/producto": "*" }
+}

@@ -7,6 +7,9 @@
 #   docker compose run --rm linter       (prototipo retirado, D-01)
 #   docker compose run --rm shell        shell interactiva dentro del entorno
 #   docker compose run --rm query        REPL de clang-query para descubrir matchers
+#   docker compose up sistema            Centinela C++ (revisor de PR) en http://localhost:8080
+#   docker compose up sistema-demo       demostración con un GitHub simulado (sin token)
+#   docker compose run --rm sistema-pruebas   pruebas del sistema, con clang y el checker reales
 
 x-base: &base
   build:
@@ -93,5 +96,52 @@ services:
     stdin_open: true
     tty: true
 
+  # Centinela C++: el revisor automático de pull requests (libro: Sistema).
+  # Configuración en sistema/.env (copiar de sistema/.env.ejemplo).
+  sistema:
+    build:
+      context: .
+      dockerfile: sistema/Dockerfile
+      # La base es la imagen del checker: compose la construye antes que esta.
+      additional_contexts:
+        checker-base: service:shell
+    image: centinela:local
+    env_file:
+      - path: sistema/.env
+        required: false
+    ports:
+      - "8080:8080"
+    volumes:
+      - centinela-datos:/datos
+    init: true
+
+  # Demostración sin credenciales: GitHub simulado + Centinela real, en http://localhost:8080.
+  sistema-demo:
+    image: centinela:local
+    build:
+      context: .
+      dockerfile: sistema/Dockerfile
+      # La base es la imagen del checker: compose la construye antes que esta.
+      additional_contexts:
+        checker-base: service:shell
+    command: ["npx", "tsx", "demo/demostrar.ts"]
+    environment:
+      CENTINELA_BD: ":memory:"
+    ports:
+      - "8080:8080"
+    init: true
+
+  sistema-pruebas:
+    image: centinela:local
+    build:
+      context: .
+      dockerfile: sistema/Dockerfile
+      # La base es la imagen del checker: compose la construye antes que esta.
+      additional_contexts:
+        checker-base: service:shell
+    command: ["npm", "test"]
+    init: true
+
 volumes:
   build:
+  centinela-datos:

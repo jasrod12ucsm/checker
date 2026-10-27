@@ -3,6 +3,12 @@
 Esta parte es para quien descarga el repositorio y quiere ver el checker
 funcionando y comprobar sus requerimientos sin leer el resto del libro.
 
+> El producto es **Centinela C++**, el servicio web que revisa los *pull
+> requests* con este checker. Para verlo funcionando:
+> `docker compose up sistema-demo` y abrir `http://localhost:8080`
+> ([Sistema: Centinela C++](../sistema/index.md)). Esta guía es la del
+> checker que el servicio usa por dentro.
+
 ## En dos minutos
 
 Solo necesitas **Docker** con `docker compose`. Todo lo demás (LLVM 21.1.8,

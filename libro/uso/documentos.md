@@ -22,19 +22,28 @@ libro deja de generarse. El símbolo puede ser una función, un
 `TEST(Suite, Nombre)`, un texto entre comillas (la prueba `@prueba("…")`
 que lo contiene) o un rango de líneas `10-20`:
 
-{{codigo bench/gen_book.py fragmento}}
+{{codigo bench/fragmentos.py fragmento}}
 
 PlantUML se busca en `$PLANTUML_JAR` o en `~/.local/share/plantuml/plantuml.jar`.
 No necesita Graphviz.
 
 ## El Word del proyecto
 
-`bench/informe/build_v4.py` arma `Proyecto_Fin_de_Carrera_V4.docx`.
-Parte de la versión V2 del documento de la universidad, que no está en el
-repositorio, y reemplaza los capítulos 4, 5 y 7 con el contenido de
-`libro/diseno/cap4`, `libro/diseno/cap5` y `libro/construccion`, y los
-diagramas con `libro/diagramas/png`. Es una herramienta de los autores:
-quien no tenga la V2 no la necesita para usar el checker.
+```bash
+bench/informe/generar.sh ~/Downloads/Proyecto_Fin_de_Carrera_V2.docx ~/Downloads/Proyecto_Fin_de_Carrera_V6.docx
+```
+
+`generar.sh` arma el Word del proyecto en dos pasadas. La primera ejecuta
+`bench/informe/build_v4.py`, que toma la plantilla V2 de la universidad (no está en el
+repositorio) y reemplaza portada, resumen, capítulos 1 a 7, glosario y referencias con el
+contenido del libro: `libro/informe` (portada, capítulos 1 a 3, glosario y referencias),
+`libro/diseno/cap4`, `cap5`, `cap6` y `libro/construccion`; los diagramas salen de
+`libro/diagramas/png` y los *mockups* de `libro/mockups`. Luego convierte el documento a PDF
+con LibreOffice y `bench/informe/paginas.py` lee en qué página cayó cada título, tabla y
+figura; la segunda pasada vuelve a generar el Word con esos números en el índice general, el
+índice de tablas y el índice de figuras. El sistema Centinela C++ es el centro del documento y
+el checker es su motor. Es una herramienta de los autores: quien no tenga la V2 no la
+necesita para usar el sistema ni el checker.
 
 ## El artículo
 

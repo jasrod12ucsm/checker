@@ -1,0 +1,18 @@
+{
+  "name": "@centinela/http",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@centinela/kernel": "*",
+    "@centinela/identidad": "*",
+    "@centinela/repositorios": "*",
+    "@centinela/revisiones": "*",
+    "@centinela/producto": "*",
+    "fastify": "5.12.7",
+    "@fastify/cookie": "11.1.3",
+    "zod": "4.6.7",
+    "@fastify/static": "10.1.7"
+  }
+}

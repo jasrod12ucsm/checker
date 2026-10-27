@@ -1,0 +1,97 @@
+@startuml
+!include _estilo.iuml
+hide empty members
+
+package identidad {
+  class Usuario <<agregado>> {
+    id: UsuarioId
+    email: Email
+    nombre: Texto
+    rol: Rol
+    hashClave: HashClave
+    estado: Pendiente | Activo | Desactivado
+  }
+  class Sesion {
+    tokenHash: HashToken
+    expira: Instante
+  }
+  class "Autorizado<P>" as Aut <<testigo>> {
+    usuarioId: UsuarioId
+    permiso: P
+    {static} para(usuario, permiso): Resultado
+  }
+  enum Rol {
+    administrador
+    desarrollador
+  }
+}
+
+package repositorios {
+  class Repositorio <<agregado>> {
+    id: RepositorioId
+    nombre: NombreRepo
+    politica: Silent | Possibly
+    bloquearMerge: boolean
+    secretoWebhook: SecretoWebhook
+    activo: boolean
+  }
+}
+
+package revisiones {
+  class "Revision<E>" as Revision <<agregado>> {
+    id: RevisionId
+    pr: PullRequest
+    origen: webhook | manual
+    intentos: number
+    estado: E
+  }
+  class PullRequest {
+    numero: Positivo
+    titulo
+    autor
+    shaCabeza
+  }
+  abstract class EstadoRevision <<unión>>
+  class Pendiente
+  class EnAnalisis
+  class Publicada {
+    veredicto: Aprobada | ConProblemas
+    resumen: Resumen
+  }
+  class Fallida {
+    motivo
+  }
+  class Hallazgo {
+    archivo, linea, columna
+    clase: Confirmado | Posible
+    mensaje
+    ruta: Nota[]
+    huella: Huella
+    clasificacion: SinRevisar | Confirmado | FalsoPositivo
+    clasificadoPor: Autoria | null
+  }
+  class Autoria {
+    por: UsuarioId
+    en: Instante
+  }
+  class Descarte {
+    huella: Huella
+  }
+}
+
+Usuario "1" -- "*" Sesion
+Usuario -- Rol
+Aut ..> Usuario : se obtiene de
+Repositorio "1" -- "*" Revision
+Repositorio "1" -- "*" Descarte : huellas de\nfalsos positivos
+Revision *-- PullRequest
+Revision *-- EstadoRevision
+EstadoRevision <|-- Pendiente
+EstadoRevision <|-- EnAnalisis
+EstadoRevision <|-- Publicada
+EstadoRevision <|-- Fallida
+Revision "1" *-- "*" Hallazgo
+Hallazgo ..> Descarte : la misma huella\nla suprime
+Hallazgo *-- Autoria
+Autoria ..> Usuario : quién clasificó
+@enduml
