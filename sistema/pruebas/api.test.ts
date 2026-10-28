@@ -4,7 +4,7 @@ import { desenvolver, type Positivo } from "@centinela/kernel";
 import { producto, type Producto } from "@centinela/producto";
 import { abrirAlmacen } from "@centinela/sqlite";
 import { claves, firmar, secretos } from "@centinela/cripto";
-import { crearServidor, COOKIE_SESION } from "@centinela/http";
+import { crearServidor, COOKIE_SESION, CABECERAS_SEGURIDAD } from "@centinela/http";
 import { dependencias } from "./dobles";
 
 const CLAVE = "clave12345678";
@@ -222,5 +222,20 @@ describe("frontend", () => {
     } finally {
       rmSync(dir, { recursive: true });
     }
+  });
+});
+
+describe("RNF-S01 cabeceras de seguridad", () => {
+  it("toda respuesta (API, error y salud) lleva la política de contenido, nosniff y no se deja enmarcar", async () => {
+    const { cookie } = await entrar();
+    for (const r of [
+      await app.inject({ method: "GET", url: "/salud" }),
+      await app.inject({ method: "GET", url: "/api/revisiones", headers: { cookie } }),
+      await app.inject({ method: "GET", url: "/api/revisiones" }),
+      await app.inject({ method: "GET", url: "/api/no-existe" }),
+    ]) {
+      for (const [k, v] of Object.entries(CABECERAS_SEGURIDAD)) expect(r.headers[k]).toBe(v);
+    }
+    expect(CABECERAS_SEGURIDAD["content-security-policy"]).toContain("frame-ancestors 'none'");
   });
 });

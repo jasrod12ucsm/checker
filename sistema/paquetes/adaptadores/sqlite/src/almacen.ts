@@ -5,7 +5,7 @@ import type { Almacen } from "@centinela/producto";
 import { aHallazgo, aRepositorio, aRevision, aSesion, aUsuario, deRevision } from "./filas";
 
 const ESQUEMA = readFileSync(new URL("./esquema.sql", import.meta.url), "utf8");
-const VERSION = 2;
+const VERSION = 3;
 
 /** Bloques de migraciones.sql por versión de destino: el bloque N lleva una base de N-1 a N. */
 const MIGRACIONES = new Map(

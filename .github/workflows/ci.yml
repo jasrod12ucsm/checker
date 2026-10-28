@@ -39,6 +39,9 @@ jobs:
       - name: Demostración de punta a punta con GitHub simulado
         run: docker compose run --rm sistema npx tsx demo/demostrar.ts --salir
 
+      - name: Seguridad contra el servicio en marcha (41 comprobaciones, capítulo 8)
+        run: docker compose run --rm sistema-no-funcionales npx tsx no-funcionales/medir.ts seguridad
+
       - name: Publicar resultados
         if: always()
         uses: actions/upload-artifact@v4

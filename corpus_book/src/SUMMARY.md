@@ -21,6 +21,7 @@
   - [Dónde va cada cosa](sistema/donde-va.md)
   - [API HTTP](sistema/api.md)
   - [Base de datos](sistema/datos.md)
+  - [El panel web](sistema/panel.md)
   - [Pruebas](sistema/pruebas.md)
   - [Ponerlo en marcha con GitHub](sistema/despliegue.md)
 
@@ -76,6 +77,12 @@
   - [7.5 Componentes](construccion/7-5-componentes.md)
   - [7.6 Plan de incrementos](construccion/7-6-incrementos.md)
   - [7.7 Estado actual](construccion/7-7-estado.md)
+- [Capítulo 8 — Pruebas del software](pruebas/index.md)
+  - [8.1 Entorno de ejecución](pruebas/8-1-entorno.md)
+  - [8.2 Pruebas funcionales](pruebas/8-2-funcionales.md)
+  - [8.3 Casos de prueba](pruebas/8-3-casos-de-prueba.md)
+  - [8.4 Pruebas no funcionales](pruebas/8-4-no-funcionales.md)
+  - [8.5 Estrategia de despliegue](pruebas/8-5-despliegue.md)
 - [Glosario](informe/glosario.md)
 - [Referencias](informe/referencias.md)
 

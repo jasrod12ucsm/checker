@@ -55,6 +55,8 @@ CREATE TABLE revisiones (
   CHECK ((estado = 'Fallida') = (motivo IS NOT NULL))
 );
 CREATE INDEX revisiones_repo ON revisiones(repositorio_id, creada_en DESC);
+-- La lista general (todas las revisiones, las 200 más recientes) recorre este índice en lugar de ordenar la tabla.
+CREATE INDEX revisiones_creada ON revisiones(creada_en DESC);
 
 CREATE TABLE hallazgos (
   id             TEXT PRIMARY KEY,

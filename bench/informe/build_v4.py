@@ -1,4 +1,4 @@
-"""Genera el Word del proyecto sobre la V2 de la universidad: portada, resumen, índices, los capítulos 1 a 7, el glosario y las referencias salen del libro (libro/informe, libro/diseno/cap4 a cap6, libro/construccion).
+"""Genera el Word del proyecto sobre la V2 de la universidad: portada, resumen, índices, los capítulos 1 a 8, el glosario y las referencias salen del libro (libro/informe, libro/diseno/cap4 a cap6, libro/construccion, libro/pruebas).
 De la V2 quedan solo el formato, la portada institucional y los títulos de capítulo."""
 import json, os, re, struct, sys, shutil
 sys.path.insert(0, os.path.dirname(__file__))
@@ -143,11 +143,14 @@ def png_size(p):
     return w, h
 
 MOCKUPS = os.path.join(LIB, "mockups")
+CAPTURAS = os.path.join(LIB, "capturas")
 
 def image(name):
     src = os.path.join(PNG, name + ".png")
     if not os.path.exists(src):
         src = os.path.join(MOCKUPS, name + ".png")
+    if not os.path.exists(src):
+        src = os.path.join(CAPTURAS, name + ".png")
     state["rid"] += 1; state["docpr"] += 1
     rid, dp = f"rId{state['rid']}", state["docpr"]
     shutil.copy(src, os.path.join(U, "word", "media", f"v4_{name}.png"))
@@ -205,7 +208,7 @@ def convert(md, cap, h1_as=None, skip_tables=()):
                 continue
             if lvl == 2:
                 cap.h3 += 1
-                t = re.sub(r"^([a-z]\)|\d+\.)\s*", "", t)
+                t = re.sub(r"^([a-z]\)|(\d+\.)+\d*)\s*", "", t)
                 t = f"{cap.n}.{cap.h2}.{cap.h3} {t}"
                 out.append(heading("Ttulo3", t))
             else:
@@ -271,6 +274,28 @@ def convert_capitulo(md, cap):
     return "".join(out)
 
 TITULOS = {
+    "Tipo de prueba|Qué se prueba": "Estrategia de pruebas",
+    "Elemento|Especificación": "Máquina anfitriona de las pruebas",
+    "Elemento|Versión": "Software dentro del contenedor",
+    "Unidad|Archivo": "Pruebas unitarias",
+    "Integración|Archivo": "Pruebas de integración",
+    "Requisito|Caso de uso": "Pruebas funcionales por requisito",
+    "Recorrido|Caso de uso": "Recorridos de extremo a extremo por navegador",
+    "Caso de uso|Dado": "Pruebas de aceptación",
+    "Campo|Contenido": "Plantilla de caso de prueba",
+    "Campo|CP-04 Clave del registro": "Caso de prueba CP-04 completo",
+    "Código|Qué prueba": "Casos de prueba y resultados",
+    "Formulario o pantalla|Obligatorios y opcionales": "Lista de verificación de formularios y pantallas",
+    "Ruta|Solicitudes por segundo": "Resultados de la prueba de carga",
+    "Conexiones|Solicitudes por segundo": "Resultados de la prueba de estrés",
+    "Base|Hallazgos": "Resultados de la prueba de volumen según el tamaño de la base",
+    "Tamaño del PR|Hallazgos": "Tiempo de revisión según el tamaño del PR",
+    "Ajuste|Valores": "Pruebas de configuración del servicio",
+    "Corrida|Violaciones": "Auditorías de accesibilidad WCAG 2.1 AA",
+    "Tarea|Acciones": "Eficiencia por tarea",
+    "Heurística|Cómo la cumple el panel": "Revisión heurística de usabilidad",
+    "Propiedad|Comprobación": "Pruebas de seguridad y resultados",
+    "Estrategia|Cómo funciona": "Estrategias de despliegue",
     "Contexto|Corre en": "Contextos de la arquitectura",
     "Caso|Actor": "Casos de uso, actores y requisitos",
     "Caso|Excepción": "Excepciones de los casos de uso",
@@ -402,6 +427,14 @@ for f, t in [("7-1-codigo", "7.1 Construcción del código"), ("7-2-datos", "7.2
              ("7-7-estado", "7.7 Estado actual")]:
     x7.append(convert(rd(f"construccion/{f}.md"), c7, t))
 
+# ---------------------------------------------------------------- capítulo 8
+c8 = Cap(8); x8 = [heading("Ttulo1", "Capítulo 8 Pruebas del software", "<w:pageBreakBefore/>")]
+x8.append(convert(rd("pruebas/index.md"), c8, None))
+for f, t in [("8-1-entorno", "8.1 Entorno de ejecución de las pruebas"), ("8-2-funcionales", "8.2 Pruebas funcionales"),
+             ("8-3-casos-de-prueba", "8.3 Casos de prueba"), ("8-4-no-funcionales", "8.4 Pruebas no funcionales"),
+             ("8-5-despliegue", "8.5 Estrategia de despliegue")]:
+    x8.append(convert(rd(f"pruebas/{f}.md"), c8, t))
+
 # ---------------------------------------------------------------- ensamblar
 doc = os.path.join(U, "word", "document.xml")
 head, P, tail = split(open(doc).read())
@@ -425,7 +458,7 @@ P[irs + 1] = con_texto(P[irs + 1], runs(res)); P[irs + 2] = con_texto(P[irs + 2]
 abs_, key = bloque("Abstract").split("\n\n")
 P[iab + 1] = con_texto(P[iab + 1], runs(abs_)); P[iab + 2] = con_texto(P[iab + 2], runs(key))
 
-cuerpo = ([P[i1], x1, P[i2], x2, P[i3], x3, P[i4], "".join(x4), P[i5], "".join(x5), P[i6], "".join(x6), "".join(x7),
+cuerpo = ([P[i1], x1, P[i2], x2, P[i3], x3, P[i4], "".join(x4), P[i5], "".join(x5), P[i6], "".join(x6), "".join(x7), "".join(x8),
            P[ig], xg, P[ir]] + [referencia(r) for r in REFS])
 assert "sectPr" in P[-1]
 

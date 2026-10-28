@@ -1,0 +1,322 @@
+{
+  "escenario": "seguridad",
+  "fecha": "2026-10-28T16:23:40.992Z",
+  "entorno": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "hilos": 16,
+    "memoriaGb": 15,
+    "memoriaLibreGb": 10,
+    "so": "Linux 7.0.0-38-generic",
+    "distribucion": "Ubuntu 24.04.5 LTS",
+    "node": "v22.17.1"
+  },
+  "datos": {
+    "casos": [
+      {
+        "propiedad": "Autenticación",
+        "prueba": "GET /api/revisiones sin sesión",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "GET /api/repositorios sin sesión",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "GET /api/usuarios sin sesión",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "POST /api/revisiones sin sesión",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "PATCH /api/repositorios/9fa26c98-6506-428f-9e40-8ea65b00a84d sin sesión",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "DELETE /api/repositorios/9fa26c98-6506-428f-9e40-8ea65b00a84d sin sesión",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "PATCH /api/hallazgos/x sin sesión",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "cookie inventada",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "clave equivocada",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "11 claves equivocadas seguidas (fuerza bruta)",
+        "esperado": "429",
+        "obtenido": "429",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "la cookie de sesión es HttpOnly",
+        "esperado": "true",
+        "obtenido": "true",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "la cookie de sesión es SameSite=Strict",
+        "esperado": "true",
+        "obtenido": "true",
+        "ok": true
+      },
+      {
+        "propiedad": "Autenticación",
+        "prueba": "la sesión cerrada ya no sirve",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Autorización",
+        "prueba": "una cuenta pendiente no puede ingresar",
+        "esperado": "403",
+        "obtenido": "403",
+        "ok": true
+      },
+      {
+        "propiedad": "Autorización",
+        "prueba": "desarrollador lee revisiones",
+        "esperado": "200",
+        "obtenido": "200",
+        "ok": true
+      },
+      {
+        "propiedad": "Autorización",
+        "prueba": "desarrollador lista usuarios",
+        "esperado": "403",
+        "obtenido": "403",
+        "ok": true
+      },
+      {
+        "propiedad": "Autorización",
+        "prueba": "desarrollador conecta un repositorio",
+        "esperado": "403",
+        "obtenido": "403",
+        "ok": true
+      },
+      {
+        "propiedad": "Autorización",
+        "prueba": "desarrollador cambia la política",
+        "esperado": "403",
+        "obtenido": "403",
+        "ok": true
+      },
+      {
+        "propiedad": "Autorización",
+        "prueba": "desarrollador se hace administrador",
+        "esperado": "403",
+        "obtenido": "403",
+        "ok": true
+      },
+      {
+        "propiedad": "Autorización",
+        "prueba": "al desactivarla, su sesión abierta deja de servir",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "webhook sin firma",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "webhook con firma de otro secreto",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "webhook con el cuerpo alterado tras firmar",
+        "esperado": "401",
+        "obtenido": "401",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "webhook bien firmado",
+        "esperado": "202",
+        "obtenido": "202",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "el mismo webhook repetido no duplica la revisión",
+        "esperado": "200",
+        "obtenido": "200",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "inyección SQL en el nombre del repositorio",
+        "esperado": "400",
+        "obtenido": "400",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "política desconocida",
+        "esperado": "400",
+        "obtenido": "400",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "tipos equivocados",
+        "esperado": "400",
+        "obtenido": "400",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "JSON mal formado",
+        "esperado": "400",
+        "obtenido": "400",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "id de revisión con inyección SQL",
+        "esperado": "400",
+        "obtenido": "400",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "cuerpo de 6 MB (límite 5 MB)",
+        "esperado": "413",
+        "obtenido": "413",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "la tabla usuarios sigue ahí después de la inyección",
+        "esperado": "200",
+        "obtenido": "200",
+        "ok": true
+      },
+      {
+        "propiedad": "Confidencialidad",
+        "prueba": "las respuestas no incluyen el hash de la clave",
+        "esperado": "false",
+        "obtenido": "false",
+        "ok": true
+      },
+      {
+        "propiedad": "Confidencialidad",
+        "prueba": "un desarrollador no ve el secreto del webhook",
+        "esperado": "false",
+        "obtenido": "false",
+        "ok": true
+      },
+      {
+        "propiedad": "Confidencialidad",
+        "prueba": "la clave no aparece en ninguna respuesta",
+        "esperado": "false",
+        "obtenido": "false",
+        "ok": true
+      },
+      {
+        "propiedad": "Confidencialidad",
+        "prueba": "el título con HTML se devuelve como texto (el panel no lo interpreta)",
+        "esperado": "true",
+        "obtenido": "true",
+        "ok": true
+      },
+      {
+        "propiedad": "Confidencialidad",
+        "prueba": "un error no expone rutas ni trazas",
+        "esperado": "false",
+        "obtenido": "false",
+        "ok": true
+      },
+      {
+        "propiedad": "Disponibilidad",
+        "prueba": "GET /salud después de las pruebas",
+        "esperado": "200",
+        "obtenido": "200",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "el panel declara una política de contenido que bloquea scripts ajenos y en línea",
+        "esperado": "true",
+        "obtenido": "true",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "el panel no se deja enmarcar (clickjacking)",
+        "esperado": "DENY",
+        "obtenido": "DENY",
+        "ok": true
+      },
+      {
+        "propiedad": "Integridad",
+        "prueba": "la API pide no adivinar el tipo de contenido",
+        "esperado": "nosniff",
+        "obtenido": "nosniff",
+        "ok": true
+      }
+    ],
+    "aprobados": 41,
+    "total": 41,
+    "cabecerasDelPanel": {
+      "accept-ranges": "bytes",
+      "cache-control": "public, max-age=0",
+      "connection": "keep-alive",
+      "content-length": "398",
+      "content-security-policy": "default-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+      "content-type": "text/html; charset=utf-8",
+      "cross-origin-opener-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:23:40 GMT",
+      "etag": "W/\"18e-1a1835302b0\"",
+      "keep-alive": "timeout=72",
+      "last-modified": "Wed, 28 Oct 2026 16:23:37 GMT",
+      "referrer-policy": "no-referrer",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY"
+    }
+  }
+}

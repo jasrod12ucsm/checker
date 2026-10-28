@@ -1,0 +1,352 @@
+{
+  "escenario": "navegadores",
+  "fecha": "2026-10-28T16:21:40.943Z",
+  "entorno": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "hilos": 16,
+    "memoriaGb": 15,
+    "kernel": "7.0.0-38-generic",
+    "node": "v24.20.0"
+  },
+  "datos": {
+    "WebKit (motor de Safari)": {
+      "ejecutado": true,
+      "version": "26.6",
+      "e2e": [
+        {
+          "caso": "E2E-01 Ingreso con clave equivocada y luego correcta",
+          "cu": "CU-S01",
+          "ok": true,
+          "acciones": 5,
+          "ms": 1069
+        },
+        {
+          "caso": "E2E-02 Ver el detalle de una revisión real y su veredicto",
+          "cu": "CU-S06",
+          "ok": true,
+          "acciones": 1,
+          "ms": 201
+        },
+        {
+          "caso": "E2E-03 Clasificar un hallazgo como confirmado",
+          "cu": "CU-S07",
+          "ok": true,
+          "acciones": 1,
+          "ms": 50
+        },
+        {
+          "caso": "E2E-04 Marcar un falso positivo: deja de verse y se puede volver a mostrar",
+          "cu": "CU-S07",
+          "ok": true,
+          "acciones": 4,
+          "ms": 245
+        },
+        {
+          "caso": "E2E-05 Revisar ahora un PR ya revisado: el panel enlaza la revisión existente",
+          "cu": "CU-S05",
+          "ok": true,
+          "acciones": 5,
+          "ms": 1218
+        },
+        {
+          "caso": "E2E-06 Conectar un repositorio y obtener su webhook",
+          "cu": "CU-S03",
+          "ok": true,
+          "acciones": 5,
+          "ms": 206
+        },
+        {
+          "caso": "E2E-07 Registrarse: la cuenta queda pendiente y no puede ingresar",
+          "cu": "CU-S01",
+          "ok": true,
+          "acciones": 8,
+          "ms": 611
+        },
+        {
+          "caso": "E2E-08 La administración aprueba la cuenta como desarrollador",
+          "cu": "CU-S02",
+          "ok": true,
+          "acciones": 2,
+          "ms": 136
+        },
+        {
+          "caso": "E2E-09 El desarrollador ingresa, revisa, y no puede administrar",
+          "cu": "CU-S01, CU-S06",
+          "ok": true,
+          "acciones": 1,
+          "ms": 145
+        },
+        {
+          "caso": "E2E-10 Cerrar sesión protege el panel",
+          "cu": "CU-S01",
+          "ok": true,
+          "acciones": 1,
+          "ms": 240
+        },
+        {
+          "caso": "E2E-11 Desconectar el repositorio de prueba",
+          "cu": "CU-S03",
+          "ok": true,
+          "acciones": 3,
+          "ms": 220
+        }
+      ],
+      "configuraciones": [
+        {
+          "pantalla": "Revisiones",
+          "ancho": 390,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Repositorios",
+          "ancho": 390,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Usuarios",
+          "ancho": 390,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Detalle",
+          "ancho": 390,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Revisiones",
+          "ancho": 390,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Repositorios",
+          "ancho": 390,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Usuarios",
+          "ancho": 390,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Detalle",
+          "ancho": 390,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Revisiones",
+          "ancho": 768,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Repositorios",
+          "ancho": 768,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Usuarios",
+          "ancho": 768,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Detalle",
+          "ancho": 768,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Revisiones",
+          "ancho": 768,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Repositorios",
+          "ancho": 768,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Usuarios",
+          "ancho": 768,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Detalle",
+          "ancho": 768,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Revisiones",
+          "ancho": 1440,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Repositorios",
+          "ancho": 1440,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Usuarios",
+          "ancho": 1440,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Detalle",
+          "ancho": 1440,
+          "tema": "light",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Revisiones",
+          "ancho": 1440,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Repositorios",
+          "ancho": 1440,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Usuarios",
+          "ancho": 1440,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        },
+        {
+          "pantalla": "Detalle",
+          "ancho": 1440,
+          "tema": "dark",
+          "ok": true,
+          "desborde": 0
+        }
+      ],
+      "accesibilidad": [
+        {
+          "tema": "light",
+          "pantalla": "Ingreso",
+          "reglasAprobadas": 21,
+          "violaciones": []
+        },
+        {
+          "tema": "light",
+          "pantalla": "Registro",
+          "reglasAprobadas": 23,
+          "violaciones": []
+        },
+        {
+          "tema": "light",
+          "pantalla": "Revisiones",
+          "reglasAprobadas": 21,
+          "violaciones": []
+        },
+        {
+          "tema": "light",
+          "pantalla": "Repositorios",
+          "reglasAprobadas": 19,
+          "violaciones": []
+        },
+        {
+          "tema": "light",
+          "pantalla": "Usuarios",
+          "reglasAprobadas": 21,
+          "violaciones": []
+        },
+        {
+          "tema": "light",
+          "pantalla": "Detalle de revisión",
+          "reglasAprobadas": 25,
+          "violaciones": []
+        },
+        {
+          "tema": "light",
+          "pantalla": "Diálogo del webhook",
+          "reglasAprobadas": 27,
+          "violaciones": []
+        },
+        {
+          "tema": "dark",
+          "pantalla": "Ingreso",
+          "reglasAprobadas": 21,
+          "violaciones": []
+        },
+        {
+          "tema": "dark",
+          "pantalla": "Registro",
+          "reglasAprobadas": 23,
+          "violaciones": []
+        },
+        {
+          "tema": "dark",
+          "pantalla": "Revisiones",
+          "reglasAprobadas": 21,
+          "violaciones": []
+        },
+        {
+          "tema": "dark",
+          "pantalla": "Repositorios",
+          "reglasAprobadas": 19,
+          "violaciones": []
+        },
+        {
+          "tema": "dark",
+          "pantalla": "Usuarios",
+          "reglasAprobadas": 21,
+          "violaciones": []
+        },
+        {
+          "tema": "dark",
+          "pantalla": "Detalle de revisión",
+          "reglasAprobadas": 25,
+          "violaciones": []
+        },
+        {
+          "tema": "dark",
+          "pantalla": "Diálogo del webhook",
+          "reglasAprobadas": 27,
+          "violaciones": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "escenario": "volumen",
+  "fecha": "2026-10-28T16:03:49.037Z",
+  "entorno": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "hilos": 16,
+    "memoriaGb": 15,
+    "memoriaLibreGb": 10,
+    "so": "Linux 7.0.0-38-generic",
+    "distribucion": "Ubuntu 24.04.5 LTS",
+    "node": "v22.17.1"
+  },
+  "datos": {
+    "base": [
+      {
+        "revisiones": 0,
+        "hallazgos": 0,
+        "sembrarS": 0,
+        "tamanoBdMb": 0.2,
+        "listaDevuelve": 0,
+        "lista": {
+          "solicitudesPorS": 19016,
+          "latenciaMs": {
+            "p50": 0,
+            "p90": 0,
+            "p97_5": 1,
+            "p99": 1,
+            "max": 22
+          },
+          "total": 209192,
+          "no2xx": 0,
+          "errores": 0,
+          "timeouts": 0,
+          "bytesPorS": 8481513
+        },
+        "memoria": {
+          "rssMb": 213,
+          "picoMb": 221
+        }
+      },
+      {
+        "revisiones": 1000,
+        "hallazgos": 5500,
+        "sembrarS": 0.1,
+        "tamanoBdMb": 2.8,
+        "listaDevuelve": 200,
+        "lista": {
+          "solicitudesPorS": 540,
+          "latenciaMs": {
+            "p50": 16,
+            "p90": 31,
+            "p97_5": 34,
+            "p99": 35,
+            "max": 128
+          },
+          "total": 5944,
+          "no2xx": 0,
+          "errores": 0,
+          "timeouts": 0,
+          "bytesPorS": 65412375
+        },
+        "detalleGrande": {
+          "solicitudesPorS": 353,
+          "latenciaMs": {
+            "p50": 25,
+            "p90": 48,
+            "p97_5": 51,
+            "p99": 53,
+            "max": 139
+          },
+          "total": 3525,
+          "no2xx": 0,
+          "errores": 0,
+          "timeouts": 0,
+          "bytesPorS": 62144512
+        },
+        "detalleGrandeKb": 172,
+        "memoria": {
+          "rssMb": 192,
+          "picoMb": 194
+        }
+      },
+      {
+        "revisiones": 20000,
+        "hallazgos": 100500,
+        "sembrarS": 1.4,
+        "tamanoBdMb": 54.4,
+        "listaDevuelve": 200,
+        "lista": {
+          "solicitudesPorS": 55,
+          "latenciaMs": {
+            "p50": 161,
+            "p90": 254,
+            "p97_5": 324,
+            "p99": 344,
+            "max": 870
+          },
+          "total": 554,
+          "no2xx": 0,
+          "errores": 0,
+          "timeouts": 0,
+          "bytesPorS": 6728090
+        },
+        "detalleGrande": {
+          "solicitudesPorS": 329,
+          "latenciaMs": {
+            "p50": 27,
+            "p90": 44,
+            "p97_5": 55,
+            "p99": 58,
+            "max": 165
+          },
+          "total": 3291,
+          "no2xx": 0,
+          "errores": 0,
+          "timeouts": 0,
+          "bytesPorS": 58025574
+        },
+        "detalleGrandeKb": 172,
+        "memoria": {
+          "rssMb": 299,
+          "picoMb": 300
+        }
+      }
+    ],
+    "pullRequests": [
+      {
+        "archivos": 1,
+        "estado": "Publicada",
+        "hallazgos": 2,
+        "resumen": {
+          "archivosAnalizados": 1,
+          "noCompilados": 0,
+          "confirmados": 1,
+          "posibles": 1,
+          "suprimidos": 0
+        },
+        "segundos": 0.3
+      },
+      {
+        "archivos": 10,
+        "estado": "Publicada",
+        "hallazgos": 20,
+        "resumen": {
+          "archivosAnalizados": 10,
+          "noCompilados": 0,
+          "confirmados": 10,
+          "posibles": 10,
+          "suprimidos": 0
+        },
+        "segundos": 0.6
+      },
+      {
+        "archivos": 40,
+        "estado": "Publicada",
+        "hallazgos": 80,
+        "resumen": {
+          "archivosAnalizados": 40,
+          "noCompilados": 0,
+          "confirmados": 40,
+          "posibles": 40,
+          "suprimidos": 0
+        },
+        "segundos": 1.7
+      }
+    ],
+    "cuerpo6Mb": 413
+  }
+}

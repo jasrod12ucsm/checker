@@ -78,7 +78,7 @@ Tabla: Trazabilidad de objetivos y resultados
 | OE1 | Banco de 750 casos etiquetado desde la norma (342 inválidos, 306 seguros, 102 dependientes de la capacidad), validado en ejecución (852 ejecuciones, 0 contradicciones); CSA de referencia detecta 80 de 342. | 2: metodología; 4: RF-13 a RF-15; 7: construcción del banco y del arnés. |
 | OE2 | Checker `ucsm.ContainerInvalidation` como *plugin* de CSA (LLVM 21): 101 mutaciones y 348 reglas de la norma como datos, con pruebas unitarias y de integración. | 4: RF-01 a RF-12, RF-16, RF-17; 5: arquitectura del motor; 7: construcción. |
 | OE3 | Comparación en cuatro condiciones con cotejo por sitio: el checker detecta 342 de 342 sin falsas alarmas; en código real, 781 unidades de cuatro proyectos sin caídas y 10 de 10 defectos sembrados detectados. | 2: protocolo; 4: RF-13, RF-14, RNF-01 a RNF-05; 7: estado y resultados. |
-| OE4 | Centinela C++: registro sin usuarios predefinidos, roles, repositorios, *webhook* firmado, cola de revisiones, comentarios en línea y estado del commit, clasificación de hallazgos; backend con 140 pruebas automáticas y *mockups* del panel. | 4: RF-S01 a RF-S05, RNF-S01 a RNF-S06; 5: casos de uso y arquitectura; 6: interfaces y datos; 7: construcción. |
+| OE4 | Centinela C++: registro sin usuarios predefinidos, roles, repositorios, *webhook* firmado, cola de revisiones, comentarios en línea y estado del commit, clasificación de hallazgos y panel web; 279 pruebas automáticas (155 del servicio y 124 del panel), 11 recorridos de extremo a extremo en 4 navegadores, pruebas de carga, estrés, volumen, configuración, usabilidad y seguridad (41 de 41). | 4: RF-S01 a RF-S05, RNF-S01 a RNF-S10; 5: casos de uso y arquitectura; 6: interfaces y datos; 7: construcción; 8: pruebas. |
 
 ## 1.5 Solución propuesta
 
@@ -206,7 +206,7 @@ La norma ISO/IEC 14882:2017 es la fuente semántica de las reglas y del banco, y
 
 ## 1.11 Síntesis de requisitos y casos de uso
 
-Los requisitos completos se desarrollan en el capítulo 4 y los casos de uso en la sección 5.1. Centinela C++ tiene cinco requerimientos funcionales (RF-S01 a RF-S05) y seis no funcionales (RNF-S01 a RNF-S06); su motor de análisis, diecisiete funcionales (RF-01 a RF-17) y ocho no funcionales (RNF-01 a RNF-08). Los actores del sistema son el administrador y el desarrollador del equipo cliente, que entran con usuario y clave, y GitHub, que envía los eventos. Cada caso de uso tiene un criterio de aceptación comprobado por una prueba automática.
+Los requisitos completos se desarrollan en el capítulo 4 y los casos de uso en la sección 5.1. Centinela C++ tiene cinco requerimientos funcionales (RF-S01 a RF-S05) y diez no funcionales (RNF-S01 a RNF-S10); su motor de análisis, diecisiete funcionales (RF-01 a RF-17) y ocho no funcionales (RNF-01 a RNF-08). Los actores del sistema son el administrador y el desarrollador del equipo cliente, que entran con usuario y clave, y GitHub, que envía los eventos. Cada caso de uso tiene un criterio de aceptación comprobado por una prueba automática.
 
 ## 1.12 Análisis de alternativas de solución
 
@@ -247,7 +247,7 @@ Tabla: Brechas técnicas y cómo se cerraron
 | API y estado de CSA | *Plugin* con núcleo puro y cáscara sobre CSA. | 40 pruebas del núcleo y 5 archivos `lit`. |
 | Etiquetado normativo | Norma como datos con su cláusula, validada en ejecución. | 852 ejecuciones, 0 contradicciones. |
 | Evaluación automática | Arnés con SARIF y cotejo por sitio. | 750 casos × 4 condiciones; 11 leyes probadas. |
-| Servicio web | Backend TypeScript con arquitectura por capas. | 140 pruebas; demostración de punta a punta con clang real. |
+| Servicio web | Backend TypeScript con arquitectura por capas. | 279 pruebas (servicio y panel); demostración de punta a punta con clang real; pruebas del capítulo 8. |
 
 La viabilidad técnica quedó demostrada con el software construido. La económica se evalúa en el capítulo 3: la inversión estimada es de S/ 22 537,50 y el VAN es positivo en los escenarios base y optimista y negativo en el pesimista, lo que muestra que el resultado depende de cuántos equipos adopten el servicio.
 

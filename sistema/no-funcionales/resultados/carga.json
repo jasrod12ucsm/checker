@@ -1,0 +1,114 @@
+{
+  "escenario": "carga",
+  "fecha": "2026-10-28T16:08:10.743Z",
+  "entorno": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "hilos": 16,
+    "memoriaGb": 15,
+    "memoriaLibreGb": 10,
+    "so": "Linux 7.0.0-38-generic",
+    "distribucion": "Ubuntu 24.04.5 LTS",
+    "node": "v22.17.1"
+  },
+  "datos": {
+    "conexiones": 20,
+    "duracionS": 20,
+    "base": "1000 revisiones, 5000 hallazgos",
+    "rutas": {
+      "GET /salud": {
+        "solicitudesPorS": 87936,
+        "latenciaMs": {
+          "p50": 0,
+          "p90": 0,
+          "p97_5": 0,
+          "p99": 0,
+          "max": 16
+        },
+        "total": 1758513,
+        "no2xx": 0,
+        "errores": 0,
+        "timeouts": 0,
+        "bytesPorS": 40093286
+      },
+      "GET /api/sesion": {
+        "solicitudesPorS": 41802,
+        "latenciaMs": {
+          "p50": 0,
+          "p90": 0,
+          "p97_5": 1,
+          "p99": 1,
+          "max": 7
+        },
+        "total": 836062,
+        "no2xx": 0,
+        "errores": 0,
+        "timeouts": 0,
+        "bytesPorS": 26211942
+      },
+      "GET /api/revisiones (200 de 1000)": {
+        "solicitudesPorS": 823,
+        "latenciaMs": {
+          "p50": 22,
+          "p90": 30,
+          "p97_5": 44,
+          "p99": 45,
+          "max": 217
+        },
+        "total": 16457,
+        "no2xx": 0,
+        "errores": 0,
+        "timeouts": 0,
+        "bytesPorS": 99608166
+      },
+      "GET /api/revisiones/:id (5 hallazgos)": {
+        "solicitudesPorS": 12484,
+        "latenciaMs": {
+          "p50": 1,
+          "p90": 2,
+          "p97_5": 2,
+          "p99": 3,
+          "max": 49
+        },
+        "total": 249645,
+        "no2xx": 0,
+        "errores": 0,
+        "timeouts": 0,
+        "bytesPorS": 34852454
+      },
+      "GET /api/repositorios": {
+        "solicitudesPorS": 32656,
+        "latenciaMs": {
+          "p50": 0,
+          "p90": 0,
+          "p97_5": 1,
+          "p99": 1,
+          "max": 7
+        },
+        "total": 653162,
+        "no2xx": 0,
+        "errores": 0,
+        "timeouts": 0,
+        "bytesPorS": 26290586
+      },
+      "GET / (panel web)": {
+        "solicitudesPorS": 14709,
+        "latenciaMs": {
+          "p50": 1,
+          "p90": 2,
+          "p97_5": 2,
+          "p99": 3,
+          "max": 12
+        },
+        "total": 294171,
+        "no2xx": 0,
+        "errores": 0,
+        "timeouts": 0,
+        "bytesPorS": 14209434
+      }
+    },
+    "memoria": {
+      "rssMb": 296,
+      "picoMb": 296
+    }
+  }
+}

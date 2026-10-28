@@ -11,12 +11,16 @@
 | **RNF-05** | Memoria | memoria residente máxima por caso frente a CSA sin el checker menor que 5 % más | 119,1 MB frente a 119,9 MB: +0,7 % |
 | **RNF-06** | Claridad del diagnóstico | todo aviso nombra handle, contenedor, operación y línea de la mutación; el posible dice qué falta | RF-11 |
 | **RNF-07** | Mantenibilidad | el núcleo de dominio compila sin las cabeceras de Clang, y corregir una regla de la norma no toca código C++ | target `ucsm_dominio` sin `include` de Clang; la norma es un archivo de datos |
-| **RNF-S01** | Seguridad del acceso | claves con scrypt y sal aleatoria; token de sesión aleatorio de 256 bits guardado como hash; cookie `httpOnly`, `SameSite=Strict` y `Secure` detrás de HTTPS; bloqueo tras 10 fallos | `cripto.test.ts`, `api.test.ts` |
+| **RNF-S01** | Seguridad del acceso | claves con scrypt y sal aleatoria; token de sesión aleatorio de 256 bits guardado como hash; cookie `httpOnly`, `SameSite=Strict` y `Secure` detrás de HTTPS; bloqueo tras 10 fallos; cabeceras de seguridad (política de contenido, `nosniff`, no enmarcar) en toda respuesta | `cripto.test.ts`, `api.test.ts`; 41 de 41 comprobaciones contra el servicio en marcha (8.4.6) |
 | **RNF-S02** | Autenticidad de los *webhooks* | solo se acepta un evento cuya firma HMAC-SHA256 corresponde al secreto del repositorio, comparada en tiempo constante | `cripto.test.ts`; firma mala: 401 |
 | **RNF-S03** | Respuesta | el *webhook* responde sin esperar el análisis: el análisis corre en un trabajador aparte | `api.test.ts`: 202 con la revisión `Pendiente` |
 | **RNF-S04** | Confiabilidad | encolar y guardar la revisión van en la misma transacción; una revisión interrumpida por una caída se marca como fallida al arrancar y se puede reintentar | `almacen.test.ts`, `casos.test.ts` |
 | **RNF-S05** | Mantenibilidad del servicio | el dominio no importa Fastify, SQLite ni Node; cada paquete importa solo lo que su capa permite | `arquitectura.test.ts` |
 | **RNF-S06** | Portabilidad | el servicio completo se levanta con una orden de Docker | `docker compose up sistema-demo`; arranca sin usuarios ni claves predefinidas |
+| **RNF-S07** | Rendimiento | con 20 conexiones simultáneas y 1 000 revisiones, el p99 de cada consulta del panel es menor que 200 ms; el *webhook* se acusa en menos de 1 s aun con 50 PR a la vez | p99 de 45 ms en la más lenta (la lista); 50 *webhooks* acusados en 77 ms (8.4.1, 8.4.2) |
+| **RNF-S08** | Capacidad | con 20 000 revisiones y 100 000 hallazgos la lista responde con p99 menor que 500 ms; un PR de 40 archivos se publica en menos de 1 minuto; un cuerpo de más de 5 MB se rechaza | 22 ms; 1,7 s; 413 (8.4.3) |
+| **RNF-S09** | Usabilidad y accesibilidad | 0 violaciones de WCAG 2.1 AA (axe-core) en cada pantalla, en tema claro y oscuro; las tareas frecuentes (abrir una revisión, clasificar un hallazgo, aprobar un registro) en una acción desde su pantalla | 0 en 14 auditorías; 1 acción (8.4.5) |
+| **RNF-S10** | Compatibilidad | el panel funciona en Chrome, Firefox y Safari (motores Blink, Gecko y WebKit) en celular (390 px), tableta (768 px) y escritorio (1440 px) sin desplazamiento horizontal | 11 de 11 recorridos y 24 de 24 combinaciones en los 4 navegadores (8.4.4) |
 | **RNF-08** | Reproducibilidad | la misma imagen da las mismas cifras; cada ejecución registra versiones y sha256 | `metricas.json` (`meta`) |
 
 ## Requerimientos organizacionales
@@ -36,6 +40,8 @@
 | SEI CERT CTR51-CPP | uso de iteradores, referencias y punteros válidos | el alcance del checker es esta regla para los contenedores de la STL |
 | Convenciones de LLVM | estilo y avisos del código del plugin | se compila con `-Wall -Wextra -Werror=switch` (`UCSM_WARNINGS`) |
 | OWASP ASVS 4.0 (V2, V3) | autenticación y manejo de sesiones del servicio | RNF-S01; pruebas de `api.test.ts` |
+| WCAG 2.1, nivel AA | accesibilidad del panel web | RNF-S09; axe-core y `contraste.test.ts` |
+| ISO/IEC 25010:2011 | las características de calidad que organizan las pruebas no funcionales (eficiencia, compatibilidad, usabilidad, seguridad) | capítulo 8 |
 | GitHub REST API v3 y *webhooks* | integración con los repositorios | cliente probado contra un GitHub simulado (`cliente.test.ts`) |
 | APA 7 | citas y referencias del informe | revisión |
 

@@ -127,7 +127,7 @@ describe("almacén SQLite", () => {
     expect(() => a.hallazgos.guardar({ ...H, clasificadoPor: { por: U.id, en: null as never } })).toThrow(/CHECK/);
   });
 
-  it("una base de la versión 1 se migra al abrirla: activos siguen activos, inactivos quedan pendientes", () => {
+  it("una base de la versión 1 se migra al abrirla (v2: activos siguen activos, inactivos quedan pendientes; v3: índice por fecha)", () => {
     const dir = mkdtempSync(join(tmpdir(), "centinela-"));
     try {
       const ruta = join(dir, "v1.db");
@@ -147,8 +147,12 @@ describe("almacén SQLite", () => {
       expect(a.hallazgos.porId(H.id)).toMatchObject({ clasificacion: "Confirmado", clasificadoPor: null });
       a.cerrar();
       const despues = new Database(ruta);
-      expect(despues.pragma("user_version", { simple: true })).toBe(2);
+      expect(despues.pragma("user_version", { simple: true })).toBe(3);
       expect(despues.pragma("foreign_key_check")).toEqual([]);
+      // v3: la lista general recorre el índice por fecha y no ordena la tabla (prueba de volumen, capítulo 8).
+      const plan = (despues.prepare("EXPLAIN QUERY PLAN SELECT * FROM revisiones ORDER BY creada_en DESC, rowid DESC LIMIT 200").all() as { detail: string }[]).map((f) => f.detail).join(" | ");
+      expect(plan).toContain("revisiones_creada");
+      expect(plan).not.toContain("TEMP B-TREE FOR ORDER BY"); // solo desempata la misma fecha, no ordena todo
       despues.close();
       abrirAlmacen(ruta).cerrar(); // abrirla otra vez no vuelve a migrar
     } finally {

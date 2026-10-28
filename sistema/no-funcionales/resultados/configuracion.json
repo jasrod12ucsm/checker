@@ -1,0 +1,81 @@
+{
+  "escenario": "configuracion",
+  "fecha": "2026-10-28T16:10:56.879Z",
+  "entorno": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "hilos": 16,
+    "memoriaGb": 15,
+    "memoriaLibreGb": 10,
+    "so": "Linux 7.0.0-38-generic",
+    "distribucion": "Ubuntu 24.04.5 LTS",
+    "node": "v22.17.1"
+  },
+  "datos": {
+    "paralelo": [
+      {
+        "paralelo": 1,
+        "archivos": 16,
+        "estado": "Publicada",
+        "hallazgos": 32,
+        "segundos": 2.6,
+        "memoriaPicoMb": 162
+      },
+      {
+        "paralelo": 2,
+        "archivos": 16,
+        "estado": "Publicada",
+        "hallazgos": 32,
+        "segundos": 1.3,
+        "memoriaPicoMb": 155
+      },
+      {
+        "paralelo": 4,
+        "archivos": 16,
+        "estado": "Publicada",
+        "hallazgos": 32,
+        "segundos": 0.7,
+        "memoriaPicoMb": 159
+      },
+      {
+        "paralelo": 8,
+        "archivos": 16,
+        "estado": "Publicada",
+        "hallazgos": 32,
+        "segundos": 0.5,
+        "memoriaPicoMb": 154
+      }
+    ],
+    "politicas": {
+      "Possibly": {
+        "estado": "Publicada",
+        "resumen": {
+          "archivosAnalizados": 16,
+          "noCompilados": 0,
+          "confirmados": 16,
+          "posibles": 16,
+          "suprimidos": 0
+        },
+        "hallazgos": 32
+      },
+      "Silent": {
+        "estado": "Publicada",
+        "resumen": {
+          "archivosAnalizados": 16,
+          "noCompilados": 0,
+          "confirmados": 16,
+          "posibles": 0,
+          "suprimidos": 0
+        },
+        "hallazgos": 16
+      }
+    },
+    "tiempoMaximoPorArchivo": {
+      "tiempoMaximoS": 5,
+      "paralelo": 1,
+      "archivos": 40,
+      "estado": "Publicada",
+      "motivo": null,
+      "segundos": 6.5
+    }
+  }
+}

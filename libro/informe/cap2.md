@@ -326,7 +326,8 @@ Tabla: Cronograma planificado y real
 | Experimento y código real (E4) | Banco sellado y checker | 16–30 nov | 20–26 oct |
 | Backend Centinela C++ (E5, I7) | Checker probado | no planificado | 26–27 oct |
 | *Mockups* del panel (E5) | API del backend | no planificado | 26–27 oct |
-| Panel web (E5) | *Mockups* | no planificado | 28 oct – 15 nov (pendiente) |
+| Panel web (E5) | *Mockups* | no planificado | 28 oct |
+| Pruebas funcionales y no funcionales (E5, capítulo 8) | Panel web | no planificado | 28 oct |
 | Entrega (E6) | Todo lo anterior | 16–30 nov | 16–30 nov (pendiente) |
 
 ![Cronograma planificado y real](../diagramas/2-gantt.svg)
@@ -335,7 +336,7 @@ El servicio no estaba en el plan inicial: se incorporó como cambio de alcance (
 
 ### Plan de gestión de los requisitos
 
-Los códigos RF-S01 a RF-S05 y RNF-S01 a RNF-S06 (del servicio Centinela C++), RF-01 a RF-17 y RNF-01 a RNF-08 (del motor de análisis), RN-S01 a RN-S05, RN-001 a RN-007, INT-S01 a INT-S04 e INT-001 a INT-006 se definen una sola vez en el capítulo 4 y se reutilizan en los casos de uso (5.1), las interfaces (capítulo 6), los componentes (7.5) y el plan de incrementos (7.6). Cada requisito declara la prueba que lo demuestra; un cambio de requisito sigue 2.5.6 y se refleja en las pruebas automáticas (Vitest del servicio; GoogleTest y `lit` del checker) o en el experimento.
+Los códigos RF-S01 a RF-S05 y RNF-S01 a RNF-S10 (del servicio Centinela C++), RF-01 a RF-17 y RNF-01 a RNF-08 (del motor de análisis), RN-S01 a RN-S05, RN-001 a RN-007, INT-S01 a INT-S04 e INT-001 a INT-006 se definen una sola vez en el capítulo 4 y se reutilizan en los casos de uso (5.1), las interfaces (capítulo 6), los componentes (7.5) y el plan de incrementos (7.6). Cada requisito declara la prueba que lo demuestra; un cambio de requisito sigue 2.5.6 y se refleja en las pruebas automáticas (Vitest del servicio; GoogleTest y `lit` del checker) o en el experimento.
 
 Tabla: Requisitos por necesidad, caso de uso y objetivo
 
