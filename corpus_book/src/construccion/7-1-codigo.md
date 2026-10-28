@@ -81,7 +81,7 @@ Buenas prácticas aplicadas:
 
 ## c) Pruebas durante la codificación
 
-Servicio (Vitest, 140 pruebas en la imagen Docker; fuera de ella, 139 y 1 omitida, la de `clang` real):
+Servicio (Vitest, 155 pruebas en la imagen Docker; fuera de ella, 154 y 1 omitida, la de `clang` real; el panel suma 124):
 
 | Nivel (servicio) | Qué prueba | Archivos |
 |---|---|---|

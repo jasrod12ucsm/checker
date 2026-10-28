@@ -8,7 +8,7 @@ un solo equipo y un solo proceso: no necesita un servidor de base de datos
 aparte, admite transacciones y claves foráneas, y se respalda copiando un
 archivo. Las consultas pasan por un adaptador (`@centinela/sqlite`), así que
 cambiar a PostgreSQL no toca el dominio. La versión del esquema va en
-`PRAGMA user_version` (hoy, la 2) y una base anterior se migra sola al abrirla,
+`PRAGMA user_version` (hoy, la 3) y una base anterior se migra sola al abrirla,
 en una transacción.
 
 ## Estructura del modelo de datos

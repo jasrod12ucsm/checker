@@ -6,7 +6,7 @@ implementación, pruebas y despliegue) está en la
 
 ![Modelo entidad-relación](../diagramas/sistema-er.svg)
 
-[`sistema/paquetes/adaptadores/sqlite/src/esquema.sql:1`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/esquema.sql#L1-L89)
+[`sistema/paquetes/adaptadores/sqlite/src/esquema.sql:1`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/esquema.sql#L1-L91)
 
 ```sql
 -- Esquema de Centinela C++ (versión 2). Cada tabla es un agregado del dominio.
@@ -66,6 +66,8 @@ CREATE TABLE revisiones (
   CHECK ((estado = 'Fallida') = (motivo IS NOT NULL))
 );
 CREATE INDEX revisiones_repo ON revisiones(repositorio_id, creada_en DESC);
+-- La lista general (todas las revisiones, las 200 más recientes) recorre este índice en lugar de ordenar la tabla.
+CREATE INDEX revisiones_creada ON revisiones(creada_en DESC);
 
 CREATE TABLE hallazgos (
   id             TEXT PRIMARY KEY,
@@ -103,7 +105,7 @@ CREATE TABLE trabajos (
 ## Versiones del esquema y migraciones
 
 La versión del esquema se guarda en `PRAGMA user_version`. Una base nueva se
-crea directamente en la versión actual (2). Una base de una versión anterior se
+crea directamente en la versión actual (3). Una base de una versión anterior se
 actualiza sola al abrirla: `abrirAlmacen` corre los bloques de
 `migraciones.sql` que le faltan, en una sola transacción, y verifica las claves
 foráneas antes de confirmar. Una base de una versión más nueva que el binario
@@ -113,8 +115,9 @@ no se abre.
 |---|---|
 | 1 | esquema inicial; la cuenta tenía `activo` (0 o 1) |
 | 2 | `usuarios.estado` (`Pendiente`, `Activo`, `Desactivado`) en lugar de `activo`; `hallazgos.clasificado_por` y `clasificado_en`. Una cuenta inactiva de la versión 1 queda `Pendiente`, porque la versión 1 no distinguía un registro sin aprobar de una baja |
+| 3 | índice `revisiones_creada` sobre `revisiones(creada_en DESC)` para la lista general. Lo pidió la prueba de volumen (8.4.3): con 20 000 revisiones la lista caía a 55 consultas por segundo porque ordenaba la tabla entera |
 
-[`sistema/paquetes/adaptadores/sqlite/src/migraciones.sql:1`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/migraciones.sql#L1-L21)
+[`sistema/paquetes/adaptadores/sqlite/src/migraciones.sql:1`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/migraciones.sql#L1-L25)
 
 ```sql
 -- Migraciones del esquema. Cada bloque lleva una base de la versión N a la N+1;
@@ -138,6 +141,10 @@ DROP TABLE usuarios;
 ALTER TABLE usuarios_v2 RENAME TO usuarios;
 ALTER TABLE hallazgos ADD COLUMN clasificado_por TEXT REFERENCES usuarios(id);
 ALTER TABLE hallazgos ADD COLUMN clasificado_en INTEGER CHECK ((clasificado_por IS NULL) = (clasificado_en IS NULL));
+
+-- @version 3: índice para la lista general de revisiones. Sin él, con 20 000 revisiones cada
+-- consulta ordenaba la tabla entera (prueba de volumen, capítulo 8): 55 consultas/s; con él, 889 (sistema/no-funcionales/resultados/volumen.json).
+CREATE INDEX revisiones_creada ON revisiones(creada_en DESC);
 ```
 
 [`sistema/paquetes/adaptadores/sqlite/src/almacen.ts:22`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/almacen.ts#L22-L35)
@@ -159,10 +166,10 @@ function migrar(db: Database.Database, desde: number) {
 }
 ```
 
-[`sistema/paquetes/adaptadores/sqlite/src/almacen.test.ts:130`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/almacen.test.ts#L130-L157)
+[`sistema/paquetes/adaptadores/sqlite/src/almacen.test.ts:130`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/almacen.test.ts#L130-L161)
 
 ```typescript
-  it("una base de la versión 1 se migra al abrirla: activos siguen activos, inactivos quedan pendientes", () => {
+  it("una base de la versión 1 se migra al abrirla (v2: activos siguen activos, inactivos quedan pendientes; v3: índice por fecha)", () => {
     const dir = mkdtempSync(join(tmpdir(), "centinela-"));
     try {
       const ruta = join(dir, "v1.db");
@@ -182,8 +189,12 @@ function migrar(db: Database.Database, desde: number) {
       expect(a.hallazgos.porId(H.id)).toMatchObject({ clasificacion: "Confirmado", clasificadoPor: null });
       a.cerrar();
       const despues = new Database(ruta);
-      expect(despues.pragma("user_version", { simple: true })).toBe(2);
+      expect(despues.pragma("user_version", { simple: true })).toBe(3);
       expect(despues.pragma("foreign_key_check")).toEqual([]);
+      // v3: la lista general recorre el índice por fecha y no ordena la tabla (prueba de volumen, capítulo 8).
+      const plan = (despues.prepare("EXPLAIN QUERY PLAN SELECT * FROM revisiones ORDER BY creada_en DESC, rowid DESC LIMIT 200").all() as { detail: string }[]).map((f) => f.detail).join(" | ");
+      expect(plan).toContain("revisiones_creada");
+      expect(plan).not.toContain("TEMP B-TREE FOR ORDER BY"); // solo desempata la misma fecha, no ordena todo
       despues.close();
       abrirAlmacen(ruta).cerrar(); // abrirla otra vez no vuelve a migrar
     } finally {

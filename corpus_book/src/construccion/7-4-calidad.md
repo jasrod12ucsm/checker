@@ -2,12 +2,14 @@
 
 | Característica | Práctica | Medida / control | Umbral | Hoy |
 |---|---|---|---|---|
-| **Servicio: corrección** | una prueba por regla del dominio y por requisito; API completa con `inject` | Vitest (`npm test`) | todas en verde; cobertura ≥ 90 % de líneas y funciones, ≥ 80 % de ramas | 140 pruebas en la imagen Docker; 97,6 % de líneas, 96,2 % de funciones, 87,7 % de ramas |
+| **Servicio: corrección** | una prueba por regla del dominio y por requisito; API completa con `inject` | Vitest (`npm test`) | todas en verde; cobertura ≥ 90 % de líneas y funciones, ≥ 80 % de ramas | 155 pruebas del servicio y 124 del panel en la imagen Docker; servicio: 97,7 % de líneas, 96,2 % de funciones, 88,8 % de ramas; panel: 99,5 %, 96,5 % y 93,5 % |
 | **Servicio: mantenibilidad** | capas por paquete; el dominio sin Fastify, SQLite ni Node | `pruebas/arquitectura.test.ts` | 0 importaciones fuera de capa | cumplido (RNF-S05) |
 | **Servicio: tipos** | `strict` y garantías que no deben compilar | `tsc` y `@ts-expect-error` | 0 errores; cada garantía sigue sin compilar | cumplido |
 | **Servicio: seguridad de acceso** | claves scrypt, sesión guardada como hash, cookie `httpOnly`/`SameSite=Strict`, bloqueo tras 10 fallos, firma HMAC del *webhook* | `cripto.test.ts`, `api.test.ts` | todas en verde | cumplido (RNF-S01, RNF-S02) |
 | **Servicio: inyección** | SQL siempre con consultas preparadas y parámetros (`db.prepare`); `clang` con `execFile` y argumentos separados, sin consola | revisión y prueba de arquitectura | 0 SQL armado con texto del usuario; 0 llamadas a una consola | cumplido |
-| **Servicio: XSS** | la API solo responde JSON, nunca HTML con datos del usuario; el panel mostrará los datos como texto (React escapa por defecto) | revisión | 0 HTML armado con datos | cumplido en la API |
+| **Servicio: XSS** | la API solo responde JSON; el panel muestra los datos como texto (React escapa); política de contenido `default-src 'self'` | `arquitectura.test.ts` del panel (prohíbe `dangerouslySetInnerHTML`), seguridad 8.4.6 | 0 HTML armado con datos; un título con `<img onerror>` se muestra como texto | cumplido |
+| **Servicio: rendimiento** | p99 de cada consulta del panel con 20 conexiones | `no-funcionales/medir.ts carga` | < 200 ms | cumplido: 45 ms en la más lenta (RNF-S07) |
+| **Panel: accesibilidad** | WCAG 2.1 AA en las 7 pantallas, tema claro y oscuro | axe-core en `navegadores.ts`; `contraste.test.ts` | 0 violaciones | cumplido (RNF-S09) |
 | **Servicio: eficiencia** | medir el tiempo de una revisión | demostración de punta a punta con `clang` real | — | 0,28 s por revisión de dos archivos |
 | **Motor: legibilidad** | estilo LLVM, nombres del lenguaje ubicuo, documentación en español | `clang-format --dry-run -Werror`; `-Wall -Wextra` | 0 diferencias de formato, 0 avisos del compilador | 0 y 0 |
 | **Motor: mantenibilidad** | capas con frontera de *target*; la norma en un solo archivo; núcleo puro | el núcleo (`ucsm_dominio`) **no compila** si incluye Clang | la norma sólo en `matriz.json` | cumplido (RNF-07) |

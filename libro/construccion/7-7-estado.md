@@ -1,4 +1,4 @@
-# 7.7 Estado actual (2026-10-27)
+# 7.7 Estado actual (2026-10-28)
 
 | Pieza | Estado | Dónde |
 |---|---|---|
@@ -13,8 +13,9 @@
 | **I3** posiciones, anclas, `++it`, copia, `it = c.erase(it)`, `erase(first, last)` (D-23) | **hecho**, probado en código real | `plugin/tests/lit/iteradores.cpp` |
 | **I4** crédito de `reserve`, `PolicyMode=Possibly`, escape (D-21) | **hecho** | `plugin/tests/lit/garantias.cpp` |
 | **I5** notas de ruta | **hecho**: nota en la obtención y en la mutación (obtención → mutación → uso) | `plugin/checker/Messages.cpp`, `plugin/tests/lit/rutas.cpp` |
-| **I7** servicio Centinela C++ (backend): RF-S01 a RF-S05 | **hecho**: 140 pruebas en verde en la imagen Docker, 97,6 % de líneas; demostración con GitHub simulado y `clang` real: una revisión de dos archivos en 0,28 s | `sistema/` |
-| **I7** panel web | *mockups* terminados (sección 6.3); **falta programarlo** sobre la API existente | `sistema/frontend/` (previsto) |
+| **I7** servicio Centinela C++ (backend): RF-S01 a RF-S05 | **hecho**: 155 pruebas en verde en la imagen Docker; demostración con GitHub simulado y `clang` real: una revisión de dos archivos en 0,28 s | `sistema/` |
+| **I7** panel web | **hecho**: React sobre los *mockups* (6.3), con las mismas capas que el servicio; 124 pruebas contra el servicio real, 99,5 % de líneas | `sistema/frontend/`, [El panel web](../sistema/panel.md) |
+| Pruebas del sistema (capítulo 8) | **hecho**: 14 casos de prueba, 11 recorridos E2E en 4 navegadores, carga, estrés, volumen, configuración, usabilidad (0 violaciones WCAG 2.1 AA) y seguridad (41 de 41); tres hallazgos corregidos (índice por fecha, cabeceras de seguridad, contraste y desborde en el celular) | `sistema/no-funcionales/`, [Capítulo 8](../pruebas/index.md) |
 | Código real con defectos sembrados | **hecho**: 10 de 10 semillas con D-22; 4 proyectos, 781 unidades | `bench/codigo_real.py`, `bench/inyeccion.py`, [Código real](../resultados/codigo-real.md) |
 | Arnés por etapas con SARIF y cotejo por sitio | **hecho** (D-24, D-25): 750 casos × 4 condiciones, 11 leyes probadas | `bench/experimento.py`, `bench/pruebas_evaluacion.py` |
 | CI en GitHub Actions | **hecho**: plugin, calidad (formato, `mypy`, cobertura) y banco con regla de regresión pasaron en GitHub Actions el 21-10-2026; con I7 el *workflow* construye además la imagen de Centinela y corre `sistema-pruebas` y la demostración de punta a punta | `.github/workflows/ci.yml`, `docker-compose.yml`, `bench/regresion.py` |

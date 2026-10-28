@@ -6,12 +6,12 @@ implementación, pruebas y despliegue) está en la
 
 ![Modelo entidad-relación](../diagramas/sistema-er.svg)
 
-{{codigo sistema/paquetes/adaptadores/sqlite/src/esquema.sql 1-89}}
+{{codigo sistema/paquetes/adaptadores/sqlite/src/esquema.sql 1-91}}
 
 ## Versiones del esquema y migraciones
 
 La versión del esquema se guarda en `PRAGMA user_version`. Una base nueva se
-crea directamente en la versión actual (2). Una base de una versión anterior se
+crea directamente en la versión actual (3). Una base de una versión anterior se
 actualiza sola al abrirla: `abrirAlmacen` corre los bloques de
 `migraciones.sql` que le faltan, en una sola transacción, y verifica las claves
 foráneas antes de confirmar. Una base de una versión más nueva que el binario
@@ -21,9 +21,10 @@ no se abre.
 |---|---|
 | 1 | esquema inicial; la cuenta tenía `activo` (0 o 1) |
 | 2 | `usuarios.estado` (`Pendiente`, `Activo`, `Desactivado`) en lugar de `activo`; `hallazgos.clasificado_por` y `clasificado_en`. Una cuenta inactiva de la versión 1 queda `Pendiente`, porque la versión 1 no distinguía un registro sin aprobar de una baja |
+| 3 | índice `revisiones_creada` sobre `revisiones(creada_en DESC)` para la lista general. Lo pidió la prueba de volumen (8.4.3): con 20 000 revisiones la lista caía a 55 consultas por segundo porque ordenaba la tabla entera |
 
-{{codigo sistema/paquetes/adaptadores/sqlite/src/migraciones.sql 1-21}}
+{{codigo sistema/paquetes/adaptadores/sqlite/src/migraciones.sql 1-25}}
 
 {{codigo sistema/paquetes/adaptadores/sqlite/src/almacen.ts migrar}}
 
-{{codigo sistema/paquetes/adaptadores/sqlite/src/almacen.test.ts "una base de la versión 1 se migra al abrirla: activos siguen activos, inactivos quedan pendientes"}}
+{{codigo sistema/paquetes/adaptadores/sqlite/src/almacen.test.ts "una base de la versión 1 se migra al abrirla (v2: activos siguen activos, inactivos quedan pendientes; v3: índice por fecha)"}}

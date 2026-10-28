@@ -18,7 +18,8 @@ sunday are open
 [E4 Experimento, código real] starts 2026-10-20 and ends 2026-10-26
 [E5 Backend Centinela C++ (I7)] starts 2026-10-26 and ends 2026-10-27
 [E5 Mockups] starts 2026-10-26 and ends 2026-10-27
-[E5 Panel web (pendiente)] starts 2026-10-28 and ends 2026-11-15
+[E5 Panel web] starts 2026-10-28 and ends 2026-10-28
+[E5 Pruebas del sistema (cap. 8)] starts 2026-10-28 and ends 2026-10-28
 [E6 Entrega] starts 2026-11-16 and ends 2026-11-30
 [E1 Perfil y plan] is colored in #9DB8D9
 [E2 Banco y validación dinámica] is colored in #9DB8D9
@@ -26,6 +27,7 @@ sunday are open
 [E4 Experimento, código real] is colored in #9DB8D9
 [E5 Backend Centinela C++ (I7)] is colored in #9DB8D9
 [E5 Mockups] is colored in #9DB8D9
-[E5 Panel web (pendiente)] is colored in #F2D7A6
+[E5 Panel web] is colored in #9DB8D9
+[E5 Pruebas del sistema (cap. 8)] is colored in #9DB8D9
 [E6 Entrega] is colored in #F2D7A6
 @endgantt

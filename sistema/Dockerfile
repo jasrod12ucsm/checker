@@ -20,15 +20,22 @@ RUN cmake -S plugin -B /opt/plugin -G Ninja -DCMAKE_BUILD_TYPE=Release >/dev/nul
 WORKDIR /opt/centinela/sistema
 COPY sistema/package.json sistema/package-lock.json ./
 COPY sistema/paquetes paquetes
+COPY sistema/frontend/package.json frontend/package.json
 RUN npm ci --no-audit --no-fund
 COPY sistema/tsconfig.json sistema/vitest.config.ts ./
 COPY sistema/pruebas pruebas
 COPY sistema/demo demo
+COPY sistema/no-funcionales no-funcionales
 COPY ejemplos /opt/centinela/ejemplos
+
+# El panel web (React): se compila aquí y Fastify lo sirve en «/».
+COPY sistema/frontend frontend
+RUN npm run build -w @centinela/panel
 
 ENV CENTINELA_PLUGIN=/opt/plugin/libContainerInvalidation.so \
     CENTINELA_CLANG=clang++ \
     CENTINELA_BD=/datos/centinela.db \
+    CENTINELA_FRONTEND=/opt/centinela/sistema/frontend/dist \
     NODE_ENV=production
 VOLUME /datos
 EXPOSE 8080

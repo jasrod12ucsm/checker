@@ -55,7 +55,7 @@ columna.
 
 El esquema completo:
 
-[`sistema/paquetes/adaptadores/sqlite/src/esquema.sql:1`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/esquema.sql#L1-L89)
+[`sistema/paquetes/adaptadores/sqlite/src/esquema.sql:1`](https://github.com/jasrod12ucsm/checker/blob/main/sistema/paquetes/adaptadores/sqlite/src/esquema.sql#L1-L91)
 
 ```sql
 -- Esquema de Centinela C++ (versión 2). Cada tabla es un agregado del dominio.
@@ -115,6 +115,8 @@ CREATE TABLE revisiones (
   CHECK ((estado = 'Fallida') = (motivo IS NOT NULL))
 );
 CREATE INDEX revisiones_repo ON revisiones(repositorio_id, creada_en DESC);
+-- La lista general (todas las revisiones, las 200 más recientes) recorre este índice en lugar de ordenar la tabla.
+CREATE INDEX revisiones_creada ON revisiones(creada_en DESC);
 
 CREATE TABLE hallazgos (
   id             TEXT PRIMARY KEY,
@@ -155,7 +157,7 @@ CREATE TABLE trabajos (
 |---|---|
 | `journal_mode = WAL` | el servidor lee mientras el trabajador escribe |
 | `foreign_keys = ON` y `busy_timeout = 5000` | integridad referencial; esperar en vez de fallar ante un bloqueo breve |
-| índices `revisiones(repositorio_id, creada_en)`, `hallazgos(revision_id)`, `sesiones(usuario_id)` | las consultas del panel y del trabajador |
+| índices `revisiones(repositorio_id, creada_en)`, `revisiones(creada_en)` (versión 3, por la prueba de volumen), `hallazgos(revision_id)`, `sesiones(usuario_id)` | las consultas del panel y del trabajador |
 | `UNIQUE (repositorio_id, numero_pr, sha_cabeza)` | la regla RN-S02 también en la base |
 | identificadores UUID en `TEXT` e instantes en milisegundos (`INTEGER`) | los genera el servicio, no la base |
 | sin particionamiento | un equipo genera del orden de miles de revisiones al año; SQLite no particiona y, a ese volumen, los índices bastan. Si un cliente llegara a millones de hallazgos, el adaptador se cambia por PostgreSQL con particiones por fecha sin tocar el dominio |
@@ -170,10 +172,10 @@ servicio, y cada operación pasa por el permiso del rol en el dominio
 ## e) Implementación
 
 El esquema se aplica al abrir una base nueva y su versión se guarda en
-`PRAGMA user_version` (hoy, la 2). Una base de la versión 1 se migra sola al
-abrirla, en una transacción, con `migraciones.sql` (el `activo` booleano de
-los usuarios pasa a `estado`, y los hallazgos ganan quién y cuándo se
-clasificaron); una base de una versión desconocida no arranca. Toda fila leída pasa por un esquema zod antes de volverse un tipo
+`PRAGMA user_version` (hoy, la 3). Una base de la versión 1 o 2 se migra sola al
+abrirla, en una transacción, con `migraciones.sql` (en la 2, el `activo` booleano de
+los usuarios pasa a `estado` y los hallazgos ganan quién y cuándo se
+clasificaron; en la 3 se agrega el índice de la lista general por fecha); una base de una versión desconocida no arranca. Toda fila leída pasa por un esquema zod antes de volverse un tipo
 del dominio; una fila que el dominio no admite es un error, no un valor a
 medias:
 

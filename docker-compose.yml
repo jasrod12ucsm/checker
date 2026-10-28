@@ -10,6 +10,7 @@
 #   docker compose up sistema            Centinela C++ (revisor de PR) en http://localhost:8080
 #   docker compose up sistema-demo       demostración con un GitHub simulado (sin token)
 #   docker compose run --rm sistema-pruebas   pruebas del sistema, con clang y el checker reales
+#   docker compose run --rm sistema-no-funcionales   carga, estrés, volumen, configuración y seguridad
 
 x-base: &base
   build:
@@ -140,6 +141,20 @@ services:
       additional_contexts:
         checker-base: service:shell
     command: ["npm", "test"]
+    init: true
+
+  # Pruebas no funcionales (práctica 8): carga, estrés, volumen, configuración y seguridad
+  # contra el servicio real; los resultados quedan en sistema/no-funcionales/resultados/.
+  sistema-no-funcionales:
+    image: centinela:local
+    build:
+      context: .
+      dockerfile: sistema/Dockerfile
+      additional_contexts:
+        checker-base: service:shell
+    command: ["npx", "tsx", "no-funcionales/medir.ts"]
+    volumes:
+      - ./sistema/no-funcionales/resultados:/opt/centinela/sistema/no-funcionales/resultados
     init: true
 
 volumes:

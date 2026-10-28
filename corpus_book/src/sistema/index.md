@@ -46,7 +46,7 @@ Después queda en marcha en `http://localhost:8080` e imprime el correo y la
 clave de esa cuenta. Las pruebas:
 
 ```bash
-docker compose run --rm sistema-pruebas   # 140 pruebas, con clang y el checker reales
+docker compose run --rm sistema-pruebas   # 279 pruebas (servicio y panel), con clang y el checker reales
 cd sistema && npm ci && npm test          # fuera de Docker: todas menos la de clang
 ```
 

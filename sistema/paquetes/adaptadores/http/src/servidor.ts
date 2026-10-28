@@ -49,6 +49,14 @@ async function responder<T>(rep: FastifyReply, r: Resultado<T, ErrorProducto>, e
   return r.ok ? rep.code(estado).send(vista(r.valor)) : enviarError(rep, r.error);
 }
 
+export const CABECERAS_SEGURIDAD = {
+  "content-security-policy": "default-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "DENY",
+  "referrer-policy": "no-referrer",
+  "cross-origin-opener-policy": "same-origin",
+} as const;
+
 export function crearServidor(p: Producto, o: OpcionesServidor) {
   const app = Fastify({ logger: o.registrar ?? false, bodyLimit: 5 * 1024 * 1024 });
   void app.register(cookie);
@@ -70,6 +78,13 @@ export function crearServidor(p: Producto, o: OpcionesServidor) {
     if (estado !== undefined && estado >= 400 && estado < 500) return rep.code(estado).send({ error: { codigo: "Peticion", mensaje: message ?? "Petición inválida." } });
     app.log.error(e);
     return rep.code(500).send({ error: { codigo: "Interno", mensaje: "Error interno del servidor." } });
+  });
+
+  // Cabeceras de seguridad en toda respuesta (hallazgo de las pruebas de seguridad, práctica 8):
+  // el panel solo carga lo suyo, no se deja enmarcar y el navegador no adivina tipos.
+  app.addHook("onSend", async (_req, rep, cuerpo) => {
+    void rep.headers(CABECERAS_SEGURIDAD);
+    return cuerpo;
   });
 
   const fallos = new Map<string, { n: number; desde: number }>();

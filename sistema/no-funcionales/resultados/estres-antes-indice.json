@@ -1,0 +1,164 @@
+{
+  "escenario": "estres",
+  "fecha": "2026-10-28T16:02:50.527Z",
+  "entorno": {
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "hilos": 16,
+    "memoriaGb": 15,
+    "memoriaLibreGb": 10,
+    "so": "Linux 7.0.0-38-generic",
+    "distribucion": "Ubuntu 24.04.5 LTS",
+    "node": "v22.17.1"
+  },
+  "datos": {
+    "lectura": {
+      "ruta": "GET /api/revisiones (200 de 1000)",
+      "duracionS": 10,
+      "escalones": {
+        "10": {
+          "solicitudesPorS": 539,
+          "latenciaMs": {
+            "p50": 16,
+            "p90": 31,
+            "p97_5": 34,
+            "p99": 35,
+            "max": 129
+          },
+          "total": 5392,
+          "no2xx": 0,
+          "errores": 0,
+          "timeouts": 0,
+          "bytesPorS": 65260749
+        },
+        "50": {
+          "solicitudesPorS": 564,
+          "latenciaMs": {
+            "p50": 85,
+            "p90": 88,
+            "p97_5": 96,
+            "p99": 174,
+            "max": 2218
+          },
+          "total": 5641,
+          "no2xx": 0,
+          "errores": 0,
+          "timeouts": 0,
+          "bytesPorS": 68285235
+        },
+        "100": {
+          "solicitudesPorS": 558,
+          "latenciaMs": {
+            "p50": 139,
+            "p90": 173,
+            "p97_5": 187,
+            "p99": 1819,
+            "max": 8903
+          },
+          "total": 5577,
+          "no2xx": 0,
+          "errores": 0,
+          "timeouts": 0,
+          "bytesPorS": 67493888
+        },
+        "200": {
+          "solicitudesPorS": 556,
+          "latenciaMs": {
+            "p50": 131,
+            "p90": 179,
+            "p97_5": 226,
+            "p99": 2326,
+            "max": 9840
+          },
+          "total": 5558,
+          "no2xx": 0,
+          "errores": 59,
+          "timeouts": 59,
+          "bytesPorS": 67272704
+        },
+        "400": {
+          "solicitudesPorS": 541,
+          "latenciaMs": {
+            "p50": 129,
+            "p90": 174,
+            "p97_5": 249,
+            "p99": 2659,
+            "max": 9912
+          },
+          "total": 5413,
+          "no2xx": 0,
+          "errores": 291,
+          "timeouts": 291,
+          "bytesPorS": 65508147
+        },
+        "800": {
+          "solicitudesPorS": 506,
+          "latenciaMs": {
+            "p50": 126,
+            "p90": 168,
+            "p97_5": 254,
+            "p99": 3348,
+            "max": 9999
+          },
+          "total": 5063,
+          "no2xx": 0,
+          "errores": 696,
+          "timeouts": 696,
+          "bytesPorS": 61287629
+        },
+        "1600": {
+          "solicitudesPorS": 505,
+          "latenciaMs": {
+            "p50": 126,
+            "p90": 169,
+            "p97_5": 250,
+            "p99": 3209,
+            "max": 9836
+          },
+          "total": 5048,
+          "no2xx": 0,
+          "errores": 1500,
+          "timeouts": 1500,
+          "bytesPorS": 61107405
+        }
+      }
+    },
+    "ingreso": {
+      "ruta": "POST /api/sesion (scrypt)",
+      "conexiones": 20,
+      "solicitudesPorS": 121,
+      "latenciaMs": {
+        "p50": 145,
+        "p90": 148,
+        "p97_5": 155,
+        "p99": 1193,
+        "max": 1282
+      },
+      "total": 1211,
+      "no2xx": 0,
+      "errores": 0,
+      "timeouts": 0,
+      "bytesPorS": 89142
+    },
+    "rafagaWebhooks": {
+      "pr": 50,
+      "estados": {
+        "202": 50
+      },
+      "acuseTotalMs": 77,
+      "acuseMs": {
+        "p50": 64,
+        "p99": 73,
+        "max": 73
+      },
+      "publicadas": 50,
+      "fallidas": 0,
+      "drenadoS": 9,
+      "revisionesPorMinuto": 337.5,
+      "publicadoEnGitHub": {
+        "revisiones": 50,
+        "estados": 150
+      },
+      "memoriaPicoMb": 237
+    }
+  }
+}
