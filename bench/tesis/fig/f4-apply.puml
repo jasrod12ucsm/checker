@@ -1,0 +1,27 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+if (¿El handle ya es inválido?) then (sí)
+  :Devolver el mismo estado\n(inválido es absorbente);
+  stop
+endif
+:Calcular las relaciones candidatas:\ngeometría ∩ reglas de la norma;
+:Consultar el efecto de cada relación;
+if (¿Las relaciones candidatas\ndan efectos distintos?) then (sí)
+  :No resuelto (relación desconocida)\nposición desconocida;
+  stop
+endif
+switch (Efecto común)
+case (Preserva)
+  :Transportar la posición;
+case (Invalida)
+  :Inválido, con la mutación\ncomo causa y una nota;
+case (Depende)
+  if (¿Crédito ≥ 1 y la operación\nañade un elemento?) then (sí)
+    :Transportar la posición;
+  else (no)
+    :No resuelto (depende del estado)\ny nota;
+  endif
+endswitch
+stop
+@enduml

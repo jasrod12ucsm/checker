@@ -1,0 +1,70 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+hide empty members
+hide circle
+class HandleState {
+  +origin() : Origin
+  +validity() : Validity
+  +position() : Position
+  +withValidity(v) : HandleState
+  +withPosition(p) : HandleState
+}
+class Origin {
+  Container : ContainerId
+  Kind : HandleKind
+  Pos : Position
+  At : SourceRef
+}
+class Validity {
+  +kind() : ValidityKind
+  +reason() : UnresolvedReason
+  +condition() : Condition
+  +cause() : MutationEvent?
+  +join(o) : Validity
+  +diagnosed() : Validity
+}
+class Position {
+  +first(n) / last(n) / anchor(id, n)
+  +pastEnd() / unknown()
+  +advance(delta) : Position
+}
+class MutationEvent {
+  Container : ContainerId
+  M : Mutation
+  PointPos : Position
+  RangeEnd : Position?
+}
+class Mutation {
+  Container : ContainerKind
+  Op : Operation
+  At : Point
+}
+enum ValidityKind {
+  Valid
+  Unresolved
+  UnresolvedDiagnosed
+  Invalidated
+  Diagnosed
+}
+class "Decisions (funciones puras)" as D {
+  +obtain(origen) : HandleState
+  +apply(evento, handle, crédito) : ApplyResult
+  +consume(mutación, crédito) : Credit
+  +onUse(handle, clase, política) : UseResult
+  +escape(handle, sitio) : HandleState?
+  +move(handle, paso) : HandleState
+}
+class NormTable {
+  +effectOf(m, clase, relación) : Effect?
+  +relationsOf(m, clase) : RelationSet
+  +growthOf(m) : Growth?
+}
+HandleState *-- Origin
+HandleState *-- Validity
+Origin *-- Position
+Validity o-- MutationEvent : causa
+Validity --> ValidityKind
+MutationEvent *-- Mutation
+D ..> HandleState
+D ..> NormTable
+@enduml

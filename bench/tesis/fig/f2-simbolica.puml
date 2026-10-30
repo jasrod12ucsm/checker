@@ -1,0 +1,18 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "Inicio\nx = α (símbolo)\ncondición: verdadera" as A #F2F6FA
+rectangle "if (x > 0)" as B #FFF4E0
+rectangle "Camino 1\ncondición: α > 0" as C #EDF7EE
+rectangle "Camino 2\ncondición: α ≤ 0" as D #EDF7EE
+rectangle "if (x > 10)\nsolo factible si α > 10" as E
+rectangle "Camino 1.1\nα > 10 (factible)" as F #EDF7EE
+rectangle "Camino 1.2\nα > 0 ∧ α ≤ 10 (factible)" as G #EDF7EE
+A --> B
+B --> C : verdadero
+B --> D : falso
+C --> E
+E --> F : verdadero
+E --> G : falso
+@enduml

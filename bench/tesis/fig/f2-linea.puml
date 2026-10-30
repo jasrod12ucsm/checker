@@ -1,0 +1,18 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #F2F6FA
+top to bottom direction
+rectangle "**2006 · Gregor y Schupp**  STLlint: análisis especializado de la biblioteca" as a
+rectangle "**2012 · Pataki**  Iteradores que comprueban su validez al ejecutarse" as b
+rectangle "**2017 · Horváth et al.**  Patrones estáticos y validación con GDB" as c
+rectangle "**2022 · Lipp et al.**  Evaluación empírica de seis analizadores para C" as d
+rectangle "**2024 · Li et al.**  Scasa: tamaño y posiciones sobre Clang Static Analyzer" as e
+rectangle "**2024 · Teodorescu y Lucanu**  Marco de flujo de datos para use-after-free" as e2
+rectangle "**2025 · Liu et al.**  IKOS4VecErr: interpretación abstracta en vector" as f
+a --> b
+b --> c
+c --> d
+d --> e
+e --> e2
+e2 --> f
+@enduml

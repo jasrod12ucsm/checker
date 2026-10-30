@@ -1,0 +1,14 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**Norma como datos**\nregla = (contenedor, operación, punto) × clase × relación\nefecto = preserva | invalida | depende" as N #EAF0F7
+rectangle "**1. Obtener**\nbegin, find, *it, c[i], front, back, data\nhandle = (contenedor, clase, posición, válido)" as O
+rectangle "**2. Modificar el mismo contenedor**\nefecto = norma(operación, clase, relación)\npreserva: mueve la posición · invalida: nota · depende: no resuelto o garantía" as M
+rectangle "**3. Usar**\n*it, ++it, r, *p\nválido: nada · no resuelto: según política · inválido: aviso confirmado" as U
+rectangle "**Evaluación**\nmisma matriz: etiquetas UB, SAFE, POLICY del banco" as E #EDF7EE
+N --> O : tabla generada
+O --> M : en cada camino
+M --> U
+N -[#7F8C8D,dashed]right-> E
+@enduml

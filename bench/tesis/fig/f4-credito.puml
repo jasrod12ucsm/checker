@@ -1,0 +1,14 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+hide empty description
+state "Desconocido" as U
+state "Conocido: k" as K
+[*] --> U : contenedor sin garantía
+U --> K : reserve(size() + k)
+K --> K : inserción de un elemento / k − 1\ndisminución de tamaño / sin cambio
+K --> U : operación no contada\n(resize, clear, assign, rehash)
+K --> U : escape a código opaco
+U --> U : inserción / sin cambio
+K --> [*] : región muerta
+U --> [*] : región muerta
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+rectangle "Dentro de clang" as det {
+  rectangle "**Cáscara**\ncallbacks del analizador\ncarga y aplica el estado" as shell #FCEDEF
+  rectangle "**Anticorrupción**\nevento de Clang → modelo" as acl #F3ECFA
+  rectangle "**Núcleo**\nfunciones puras\ndecide" as core #E8F1FB
+  rectangle "**Tabla normativa**\ngenerada" as tab #FFF8E6
+}
+rectangle "**Matriz normativa**\n101 mutaciones, 348 reglas" as matriz #FFF8E6
+rectangle "Fuera de clang" as eval {
+  rectangle "**Generación del banco**" as g #EDF7EE
+  rectangle "**Arnés**\nejecutar, normalizar,\ncotejar, agregar" as a #EDF7EE
+  rectangle "**Validación dinámica**" as d #EDF7EE
+}
+shell --> acl
+shell --> core
+acl --> core
+core --> tab
+matriz --> tab : gen_tabla.py
+matriz --> g : etiquetas
+g --> a
+g --> d
+a ..> shell : clang --analyze -load
+@enduml

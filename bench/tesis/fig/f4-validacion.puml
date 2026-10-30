@@ -1,0 +1,23 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:Generar un ejecutable de despacho\ncon los 750 casos;
+:Compilar con g++ y -D_GLIBCXX_DEBUG;
+:Compilar con clang++ y\n-fsanitize=address,undefined;
+repeat
+  :Tomar un caso;
+  if (¿Etiqueta POLICY?) then (sí)
+    :Ejecutar en force y en preserve;
+  else (no)
+    :Ejecutar una vez;
+  endif
+  :Registrar por ejecución: escenario,\nestado de cada herramienta y salida;
+repeat while (¿Quedan casos?) is (sí) not (no)
+if (¿Detección dinámica en SAFE o en\nPOLICY con escenario preserve?) then (sí)
+  :Registrar contradicción\ny revisar la regla;
+else (no)
+  :Etiqueta sin contradicción;
+endif
+:Comprobar la cobertura del protocolo:\n852 ejecuciones esperadas;
+stop
+@enduml

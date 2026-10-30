@@ -1,0 +1,23 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #F2F6FA
+skinparam defaultTextAlignment center
+top to bottom direction
+rectangle "Defectos de memoria que pueden\nno detectarse durante el desarrollo" as E1
+rectangle "Falsas alarmas que reducen\nla utilidad de las herramientas" as E2
+rectangle "Decisiones sobre herramientas\nsin evidencia medida" as E3
+rectangle "**Problema**\nSe desconoce qué diferencias de precisión, exhaustividad y F1 existen\nal detectar usos de iteradores, referencias y punteros invalidados entre una\nconfiguración de referencia de Clang Static Analyzer y la misma configuración\ncon un checker que modele las reglas de C++17" as P #FFF4E0
+rectangle "Las reglas varían según\ncontenedor, operación,\nclase de acceso y estado" as C1
+rectangle "Las capacidades documentadas\nno determinan el desempeño\nen cada combinación" as C2
+rectangle "Los checkers de iteradores\nson experimentales y el de punteros\ninternos se limita a std::string" as C3
+rectangle "No se encontró un banco público\netiquetado por la norma\npara este dominio de defectos" as C4
+E1 -[hidden]r- E2
+E2 -[hidden]r- E3
+E1 <-- P
+E2 <-- P
+E3 <-- P
+P <-- C1
+P <-- C2
+P <-- C3
+P <-- C4
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**Universo**\nescenarios C++ en los que una operación sobre la biblioteca estándar\npuede afectar la validez de un iterador, referencia o puntero" as U #F5F5F5
+rectangle "**Población**\nescenarios de 10 contenedores de la biblioteca estándar\nregidos por las reglas de C++17" as P #F2F6FA
+rectangle "**Población accesible**\nescenarios de 57 pares contenedor–operación, expresables en un programa mínimo\ny analizables con Clang 21.1.8 y libstdc++ 13.3.0" as PA #F2F6FA
+rectangle "**Censo de la matriz: 684 casos**\n57 pares × 3 clases de handle × 4 formas" as M #E8F1FB
+rectangle "**Selección intencional: 66 casos**\n54 con reserva previa y 12 con iterador devuelto" as I #FFF8E6
+rectangle "**Muestra: banco de 750 casos**\n342 UB, 306 SAFE y 102 POLICY" as B #EDF7EE
+U --> P
+P --> PA
+PA --> M
+PA --> I
+M --> B
+I --> B
+@enduml

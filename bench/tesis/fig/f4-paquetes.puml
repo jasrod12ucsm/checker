@@ -1,0 +1,20 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**norma/**\nmatriz.json · gen_tabla.py" as N #FFF8E6
+rectangle "**plugin/registro**\nPlugin.cpp" as R #F5F5F5
+rectangle "**plugin/checker** (cáscara)\nInvalidationChecker · Messages" as K #FCEDEF
+rectangle "**plugin/acl** (anticorrupción)\nClangRecognizer" as A #F3ECFA
+rectangle "**plugin/dominio** (núcleo)\nLenguaje · HandleState · Position\nDecisions · NormTable" as D #E8F1FB
+rectangle "**bench/** (Python)\netiquetar · gen_corpus · run_runtime_validation\nexperimento · analisis_estadistico · codigo_real · inyeccion" as B #EDF7EE
+rectangle "**test/**\ncorpus.cpp · corpus_truth.json · banco-1.json\nexperimento/ · codigo_real/" as T #F5F5F5
+R --> K
+K --> A
+K --> D
+A --> D
+N --> D : NormTable.inc
+N --> B : etiquetas
+B --> T : genera y registra
+B ..> R : clang++ -load
+@enduml

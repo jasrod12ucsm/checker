@@ -1,0 +1,31 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam defaultFontSize 12
+top to bottom direction
+rectangle "Norma C++17 (N4659)" as N #F5F5F5
+rectangle "Matriz normativa\n101 mutaciones, 348 reglas" as M #FFF8E6
+rectangle "Generador de la tabla\ncomprueba las leyes" as G #FFF8E6
+rectangle "Motor de Clang Static Analyzer\nejecución simbólica" as E #F2F6FA
+rectangle "Checker InvalidationChecker\nestado por camino y avisos" as C #E8F1FB
+rectangle "Reconocedor\nClangRecognizer" as R #E8F1FB
+rectangle "Núcleo de decisión\nsin cabeceras de Clang" as D #E8F1FB
+rectangle "Banco de 750 casos\ncon etiqueta por caso" as B #EDF7EE
+rectangle "Validación dinámica\nlibstdc++ Debug y sanitizadores" as V #EDF7EE
+rectangle "Arnés\ncuatro condiciones, cotejo por sitio" as A #EDF7EE
+rectangle "Análisis estadístico\nmétricas, McNemar e intervalo" as S #EDF7EE
+N --> M : reglas
+M --> G
+M --> B : etiquetas
+G --> D : tabla de reglas
+B --> V : ejecuta los casos
+V --> A : banco validado y sellado
+A --> E : una invocación\npor caso y condición
+E --> C : eventos
+C --> E : estado y avisos
+C <--> R : llamada o acceso;\noperación y handle
+C --> D : estado y evento
+D --> C : nuevo estado\ny clase de aviso
+E --> A : avisos en SARIF
+A --> S : cotejo
+@enduml

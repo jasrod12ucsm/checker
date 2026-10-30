@@ -1,0 +1,18 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:Tomar las reglas de la mutación para la clase\ndel handle sostenido y las relaciones que\npermite la geometría del punto;
+if (¿Hay reserve(size() + k) previo y\nla operación añade un elemento?) then (sí)
+  :Un efecto que depende de la capacidad\no del rehash se lee como preserva;
+else (no)
+endif
+:Si los efectos que quedan difieren,\nel efecto es depende;
+if (¿Es bucle y el handle sostenido\nno es un iterador?) then (sí)
+  :Calcular también el efecto para\nel iterador de control;
+  :Etiqueta = peor de los dos\nSAFE < POLICY < UB;
+else (no)
+  :Etiqueta del handle sostenido\npreserva → SAFE, depende → POLICY,\ninvalida → UB;
+endif
+:Registrar la etiqueta en corpus_truth.json;
+stop
+@enduml

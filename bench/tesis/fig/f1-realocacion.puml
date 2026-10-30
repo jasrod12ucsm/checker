@@ -1,0 +1,11 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam defaultTextAlignment center
+left to right direction
+rectangle "**Antes de la inserción**\nv: capacidad 3, tamaño 3\n\n[ 10 | 20 | 30 ]\n bloque A\n\nit designa el elemento 10 del bloque A" as A #EAF0F7
+rectangle "**v.push_back(40)**\nNo hay capacidad disponible:\nse reserva un bloque mayor, se mueven\nlos elementos y se libera el bloque A" as B #FFF4E0
+rectangle "**Después de la inserción**\nv: capacidad 6, tamaño 4\n\n[ 10 | 20 | 30 | 40 |  |  ]\n bloque B\n\nit sigue apuntando al bloque A, ya liberado\n*it es comportamiento indefinido" as C #FCEDEF
+A --> B
+B --> C
+@enduml

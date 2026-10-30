@@ -1,0 +1,18 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "Reglas de invalidación de C++17\n(norma N4659)" as N #FFF8E6
+rectangle "Banco de 750 casos\ncon etiqueta UB, SAFE o POLICY" as Bn #EDF7EE
+rectangle "Checker para Clang Static Analyzer\n(complemento cargable)" as Ch #E8F1FB
+rectangle "Configuración B\ncheckers existentes" as B #F5F5F5
+rectangle "Configuración C\nB + checker" as C #E8F1FB
+rectangle "Comparación por caso\nprecisión, exhaustividad, F1" as R #EDF7EE
+N --> Bn : etiquetas
+N --> Ch : reglas
+Bn --> B
+Bn --> C
+Ch --> C
+B --> R
+C --> R
+@enduml

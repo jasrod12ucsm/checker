@@ -1,0 +1,18 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**Verificar**  sello del banco, carga del checker y versiones" as V #F5F5F5
+rectangle "**Ejecutar**  un proceso por caso y condición" as E #EDF7EE
+rectangle "**Normalizar**  SARIF → aviso confirmado, posible u otro" as N #EDF7EE
+rectangle "**Atribuir**  aviso → caso y sitio de uso" as A #EDF7EE
+rectangle "**Cotejar**  caso + avisos → veredicto" as C #EDF7EE
+rectangle "**Agregar**  conteos por grupo; métricas al final" as G #EDF7EE
+rectangle "**Contrastar**  McNemar, bootstrap y hoja de resultados" as X #FFF8E6
+V --> E
+E --> N
+N --> A
+A --> C
+C --> G
+G --> X
+@enduml

@@ -1,0 +1,80 @@
+{
+ "B": "Reference",
+ "C": "Experimental-Silent",
+ "confirmados_iguales_entre_politicas": true,
+ "metricas": {
+  "Reference": {
+   "TP": 80,
+   "FP": 0,
+   "FN": 262,
+   "TN": 306,
+   "PolicyWarned": 0,
+   "PolicySilent": 102,
+   "Incident": 0,
+   "precision": 1.0,
+   "exhaustividad": 0.23391812865497075,
+   "f1": 0.3791469194312796
+  },
+  "Experimental-Silent": {
+   "TP": 342,
+   "FP": 0,
+   "FN": 0,
+   "TN": 306,
+   "PolicyWarned": 0,
+   "PolicySilent": 102,
+   "Incident": 0,
+   "precision": 1.0,
+   "exhaustividad": 1.0,
+   "f1": 1.0
+  },
+  "Experimental-Possibly": {
+   "TP": 342,
+   "FP": 0,
+   "FN": 0,
+   "TN": 306,
+   "PolicyWarned": 102,
+   "PolicySilent": 0,
+   "Incident": 0,
+   "precision": 1.0,
+   "exhaustividad": 1.0,
+   "f1": 1.0
+  },
+  "Plugin-Possibly": {
+   "TP": 342,
+   "FP": 0,
+   "FN": 0,
+   "TN": 306,
+   "PolicyWarned": 102,
+   "PolicySilent": 0,
+   "Incident": 0,
+   "precision": 1.0,
+   "exhaustividad": 1.0,
+   "f1": 1.0
+  }
+ },
+ "mcnemar": {
+  "UB": {
+   "casos": 342,
+   "b": 262,
+   "c": 0,
+   "p": 2.698802673467014e-79,
+   "proporcion_discordantes": 0.7660818713450293
+  },
+  "SAFE": {
+   "casos": 306,
+   "b": 0,
+   "c": 0,
+   "p": 1.0,
+   "proporcion_discordantes": 0.0
+  }
+ },
+ "bootstrap": {
+  "replicas": 10000,
+  "semilla": 20261020,
+  "dF1": 0.6208530805687205,
+  "ic95": [
+   0.5616438356164384,
+   0.6805896805896806
+  ]
+ }
+}

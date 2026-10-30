@@ -1,0 +1,44 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+hide empty members
+hide circle
+top to bottom direction
+class "Checker<PreCall, PostCall, Location,\nBind, DeadSymbols, RegionChanges>" as CK #F5F5F5
+class InvalidationChecker #FCEDEF {
+  -Confirmed : BugType
+  -Possible : BugType
+  -Mode : PolicyMode
+  +checkPreCall()
+  +checkPostCall()
+  +checkLocation()
+  +checkBind()
+  +checkDeadSymbols()
+  +checkRegionChanges()
+}
+class "ElementMap\nregión del elemento → estado" as EM #FCEDEF
+class "IteratorMap\nregión del iterador → estado" as IM #FCEDEF
+class "CreditMap\nregión del contenedor → crédito" as CM #FCEDEF
+class Messages #FCEDEF {
+  +obtainedNote()
+  +invalidatedNote()
+  +unresolvedNote()
+}
+class ClangRecognizer #F3ECFA {
+  +containerCall(call)
+  +iteratorObtention(cc, call)
+  +elementAccess(cc, call)
+  +mutation(cc, call, pos)
+  +iteratorUse(call)
+  +iteratorCopy(call)
+  +categoryAtLoad(stmt)
+}
+class "Decisions" as D #E8F1FB
+CK <|-- InvalidationChecker
+InvalidationChecker --> ClangRecognizer
+InvalidationChecker --> D
+ClangRecognizer --> D
+InvalidationChecker --> Messages
+InvalidationChecker ..> EM
+InvalidationChecker ..> IM
+InvalidationChecker ..> CM
+@enduml

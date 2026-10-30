@@ -1,0 +1,18 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:Fijar el proyecto en un commit;
+:Generar su base de compilación;
+fork
+  :Analizar las unidades con Possibly\ny modo de expansión all;
+  :Revisar manualmente cada aviso;
+fork again
+  :Fijar la semilla y su resultado esperado:\nconfirmado, posible o nada;
+  :Reemplazar un fragmento exacto del archivo;
+  :Analizar la unidad que lo contiene;
+  :Restaurar el archivo;
+  :Comparar lo observado con lo esperado;
+end fork
+:Registrar avisos y commit,\nsin guardar el código del proyecto;
+stop
+@enduml

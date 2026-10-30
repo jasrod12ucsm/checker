@@ -1,0 +1,18 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+left to right direction
+rectangle "Banco congelado\nmismos casos\ny etiquetas" as B #EDF7EE
+rectangle "**B**\nsin el checker\n(línea base)" as X #F5F5F5
+rectangle "**C**\ncon el checker\n(Silent y Possibly)" as Y #E8F1FB
+rectangle "**D**\nchecker sin alpha.cplusplus\n(complementaria)" as Z #F5F5F5
+rectangle "Clasificación\npor caso\nVP, FP, FN, VN" as O #FFF8E6
+rectangle "Contraste pareado\nB frente a C\nmismo caso, dos resultados" as R #EDF7EE
+B --> X
+B --> Y
+B --> Z
+X --> O
+Y --> O
+Z --> O
+O --> R
+@enduml

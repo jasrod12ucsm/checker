@@ -1,0 +1,14 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam defaultTextAlignment center
+top to bottom direction
+rectangle "Etiqueta UB\ncon aviso\n**VP**" as VP #EDF7EE
+rectangle "Etiqueta UB\nsin aviso\n**FN**" as FN #FCEDEF
+rectangle "Etiqueta SAFE\ncon aviso\n**FP**" as FP #FCEDEF
+rectangle "Etiqueta SAFE\nsin aviso\n**VN**" as VN #EDF7EE
+VP -[hidden]r- FN
+FP -[hidden]r- VN
+VP -[hidden]d- FP
+FN -[hidden]d- VN
+@enduml

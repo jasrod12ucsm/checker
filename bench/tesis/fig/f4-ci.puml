@@ -1,0 +1,17 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:git push o pull request;
+:Construir la imagen checker:llvm21;
+:Compilar el checker y ejecutar\n40 pruebas unitarias y 5 archivos lit;
+:Calidad: clang-format, mypy,\nleyes del arnés y cobertura del núcleo;
+:Ejecutar el banco en las 4 condiciones;
+if (¿Un SAFE con aviso confirmado, un UB que\nya no se detecta, una incidencia o costo excesivo?) then (sí)
+  :Fallar con las condiciones y los\nconteos que no cumplen;
+  :Publicar test/experimento/ como artefacto;
+  stop
+else (no)
+  :Publicar test/experimento/ como artefacto;
+  stop
+endif
+@enduml

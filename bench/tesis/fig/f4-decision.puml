@@ -1,0 +1,17 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:Inserción cuyo efecto depende\nde la capacidad o del rehash;
+if (¿Crédito ≥ 1 y la operación\nañade un elemento?) then (sí)
+  :Sin invalidación;\ncrédito − 1;
+  stop
+else (no)
+  :Handle no resuelto con su razón;
+  if (Política al usar el handle) then (Possibly)
+    :Aviso posible que nombra\nla garantía que falta;
+  else (Silent)
+    :Sin aviso;
+  endif
+  stop
+endif
+@enduml

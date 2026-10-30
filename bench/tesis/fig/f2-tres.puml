@@ -1,0 +1,12 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "Regla que depende del estado\n¿Se cumple la condición invalidante en este camino?" as Q #FFF4E0
+rectangle "**Se demuestra**\nse aplica el efecto\nsobre los handles afectados" as A #FCEDEF
+rectangle "**Se descarta**\nse aplican las garantías\nde preservación" as B #EDF7EE
+rectangle "**Permanece indeterminada**\nno equivale a válido ni a inválido;\ndecide la política de aproximación" as C #FFF8E6
+Q --> A
+Q --> B
+Q --> C
+@enduml

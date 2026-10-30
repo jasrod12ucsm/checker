@@ -1,0 +1,17 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam defaultTextAlignment center
+top to bottom direction
+rectangle "B acierta y C acierta\n**a** (no informa)" as A #F5F5F5
+rectangle "B falla y C acierta\n**b** (discordante)" as B #FFF8E6
+rectangle "B acierta y C falla\n**c** (discordante)" as C #FFF8E6
+rectangle "B falla y C falla\n**d** (no informa)" as D #F5F5F5
+rectangle "Si ambas aciertan por igual: b ~ Binomial(b + c; 0,5)\np bilateral exacto, uno por contraste (UB y SAFE);\nla decisión sobre H0 sigue la sección 3.4.4" as R #EDF7EE
+A -[hidden]r- B
+C -[hidden]r- D
+A -[hidden]d- C
+B -[hidden]d- D
+C --> R
+D --> R
+@enduml

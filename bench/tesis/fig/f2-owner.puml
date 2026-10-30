@@ -1,0 +1,14 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+left to right direction
+rectangle "**Owner**\nstd::vector<int> c\nposee sus elementos" as O #E8F1FB
+rectangle "Elemento\nde c" as E #F5F5F5
+rectangle "**Pointer**\niterador it" as I #FFF8E6
+rectangle "**Pointer**\nreferencia r" as R #FFF8E6
+rectangle "**Pointer**\npuntero p" as P #FFF8E6
+O --> E : posee
+I --> E : designa
+R --> E : designa
+P --> E : designa
+@enduml

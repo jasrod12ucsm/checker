@@ -89,6 +89,74 @@ figura; la segunda pasada vuelve a generar el Word con esos números en el índi
 el checker es su motor. Es una herramienta de los autores: quien no tenga la V2 no la
 necesita para usar el sistema ni el checker.
 
+## El plan de tesis
+
+```bash
+bench/tesis/render.sh                 # bench/tesis/fig/*.puml → fig/png; necesita Java y plantuml.jar
+python3 bench/tesis/generar_tesis.py ~/Downloads/Plan_de_Tesis_Cap1_V3.docx ~/Downloads/Plan_de_Tesis_Cap1_V5.docx
+```
+
+La tesis trata solo del checker: no menciona Centinela C++ ni la revisión de *commits*
+históricos. `generar_tesis.py` no toca el documento de origen. Sobre una copia cambia el título,
+reemplaza el capítulo IV (`bench/tesis/contenido_cap4.py`), inserta las figuras y tablas de los
+capítulos I a III y ordena el capítulo III según la rúbrica de los capítulos III y IV
+(`bench/tesis/contenido_cap1a3.py`). Después renumera tablas y figuras y arma los índices con las
+páginas que da LibreOffice. Los comentarios de revisión del documento se conservan. Las figuras de
+la tesis están en `bench/tesis/fig/` y no son las del libro: estas últimas nombran el servicio. Los
+valores obtenidos no van en el capítulo IV, sino en el V.
+
+El capítulo III queda con 3.1 Alcances y limitaciones, 3.2 Enfoque, tipo y nivel, 3.3 Universo,
+población y muestra, 3.4 Metodología, técnicas e instrumentos (3.4.1 a 3.4.5) y 3.5 Consideraciones
+éticas. El capítulo IV queda con 4.1 Generalidades y 4.2 Esquema de la solución y desarrollo del
+prototipo, cuyas subsecciones 4.2.1 a 4.2.9 van del esquema de componentes al alcance previsto y su
+avance. El cuarto nivel de títulos (por ejemplo, 4.2.3.2) usa un estilo que añade el generador y no
+entra en los índices. Dentro de `contenido_cap1a3.py`, los textos de la V3 y los anteriores a
+`renumerar` citan las secciones con la numeración antigua: esa función las convierte a la nueva. Lo
+que se escribe después de ella, y todo `contenido_cap4.py`, ya usa la nueva.
+
+## La demostración del video
+
+La demostración del prototipo está en `video/`. Necesita git, Docker con Compose y Python 3, y corre
+desde cualquier carpeta donde se haya clonado el repositorio:
+
+```bash
+git clone https://github.com/jasrod12ucsm/checker.git
+cd checker
+docker compose build     # una sola vez: descarga LLVM 21 (imagen de unos 2 GB)
+./video/demo.sh 1        # compila el checker y corre sus pruebas; va antes que los demás pasos
+./video/demo.sh 2        # Clang sin el checker sobre video/demo.cpp
+./video/demo.sh 3        # con el checker, política Silent
+./video/demo.sh ruta     # la ruta del primer aviso
+./video/demo.sh 4        # con el checker, política Possibly
+./video/demo.sh 5        # banco y experimento registrado
+./video/demo.sh 6        # código real y defectos sembrados
+./video/demo.sh 7        # verificación completa de los requerimientos
+```
+
+Los pasos 5 y 6 leen los resultados guardados en `test/`; no vuelven a ejecutar el experimento.
+
+## El análisis estadístico
+
+```bash
+python3 bench/analisis_estadistico.py
+```
+
+Lee `test/experimento/cotejo.json` y `test/corpus_truth.json`, y solo usa la biblioteca estándar.
+Escribe `test/experimento/contraste.json`, con la prueba exacta de McNemar por separado en los
+casos `UB` y `SAFE` y el intervalo bootstrap del 95 % de ΔF1 (10 000 réplicas, semilla fija), y
+`test/experimento/resultados.xlsx`, la hoja de resultados por condición, contenedor, operación,
+clase de handle y forma, que se abre con Excel o LibreOffice Calc.
+
+## La evaluación económica
+
+```bash
+python3 bench/informe/evaluacion_economica.py
+```
+
+Calcula la inversión, los flujos, el VAN, la TIR, la sensibilidad y el umbral de adopción del
+capítulo 3 del informe. Cada parámetro del script lleva su fuente en un comentario, y la tabla
+«Parámetros del análisis y sus fuentes» del capítulo 3 los reúne con su cita.
+
 ## El artículo
 
 ```bash

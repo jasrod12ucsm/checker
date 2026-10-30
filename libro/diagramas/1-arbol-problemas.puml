@@ -4,16 +4,16 @@ skinparam rectangleBackgroundColor #F2F6FA
 skinparam defaultTextAlignment center
 top to bottom direction
 
-rectangle "Defectos de invalidación llegan a producción:\nfallas intermitentes y vulnerabilidades de memoria" as E1
-rectangle "Revisores de pull requests dedican tiempo\na buscar a mano estos defectos" as E2
-rectangle "Desconfianza en avisos del análisis\n(falsas alarmas, omisiones no medidas)" as E3
+rectangle "Errores que llegan a producción como fallas\nintermitentes o problemas de seguridad" as E1
+rectangle "Más tiempo de revisión para buscar\nestos errores en cada cambio" as E2
+rectangle "Poca confianza en las herramientas automáticas:\nno se sabe cuántos errores detectan\nni cuántas falsas alarmas dan" as E3
 
-rectangle "**Problema central**\nLos equipos que desarrollan en C++ integran código con usos de\niteradores, referencias y punteros invalidados porque su revisión\nde pull requests no los detecta de forma automática y confiable" as P #FFF4E0
+rectangle "**Problema central**\nLos equipos que desarrollan en C++ incorporan a sus programas\nusos de marcadores inválidos porque su revisión de cambios\nno incluye una verificación automática de estas reglas" as P #FFF4E0
 
-rectangle "CSA de referencia detecta pocos usos inválidos\n(48 de 328 sobre el handle sostenido)\ny ninguno sobre referencias o punteros" as C1
-rectangle "La regla depende del contenedor, la operación\ny la capacidad: difícil de aplicar a mano" as C2
-rectangle "El análisis estático no forma parte del flujo\ndel pull request: nadie lo corre antes del merge\nni comenta la línea afectada" as C3
-rectangle "Falta un banco etiquetado desde la norma\npara medir cualquier detector" as C4
+rectangle "La herramienta disponible revisa solo\nuna parte de los casos,\ncon funciones experimentales" as C1
+rectangle "Las reglas cambian según la colección y la operación,\ny el error involucra partes del código\nque pueden no estar en el cambio revisado" as C2
+rectangle "Las herramientas automáticas se ejecutan aparte\ny sus resultados no aparecen\nen la revisión del cambio" as C3
+rectangle "No se encontró un conjunto público de casos\nde prueba para medir cuántos errores detecta\nuna herramienta y cuántos se le escapan" as C4
 
 E1 -[hidden]r- E2
 E2 -[hidden]r- E3

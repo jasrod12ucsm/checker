@@ -1,0 +1,20 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**I0**  Entorno y complemento vacío" as I0 #F5F5F5
+rectangle "**I1**  Matriz normativa y núcleo puro" as I1 #FFF8E6
+rectangle "**I2**  Referencias y punteros" as I2 #E8F1FB
+rectangle "**I3**  Iteradores y posiciones" as I3 #E8F1FB
+rectangle "**I4**  Garantía, política y escape" as I4 #E8F1FB
+rectangle "**I5**  Notas y mensajes" as I5 #E8F1FB
+rectangle "**I6**  Banco congelado y experimento" as I6 #EDF7EE
+rectangle "En paralelo con I2 a I5:\nbanco, validación dinámica\ny arnés de medición" as P #F5F5F5
+I0 --> I1
+I1 --> I2
+I2 --> I3
+I3 --> I4
+I4 --> I5
+I5 --> I6
+P .left.> I3
+@enduml

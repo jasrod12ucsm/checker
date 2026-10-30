@@ -1,0 +1,12 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+left to right direction
+rectangle "**Variable independiente**\nConfiguración del analizador\nB: checkers existentes pertinentes\nC: B + checker propuesto" as VI #EAF0F7
+rectangle "**Factor anidado en C**\nPolítica ante condiciones indeterminadas\nSilent | Possibly" as FA #FFF8E6
+rectangle "**Variable dependiente**\nDesempeño de la detección\nprecisión, exhaustividad, F1" as VD #EDF7EE
+rectangle "**Condiciones controladas**\nmismos casos y etiquetas,\nmisma versión de Clang,\nmismas opciones" as K #F5F5F5
+VI --> VD : se contrasta\nH1: ΔF1 ≠ 0
+FA --> VD : se analiza aparte\nen los casos POLICY
+K ..> VD : se mantienen\nconstantes
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+left to right direction
+rectangle "**Dentro del alcance**\n10 contenedores y 57 pares contenedor–operación\niteradores, referencias y punteros a elementos\nC++17, Clang Static Analyzer 21.1.8, libstdc++ 13.3.0\nbanco de 750 casos; 4 proyectos como complemento" as D #EDF7EE
+rectangle "**Fuera del alcance**\nstd::basic_string, std::unordered_multiset, adaptadores\nswap, splice, merge y operaciones por rangos de C++23\nanálisis entre unidades de traducción\ncostos, productividad y experiencia de uso" as F #F5F5F5
+D -[hidden]r- F
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**Cláusula de la norma**\n[vector.modifiers] erase" as C #F5F5F5
+rectangle "**Regla en matriz.json**\nvector.erase.front, referencia, same → invalidates" as R #FFF8E6
+rectangle "**Función del banco**\nf_vector_erase_begin_ref_recto" as F #EDF7EE
+rectangle "**Etiqueta en corpus_truth.json**\nesperado: UB" as E #EDF7EE
+rectangle "**Fila de la tabla compilada**\nNormTable.inc" as T #E8F1FB
+rectangle "**Decisión del núcleo**\napply → inválido" as D #E8F1FB
+rectangle "Prueba Banco.ElVeredictoDelNucleoEsLaEtiqueta\ncompara ambas implementaciones" as P #FFF4E0
+C --> R
+R --> F
+F --> E
+R --> T
+T --> D
+E --> P
+D --> P
+@enduml

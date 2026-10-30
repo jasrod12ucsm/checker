@@ -1,0 +1,17 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:Verificar el banco contra su sello sha256;
+repeat
+  :Analizar un caso con la configuración B\n(-analyze-function=caso);
+  if (¿Terminó sin error?) then (sí)
+    :Leer el SARIF y normalizar los avisos;
+    :Cotejar por sitio;
+  else (no)
+    :Registrar incidencia;
+  endif
+repeat while (¿Quedan casos?) is (sí) not (no)
+:Agregar conteos y métricas;
+:Clasificar cada omisión por causa;
+stop
+@enduml

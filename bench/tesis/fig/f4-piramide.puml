@@ -1,0 +1,12 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**Código real**\n781 unidades de 4 proyectos, 8 defectos y 2 usos correctos sembrados\nel checker no interrumpe al compilador" as D #F5F5F5
+rectangle "**Banco**\n750 casos como regresión de cada incremento" as C #EDF7EE
+rectangle "**Pruebas lit**\n5 archivos de programas mínimos: aviso y nota esperados" as B #F3ECFA
+rectangle "**Pruebas unitarias del núcleo**\n40 pruebas con GoogleTest sobre las leyes y decisiones del núcleo" as A #E8F1FB
+D --> C
+C --> B
+B --> A
+@enduml

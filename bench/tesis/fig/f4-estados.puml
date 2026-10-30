@@ -1,0 +1,23 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+hide empty description
+state "Válido" as V
+state "No resuelto" as N
+state "No resuelto, avisado" as ND
+state "Inválido" as I
+state "Inválido, avisado" as ID
+[*] --> V : obtención reconocida
+V --> V : efecto preserva
+V --> N : efecto depende, sin garantía\no relación ambigua
+V --> I : efecto invalida
+N --> ND : uso con Possibly\n/ aviso posible
+N --> I : efecto invalida
+ND --> I : efecto invalida
+I --> ID : uso\n/ aviso confirmado
+ID --> ID : cualquier mutación o uso
+V --> [*] : región muerta o escape
+N --> [*] : región muerta o escape
+ID --> [*] : región muerta
+ND --> [*] : región muerta o escape
+I --> [*] : región muerta
+@enduml

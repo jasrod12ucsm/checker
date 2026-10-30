@@ -1,0 +1,31 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam sequenceMessageAlign center
+participant "Motor de\nejecución simbólica" as eng
+participant "Cáscara" as chk
+participant "Anticorrupción" as acl
+participant "Núcleo" as dom
+participant "Estado del\ncamino" as st
+participant "Generador\nde reportes" as bug
+== Obtención: const auto& h = *it; ==
+eng -> chk : checkPostCall(operator*)
+chk -> acl : iteratorUse(llamada)
+acl --> chk : desreferencia de it
+chk -> dom : obtain(origen)
+dom --> chk : estado válido
+chk -> st : ElementMap[región] = estado
+== Mutación: c.erase(c.begin()); ==
+eng -> chk : checkPostCall(vector::erase)
+chk -> acl : mutation(llamada)
+acl --> chk : evento de mutación
+chk -> st : handles del contenedor
+chk -> dom : apply(evento, handle, crédito)
+dom --> chk : estado inválido
+chk -> st : addTransition(estado, NoteTag)
+== Uso: sink(h); ==
+eng -> chk : checkLocation(lectura, región)
+chk -> st : estado de la región base
+chk -> dom : onUse(estado, clase, política)
+dom --> chk : veredicto confirmado
+chk -> bug : emitReport(aviso con ruta)
+@enduml

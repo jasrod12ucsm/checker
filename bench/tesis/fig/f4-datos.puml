@@ -1,0 +1,55 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+hide circle
+hide empty members
+skinparam linetype ortho
+entity "Mutación\nnorma/matriz.json" as mut {
+  * id
+  --
+  contenedor, operación
+  punto, crecimiento
+}
+entity "Regla" as regla {
+  * mutación, categoría, relación
+  --
+  efecto, condición, cláusula
+}
+entity "Caso\ntest/corpus_truth.json" as caso {
+  * nombre de la función
+  --
+  contenedor, op, sostiene, forma
+  garantía, esperado, handles
+}
+entity "Validación\nruntime_validation_results.json" as val {
+  * caso, escenario
+  --
+  etiqueta, Debug, ASan/UBSan
+}
+entity "Ejecución\nexperimento/ejecucion.json" as eje {
+  * caso, condición
+  --
+  outcome, segundos, max_rss_kb
+}
+entity "Aviso\ndentro de la ejecución" as av {
+  línea, columna, checker
+  clase, mensaje
+}
+entity "Cotejo\nexperimento/cotejo.json" as cot {
+  * caso, condición
+  --
+  veredicto, sitios, en_sostenido
+  fuera_de_sitio, posibles
+}
+entity "Métricas y contraste\nmetricas.json, contraste.json" as met {
+  * condición, grupo, valor
+  --
+  conteos, precisión, exhaustividad, F1
+}
+mut ||--o{ regla
+mut ||--o{ caso
+caso ||--o{ val
+caso ||--o{ eje
+eje ||--o{ av
+eje ||--|| cot
+cot }o--|| met
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:Caso UB sin aviso en B;
+if (¿El handle sostenido es\nreferencia o puntero?) then (sí)
+  :Causa 1: dominio de referencias\ny punteros no modelado;
+  stop
+endif
+if (¿La forma es recta,\nsin comparación con end()?) then (sí)
+  :Causa 2: el modelado no se activa\nsin comparación previa;
+  stop
+endif
+if (¿La operación borra elementos?) then (sí)
+  :Causa 3: el modelado del borrado\nno alcanza la posición;
+  stop
+endif
+:Causa 4: el modelado de la inserción o\nla realocación no alcanza la posición;
+stop
+@enduml

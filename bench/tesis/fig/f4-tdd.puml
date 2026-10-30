@@ -1,0 +1,17 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+repeat
+  if (¿La regla está en el núcleo puro?) then (sí)
+    :Escribir la prueba de la ley\n(GoogleTest);
+    :Escribir la función que la cumple;
+  else (no, depende del analizador)
+    :Escribir un programa mínimo\ncon el aviso esperado (lit);
+    :Escribir el reconocimiento\nque lo produce;
+  endif
+  :Ejecutar pruebas unitarias y lit;
+  :Medir sobre el banco;
+repeat while (¿Hay regresión frente al incremento anterior?) is (sí) not (no)
+:Cerrar el incremento y registrar sus decisiones;
+stop
+@enduml

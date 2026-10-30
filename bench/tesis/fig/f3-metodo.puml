@@ -1,0 +1,14 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**Paso 1 · OE1**\nMétodo: análisis documental\nProducto: matriz normativa y banco validado" as A #FFF8E6
+rectangle "**Paso 2 · OE2**\nMétodo: experimental (medición de la línea base)\nProducto: resultados de B y causas de omisión" as B #EDF7EE
+rectangle "**Paso 3 · OE3**\nMétodo: desarrollo tecnológico incremental\nProducto: checker verificado" as C #E8F1FB
+rectangle "**Paso 4 · OE4**\nMétodo: experimental (comparación de políticas)\nProducto: política y su efecto medido" as D #E8F1FB
+rectangle "**Paso 5 · OE5**\nMétodo: experimental (contraste pareado)\nProducto: comparación y decisión sobre H0" as E #EDF7EE
+A --> B : el banco es la medida
+B --> C : orden de los objetivos
+C --> D : el checker admite dos políticas
+D --> E : mismas condiciones y mismos casos
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #F2F6FA
+top to bottom direction
+rectangle "**Contenedores del alcance**" as T #E8F1FB
+rectangle "**Secuenciales**\nstd::vector\nstd::deque\nstd::list\nstd::forward_list" as A
+rectangle "**Asociativos ordenados**\nstd::set\nstd::multiset\nstd::map\nstd::multimap" as B
+rectangle "**Asociativos no ordenados**\nstd::unordered_set\nstd::unordered_map" as C
+T --> A
+T --> B
+T --> C
+@enduml

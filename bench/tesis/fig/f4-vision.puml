@@ -1,0 +1,22 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "Norma C++17 (N4659)" as N #F5F5F5
+rectangle "**OE1** Matriz normativa\n101 mutaciones, 348 reglas" as M #FFF8E6
+rectangle "**OE1** Banco de 750 casos\ny validación dinámica" as B #EDF7EE
+rectangle "**OE2** Línea base\nconfiguración B" as L #F5F5F5
+rectangle "**OE3** Checker\nucsm.ContainerInvalidation" as C #E8F1FB
+rectangle "**OE4** Política\nSilent y Possibly" as P #E8F1FB
+rectangle "**OE5** Arnés y comparación\n4 condiciones, 3000 invocaciones" as A #EDF7EE
+rectangle "Código real\n4 proyectos y semillas" as R #F5F5F5
+N --> M
+M --> B : etiquetas
+M --> C : tabla generada
+B --> L
+B --> A
+C --> P
+P --> A
+L --> A
+C --> R
+@enduml

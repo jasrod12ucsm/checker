@@ -1,0 +1,16 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:1. Construir la matriz normativa;
+:2. Elaborar la verdad fundamental;
+:3. Construir y validar el banco;
+:4. Implementar e integrar el checker por incrementos,
+con el banco como prueba de regresión;
+:5. Fijar el entorno y sellar el banco;
+:6. Medir la línea base (B);
+:7. Medir las condiciones C-Silent, C-Possibly y D;
+:8. Clasificar los casos y contrastar;
+:9. Conservar las evidencias;
+:10. Evaluar en código real (complemento);
+stop
+@enduml

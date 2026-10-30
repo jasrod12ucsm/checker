@@ -8,7 +8,7 @@ Este capítulo explica los conceptos necesarios para entender Centinela C++, su 
 
 Centinela C++ es un sistema de componentes que interactúan: GitHub avisa de un *pull request*, el servicio guarda la revisión, el trabajador descarga el código, el motor de CSA lo analiza, el checker decide la validez de cada handle y el servicio devuelve el resultado a GitHub y al panel. Un cambio en un componente puede cambiar el resultado global: una etiqueta mal puesta en el banco altera las métricas aunque el checker funcione según su diseño, y un *webhook* sin firma comprometería todo el flujo aunque el análisis fuera perfecto.
 
-Por eso, además de las pruebas de cada pieza, se probó el sistema completo: la demostración de punta a punta recibe un *webhook*, analiza con clang real y publica en un GitHub simulado (sección 7.7). La gestión del proyecto también se apoyó en la retroalimentación: cada incremento produjo evidencia que orientó la decisión siguiente.
+Por esta razón, además de probar cada componente, se probó el sistema completo con una demostración de punta a punta que recibe un *webhook*, analiza con Clang y publica el resultado en un GitHub simulado (sección 7.7). La gestión del proyecto también se apoyó en la retroalimentación, ya que cada incremento produjo evidencia que orientó la decisión siguiente.
 
 ### Principios de ingeniería de sistemas
 
@@ -16,7 +16,7 @@ La ingeniería de requisitos transforma el problema en comportamientos verificab
 
 ### Teorías de gestión de proyectos
 
-La gestión se organizó por entregables (EDT) con responsables, dependencias, esfuerzo y riesgos, y con un desarrollo incremental: primero la integración con la plataforma (I0), después las reglas con sus pruebas (I1 a I5), la evaluación, y por último el servicio (I7). Un incremento se cerraba cuando sus pruebas automáticas pasaban en la imagen Docker. El alcance mínimo se protegió: cada ampliación se registró como decisión (sección 5.8).
+La gestión se organizó por entregables (EDT), con responsables, dependencias, esfuerzo y riesgos, y siguió el modelo de desarrollo incremental (Sommerville, 2020), en el que el producto se construye como una serie de versiones que se validan antes de continuar. El primer incremento integró el motor con la plataforma (I0); los siguientes, sus reglas y pruebas (I1 a I5) y su evaluación (I6); y el último, el servicio (I7). Un incremento se daba por terminado cuando sus pruebas automáticas pasaban en la imagen Docker, y cada ampliación del alcance se registró como decisión (sección 5.8).
 
 ### Análisis estático de programas
 
@@ -24,7 +24,7 @@ El análisis estático examina el código sin ejecutarlo. Puede razonar sobre ej
 
 ### Interpretación abstracta y ejecución simbólica
 
-Una abstracción representa las propiedades relevantes de un programa sin todos los detalles de una ejecución. La ejecución simbólica usa símbolos en lugar de valores y acumula condiciones a lo largo de cada camino; por ejemplo, una rama puede aportar que el tamaño de un vector es menor que su capacidad. El checker registra en el estado de cada camino los handles, sus contenedores y las operaciones. Cuando la información no alcanza para decidir si hubo invalidación —típicamente, si un `push_back` reubicó o no—, el handle queda en estado «puede estar invalidado» y la política decide si se avisa; nunca se asume que sigue válido.
+Una abstracción representa las propiedades relevantes de un programa sin todos los detalles de una ejecución. La ejecución simbólica usa símbolos en lugar de valores y acumula condiciones a lo largo de cada camino; por ejemplo, una rama puede aportar que el tamaño de un vector es menor que su capacidad. El checker registra en el estado de cada camino los handles, sus contenedores y las operaciones. Cuando la información no alcanza para decidir si hubo invalidación, por ejemplo, si un `push_back` reubicó o no los elementos, el handle queda en estado «puede estar invalidado» y la política del motor decide si se emite un aviso; en ningún caso se asume que sigue válido.
 
 ### Análisis interprocedural y resúmenes de función
 
@@ -121,33 +121,33 @@ Tabla: Antecedentes y decisiones que orientan
 
 ## 2.3 Metodología técnica y herramientas
 
-La metodología separó la construcción del software de su evaluación. Las condiciones del experimento usaron el mismo banco, la misma imagen y las mismas opciones, salvo la activación del checker; el servicio se evaluó con los criterios de aceptación de sus casos de uso.
+El proyecto separó la construcción del software de su verificación. El motor de análisis se verificó comparándolo con CSA sobre un mismo banco de casos de prueba, con la misma imagen y las mismas opciones, de modo que la única diferencia entre las configuraciones fue la activación del motor. El servicio se verificó con los criterios de aceptación de sus casos de uso y con pruebas no funcionales (capítulo 8).
 
 ### Enfoque de la investigación
 
-Cuantitativo: se registraron avisos, etiquetas, conteos, métricas, tiempos y memoria. Las explicaciones de cada falso positivo y cada omisión complementan las cifras.
+El proyecto tiene un enfoque de desarrollo tecnológico: construye un sistema para resolver un problema concreto y verifica su funcionamiento con mediciones. En el motor se registraron avisos, conteos, tiempos y memoria; en el servicio, los resultados de las pruebas funcionales y no funcionales. Cada falso positivo y cada omisión del motor se revisó y explicó.
 
 ### Tipo de investigación
 
-Aplicada: se desarrolló un sistema para una necesidad concreta de los equipos que desarrollan en C++ y se evaluó con resultados observables.
+Se trata de un proyecto aplicado, porque el sistema responde a una necesidad concreta de los equipos que desarrollan en C++ y se evaluó con resultados observables.
 
 ### Nivel de investigación
 
-Descriptivo en la caracterización de CSA y explicativo-experimental en la comparación controlada entre CSA y el checker, donde el único factor que cambia es la activación del checker.
+La verificación del motor describe primero el comportamiento de CSA sobre el banco y después compara CSA con CSA más el motor, cambiando solo la activación del motor. La verificación del servicio comprueba que cada caso de uso cumple su criterio de aceptación.
 
 ### Diseño de la investigación y procedimiento experimental
 
-Diseño pareado: cada caso del banco se analizó en cuatro condiciones —`Reference` (CSA con sus *checkers* de iteradores y contenedores), `Experimental-Silent` y `Experimental-Possibly` (la referencia más el checker con cada política) y `Plugin-Possibly` (el checker sin los *checkers* experimentales de CSA)—. La comparación principal es `Reference` frente a `Experimental-Possibly`.
+Cada caso del banco se analizó en cuatro configuraciones: `Reference`, que es CSA con sus *checkers* de iteradores y contenedores; `Experimental-Silent` y `Experimental-Possibly`, que agregan el motor con cada una de sus políticas; y `Plugin-Possibly`, que usa el motor sin los *checkers* experimentales de CSA. La comparación principal es `Reference` frente a `Experimental-Possibly`.
 
-El procedimiento fue: viabilidad de la plataforma (I0), norma como datos y banco, validación dinámica de las etiquetas, medición de la referencia, construcción del checker por incrementos, experimento, prueba en código real y con defectos sembrados, y por último el servicio y su demostración de punta a punta.
+El procedimiento siguió el orden de los incrementos: comprobación de la plataforma (I0), registro de la norma como datos y generación del banco, validación de las etiquetas por ejecución, medición de CSA, construcción del motor, comparación, prueba en código real y con defectos sembrados, y finalmente construcción del servicio y su demostración de punta a punta.
 
-No se reservó un subconjunto del banco para la evaluación final: el banco y el checker los construyó el mismo equipo, con las mismas formas de código. Esa amenaza a la validez se atendió fuera del banco, en cuatro proyectos reales que el equipo no escribió y con defectos sembrados en ellos (sección 7.7). El análisis es determinista, así que no se planteó una prueba de hipótesis estadística sobre repeticiones: el banco completo se analizó una vez por condición, como un censo de los casos definidos.
+El banco y el motor fueron construidos por el mismo equipo, con las mismas formas de código, por lo que no se reservó una parte del banco para una evaluación final. Para compensar esta limitación, el motor se probó además en cuatro proyectos reales que el equipo no escribió y con defectos sembrados en ellos (sección 7.7). Como el análisis es determinista, el banco completo se analizó una vez por configuración.
 
 ### Universo, población y muestra
 
-El universo conceptual son los programas C++ que usan los contenedores de la biblioteca estándar. El banco es un conjunto intencional derivado de la norma, no una muestra aleatoria de software de producción, y no permite estimar tasas de defectos en ese universo. Para el código real se eligieron cuatro proyectos públicos de distinto tamaño y estilo (ninja, leveldb, yaml-cpp y RocksDB), cada uno en un *commit* fijo.
+Para la verificación del motor, el universo son los programas C++ que usan los contenedores de la biblioteca estándar. El banco no es una muestra aleatoria de ese universo, sino un conjunto de casos derivado de la norma, por lo que no permite estimar con qué frecuencia aparecen estos defectos en el software real. Para el código real se eligieron cuatro proyectos públicos de distinto tamaño y estilo (ninja, leveldb, yaml-cpp y RocksDB), cada uno en una versión fija.
 
-La unidad de evaluación es el sitio de uso de un handle. Cada etiqueta se fundamenta en una cláusula y en las precondiciones del caso; la etiqueta de un caso con varios handles es la combinación (*JOIN*) de las de sus handles.
+La unidad de evaluación del motor es el lugar donde se usa un handle. Cada etiqueta se justifica con una cláusula de la norma y con las condiciones del caso; cuando un caso tiene varios handles, su etiqueta es la combinación de las de cada uno. En el servicio, la unidad de evaluación es el caso de uso.
 
 ### Procedimientos para el cumplimiento de los objetivos
 
@@ -155,14 +155,15 @@ Tabla: Procedimientos y evidencia
 
 | Objetivo | Actividades | Evidencia |
 |---|---|---|
-| OE1 | Escribir la norma como datos; generar el banco; validarlo en ejecución; medir CSA. | `norma/matriz.json`, `test/corpus_truth.json`, 852 ejecuciones, métricas de la referencia. |
-| OE2 | Imagen LLVM 21; núcleo de reglas; handles, posiciones, garantías y rutas; pruebas. | *Plugin*, pruebas unitarias y de integración. |
-| OE3 | Ejecutar cuatro condiciones; cotejar por sitio; analizar errores; correr código real y semillas. | `test/experimento/`, `test/codigo_real/`. |
-| OE4 | Modelar el dominio; construir el backend y sus adaptadores; probar los casos de uso; diseñar las pantallas; desplegar con Docker. | `sistema/`, pruebas Vitest, *mockups*, demostración de punta a punta. |
+| OE1 | Analizar el flujo de revisión de *pull requests* y las reglas de la norma; redactar los requerimientos con su prueba. | Capítulo 4. |
+| OE2 | Definir los casos de uso; diseñar la arquitectura, los paquetes, las clases, las pantallas, la API y el modelo de datos. | Capítulos 5 y 6, *mockups*. |
+| OE3 | Registrar la norma como datos; generar y validar el banco; construir el motor; compararlo con CSA; probarlo en código real y con defectos sembrados. | `norma/matriz.json`, `test/corpus_truth.json`, 852 ejecuciones, *plugin*, `test/experimento/`, `test/codigo_real/`. |
+| OE4 | Modelar el dominio; construir el servicio, sus adaptadores y el panel web; desplegar con Docker. | `sistema/`, demostración de punta a punta. |
+| OE5 | Ejecutar las pruebas funcionales y no funcionales del sistema. | Capítulo 8, pruebas Vitest y de navegador. |
 
 ### Métodos y técnicas
 
-Derivación de casos desde la norma, validación dinámica con dos oráculos (el modo de depuración de libstdc++ y AddressSanitizer con UndefinedBehaviorSanitizer; LLVM Project, s. f.), construcción incremental guiada por pruebas, pruebas de propiedades (leyes) del núcleo y del arnés, cotejo automático por sitio, comparación pareada y criterios de aceptación «dado, cuando, entonces» para cada caso de uso del servicio.
+Se emplearon la derivación de casos de prueba desde la norma; la validación de sus etiquetas por ejecución, con el modo de depuración de libstdc++ y con AddressSanitizer y UndefinedBehaviorSanitizer (LLVM Project, s. f.); la construcción incremental guiada por pruebas; las pruebas de propiedades (leyes) del núcleo y del arnés; el cotejo automático de cada aviso con el lugar esperado; la comparación de configuraciones sobre los mismos casos; y criterios de aceptación «dado, cuando, entonces» para cada caso de uso del servicio.
 
 ### Instrumentos
 
@@ -201,13 +202,13 @@ Tabla: Herramientas usadas
 
 ### Plan de análisis de los datos
 
-Se conservó la salida SARIF original de cada ejecución. Cada aviso se atribuyó a la función del caso y al handle sobre el que cae (cotejo por sitio): un aviso sobre un sitio inválido es VP; un aviso pertinente sin defecto, FP; un sitio inválido sin aviso, FN; un sitio válido sin aviso, VN. Los avisos posibles sobre casos `POLICY` se cuentan aparte. Las métricas se calcularon globalmente y por contenedor, operación, tipo de handle, forma y garantía; una métrica cuyo denominador es cero se registra como no definida, nunca como cero.
+Se conservó la salida SARIF original de cada ejecución. Cada aviso se asignó a la función del caso y al handle sobre el que recae (cotejo por sitio). Un aviso sobre un uso inválido se contó como verdadero positivo (VP); un aviso sin defecto, como falso positivo (FP); un uso inválido sin aviso, como falso negativo (FN); y un uso válido sin aviso, como verdadero negativo (VN). Los avisos posibles sobre casos `POLICY` se cuentan aparte. Las métricas se calcularon globalmente y por contenedor, operación, tipo de handle, forma y garantía; una métrica cuyo denominador es cero se registra como no definida, nunca como cero.
 
-Los errores de compilación, las caídas del analizador y los tiempos agotados se registraron como incidencias y no como VN; en el experimento hubo cero. Tiempo y memoria se midieron por ejecución, y el sobrecosto del checker se comparó contra la referencia con la mediana (RNF-04 y RNF-05). No se hicieron intervalos por remuestreo ni repeticiones de tiempo: el análisis es determinista y la variación de tiempo entre corridas no cambia ningún veredicto.
+Los errores de compilación, las caídas del analizador y los tiempos agotados se registraron como incidencias y no como VN; en la comparación no hubo ninguno. El tiempo y la memoria se midieron en cada ejecución, y el costo adicional del motor se comparó con la referencia mediante la mediana (RNF-04 y RNF-05). Como el análisis es determinista, no se repitieron las mediciones de tiempo: su variación entre ejecuciones no cambia ningún resultado.
 
 ### Calidad, ética y trazabilidad
 
-Cada caso tiene su cláusula; cada regla del checker sale de la misma matriz; cada requerimiento declara su prueba. El banco se selló con su sha256 (`banco-1`) y cada experimento verifica el sello. Los resultados favorables y adversos se reportan igual: el falso positivo posible en ninja y los errores que el código real destapó están documentados. Se respetaron las licencias de los proyectos analizados y no se usaron datos personales en la evaluación.
+Cada caso del banco tiene su cláusula, cada regla del motor proviene de la misma matriz y cada requerimiento declara la prueba que lo demuestra. El banco se selló con su resumen sha256 (`banco-1`), y cada ejecución de la comparación verifica el sello. Los resultados favorables y los adversos se informan del mismo modo; por ejemplo, el aviso posible en ninja y los errores que el código real reveló están documentados. Se respetaron las licencias de los proyectos analizados y no se usaron datos personales en la evaluación.
 
 ### Riesgos y estrategias de mitigación
 
@@ -242,10 +243,10 @@ Tabla: Responsabilidades y objetivos
 |---|---|---|---|
 | Asesoría | Ramírez Valdez, Oscar Alberto | Revisar método, alcance y entregables. | Todos |
 | Coordinación | Rodríguez Chávez, Jason Sebastián | Alcance, cronograma, cambios e integración. | Todos |
-| Checker y motor | Rodríguez Chávez, Jason Sebastián | Plataforma, núcleo, checker y pruebas. | OE2 |
-| Servicio (backend) | Rodríguez Chávez, Jason Sebastián | Dominio, API, *webhook*, trabajador y despliegue. | OE4 |
-| Banco y evaluación | Aranibar Zegovia, Mayerly Katrina | Norma, casos, etiquetas, validación dinámica y experimento. | OE1 y OE3 |
-| Interfaz | Aranibar Zegovia, Mayerly Katrina | *Mockups* y panel web. | OE4 |
+| Motor de análisis | Rodríguez Chávez, Jason Sebastián | Plataforma, núcleo, *checker* y pruebas. | OE3 |
+| Servicio (backend) | Rodríguez Chávez, Jason Sebastián | Requerimientos, arquitectura, dominio, API, *webhook*, trabajador y despliegue. | OE1, OE2 y OE4 |
+| Banco y evaluación | Aranibar Zegovia, Mayerly Katrina | Norma, casos, etiquetas, validación dinámica y comparación. | OE3 |
+| Interfaz y pruebas | Aranibar Zegovia, Mayerly Katrina | *Mockups*, panel web y pruebas del sistema. | OE2, OE4 y OE5 |
 | Documentación | ambas personas | Libro del proyecto, informe y artículo. | Todos |
 
 ## 2.5 Plan del proyecto
@@ -278,7 +279,7 @@ Tabla: Costos de calidad
 
 ### Plan de gestión de los costos
 
-La estimación es paramétrica: horas × tarifa. La tarifa del equipo es S/ 35 por hora y la de la asesoría S/ 80 por hora; son supuestos del equipo para valorizar su tiempo, no salarios pagados.
+La estimación es paramétrica (horas por tarifa). La tarifa del equipo es de S/ 35 por hora. Es cercana a lo que le cuesta una hora de trabajo al empleador de un ingeniero de sistemas con el sueldo máximo que publica Ponte en Carrera, S/ 5 000 mensuales (Agencia Peruana de Noticias Andina, 2023); al sumar gratificaciones, CTS y aporte a EsSalud, ese costo es de S/ 38,03 por hora (sección 3.3.1). La tarifa de la asesoría, S/ 80 por hora, es un supuesto del equipo. Ambas valorizan el tiempo invertido; no son salarios pagados.
 
 Tabla: Costo paramétrico por EDT
 
@@ -332,7 +333,7 @@ Tabla: Cronograma planificado y real
 
 ![Cronograma planificado y real](../diagramas/2-gantt.svg)
 
-El servicio no estaba en el plan inicial: se incorporó como cambio de alcance (2.5.6) a pedido de la revisión académica, que pidió que el producto fuera un sistema que use el cliente. El adelanto del banco y del checker dejó el margen para hacerlo.
+El servicio no formaba parte del plan inicial. Se incorporó como cambio de alcance (2.5.6) a pedido de la revisión académica, que solicitó que el producto fuera un sistema utilizable por el cliente, y el adelanto en el banco y el motor dejó el tiempo necesario para construirlo.
 
 ### Plan de gestión de los requisitos
 
@@ -342,17 +343,17 @@ Tabla: Requisitos por necesidad, caso de uso y objetivo
 
 | Necesidad | Requisitos | Casos de uso | Objetivo |
 |---|---|---|---|
-| Acceder al sistema | RF-S01 | CU-S01, CU-S02 | OE4 |
-| Conectar repositorios | RF-S02 | CU-S03 | OE4 |
-| Revisar *pull requests* | RF-S03 | CU-S04, CU-S05 | OE4 |
-| Consultar revisiones | RF-S04 | CU-S06 | OE4 |
-| Clasificar hallazgos | RF-S05 | CU-S07 | OE4 |
-| Analizar código (motor) | RF-01 a RF-04 | CU-S04 | OE2 |
-| Seguir handles (motor) | RF-05 a RF-07 | CU-S04 | OE2 |
-| Aplicar la norma (motor) | RF-08 a RF-10 | CU-S04 | OE2 |
-| Diagnosticar (motor) | RF-11, RF-12 | CU-S04, CU-S06 | OE2 |
-| Medir el motor | RF-13 a RF-15 | verificación (7.4) | OE1 y OE3 |
-| Mantener el motor | RF-16, RF-17 | verificación (7.4) | OE2 |
+| Acceder al sistema | RF-S01 | CU-S01, CU-S02 | OE1, OE4 |
+| Conectar repositorios | RF-S02 | CU-S03 | OE1, OE4 |
+| Revisar *pull requests* | RF-S03 | CU-S04, CU-S05 | OE1, OE4 |
+| Consultar revisiones | RF-S04 | CU-S06 | OE1, OE4 |
+| Clasificar hallazgos | RF-S05 | CU-S07 | OE1, OE4 |
+| Analizar código (motor) | RF-01 a RF-04 | CU-S04 | OE1, OE3 |
+| Seguir handles (motor) | RF-05 a RF-07 | CU-S04 | OE1, OE3 |
+| Aplicar la norma (motor) | RF-08 a RF-10 | CU-S04 | OE1, OE3 |
+| Diagnosticar (motor) | RF-11, RF-12 | CU-S04, CU-S06 | OE1, OE3 |
+| Medir el motor | RF-13 a RF-15 | verificación (7.4) | OE1, OE3 |
+| Mantener el motor | RF-16, RF-17 | verificación (7.4) | OE1, OE3 |
 
 ### Plan de gestión de cambios
 

@@ -1,0 +1,16 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+start
+:Registros de ejecución de cada condición;
+:Clasificación de cada caso (VP, FP, FN, VN, incidencia);
+fork
+  :648 casos UB y SAFE\nprecisión, exhaustividad y F1;
+  :Prueba exacta de McNemar\nen UB y en SAFE;
+  :Bootstrap estratificado\nIC 95 % de ΔF1;
+fork again
+  :102 casos POLICY\navisos confirmados y posibles;
+end fork
+:Desagregación por contenedor, operación,\nclase de handle y forma;
+:Decisión sobre H0: un valor p < 0,025\ny el IC 95 % de ΔF1 excluye el cero;
+stop
+@enduml

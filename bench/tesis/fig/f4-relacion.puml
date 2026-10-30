@@ -1,0 +1,19 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam defaultTextAlignment center
+left to right direction
+rectangle "e0\n**before**\nantes del punto" as A #EDF7EE
+rectangle "e1\n**before**\nantes del punto" as B #EDF7EE
+rectangle "e2\n**same**\npunto de la operación" as C #FCEDEF
+rectangle "e3\n**after**\ndespués del punto" as D #FFF8E6
+rectangle "e4\n**after**\ndespués del punto" as E #FFF8E6
+A -[hidden]r- B
+B -[hidden]r- C
+C -[hidden]r- D
+D -[hidden]r- E
+A --> B
+B --> C
+C --> D
+D --> E
+@enduml

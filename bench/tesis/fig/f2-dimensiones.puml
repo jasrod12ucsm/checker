@@ -1,0 +1,12 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "**Regla aplicable a un acceso retenido**" as R #E8F1FB
+rectangle "**Posición relativa**\nel elemento está antes, en\no después del punto de\nla operación" as P #F2F6FA
+rectangle "**Condición de estado**\nla operación realoca o\nredistribuye según la capacidad\no el factor de carga" as E #F2F6FA
+rectangle "**Clase de acceso**\niterador, referencia o puntero:\nuna operación puede invalidar\nuno y conservar otro" as C #F2F6FA
+P --> R
+E --> R
+C --> R
+@enduml

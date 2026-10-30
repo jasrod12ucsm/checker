@@ -1,0 +1,17 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+top to bottom direction
+rectangle "Código C++" as S #F5F5F5
+rectangle "Árbol de sintaxis abstracta" as A #F2F6FA
+rectangle "Grafo de flujo de control" as C #F2F6FA
+rectangle "Motor de ejecución simbólica\nProgramState por camino · ExplodedGraph" as E #E8F1FB
+rectangle "Checkers\nreciben eventos y añaden estado" as K #FFF8E6
+rectangle "Generador de reportes\ndiagnóstico con su ruta" as R #EDF7EE
+S --> A
+A --> C
+C --> E
+E -right-> K : eventos
+K -left-> E : estado nuevo
+K --> R : aviso
+@enduml

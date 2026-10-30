@@ -1,0 +1,23 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+skinparam rectangleBackgroundColor #FFFFFF
+left to right direction
+rectangle "**checkPostCall**\nbegin, find, *it, c[i], mutadores" as A #FCEDEF
+rectangle "**checkPreCall**\n++it, it != end, c.erase(it), p->m()" as B #FCEDEF
+rectangle "**checkLocation**\nlectura o escritura de memoria" as C #FCEDEF
+rectangle "**checkBind**\nauto it2 = it" as D #FCEDEF
+rectangle "**checkRegionChanges**\nllamada no reconocida" as E #FCEDEF
+rectangle "**checkDeadSymbols**\nregión que dejó de estar viva" as F #FCEDEF
+rectangle "Obtención o mutación" as a #E8F1FB
+rectangle "Uso de iterador" as b #E8F1FB
+rectangle "Uso de elemento" as c #E8F1FB
+rectangle "Copia de iterador" as d #E8F1FB
+rectangle "Escape" as e #E8F1FB
+rectangle "Olvido del estado" as f #E8F1FB
+A --> a
+B --> b
+C --> c
+D --> d
+E --> e
+F --> f
+@enduml

@@ -109,7 +109,7 @@ checkers de LLVM 21 condiciona la implementación del motor.
 | Postcondición | sesión abierta; las operaciones fuera del rol responden «sin permiso» |
 | Excepciones | correo o clave incorrectos: el mismo mensaje en ambos casos; 10 fallos seguidos: bloqueo de 15 minutos; cuenta `Pendiente`: no entra («Tu cuenta espera la aprobación de un administrador.»); cuenta `Desactivado` (rechazada o desactivada): no entra («Tu cuenta está desactivada: pide a un administrador que la reactive.»), y al desactivarla se cierran sus sesiones; nadie vuelve a `Pendiente`; correo ya registrado: se rechaza; clave de menos de 10 caracteres o sin letras y números: se rechaza; nadie se desactiva ni se cambia el rol a sí mismo |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE4 |
 | Cómo se demuestra | pruebas de `identidad.test.ts`, `casos.test.ts` (RF-S01) y `api.test.ts` (RF-S01 registro y autenticación) |
 | Evidencia | `npm test` en `sistema/`: verde |
 
@@ -123,7 +123,7 @@ checkers de LLVM 21 condiciona la implementación del motor.
 | Postcondición | repositorio activo; sus *webhooks* se aceptan |
 | Excepciones | nombre que no es `propietario/nombre`: se rechaza; repositorio ya conectado: se informa; desconectar no borra sus revisiones y reconectar le da un secreto nuevo |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE4 |
 | Cómo se demuestra | `repositorios.test.ts`, `casos.test.ts` (RF-S02), `api.test.ts` (conectar, configurar y desconectar) |
 | Evidencia | `npm test`: verde |
 
@@ -137,7 +137,7 @@ checkers de LLVM 21 condiciona la implementación del motor.
 | Postcondición | revisión `Publicada` con su veredicto, o `Fallida` con su motivo |
 | Excepciones | firma inválida o repositorio no conectado: se rechaza; el mismo commit no se revisa dos veces; acciones que no cambian el código (cerrar, etiquetar): se ignoran; un archivo que no compila se informa como no analizado; si `clang` o GitHub fallan, la revisión queda `Fallida` y el commit en `error`; si el proceso se cae, al volver marca como fallidas las revisiones a medias |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE4 |
 | Cómo se demuestra | `revisiones.test.ts`, `casos.test.ts` (RF-S03), `api.test.ts` (webhook), `clang.test.ts` (clang y checker reales) y la demostración `demo/demostrar.ts` |
 | Evidencia | `docker compose run --rm sistema-pruebas`: verde; la demostración publica 2 comentarios y estado `failure` sobre el PR de ejemplo |
 
@@ -151,7 +151,7 @@ checkers de LLVM 21 condiciona la implementación del motor.
 | Postcondición | — (solo lectura) |
 | Excepciones | revisión inexistente: «no existe»; usuario desactivado: sin acceso |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE4 |
 | Cómo se demuestra | `casos.test.ts` (RF-S04 y RF-S05), `api.test.ts` (detalle con hallazgos) |
 | Evidencia | `npm test`: verde |
 
@@ -165,7 +165,7 @@ checkers de LLVM 21 condiciona la implementación del motor.
 | Postcondición | las revisiones nuevas o reintentadas cuentan ese hallazgo como suprimido |
 | Excepciones | hallazgo inexistente: «no existe»; desmarcar un falso positivo lo vuelve a reportar |
 | Prioridad | Media |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE4 |
 | Cómo se demuestra | `revisiones.test.ts` (clasificar, huella), `casos.test.ts` («un falso positivo deja de reportarse al reintentar la revisión») |
 | Evidencia | `npm test`: verde |
 
@@ -184,7 +184,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | el checker figura en la lista con su descripción |
 | Excepciones | versión de API distinta: `clang` rechaza el plugin con un error; nunca analiza en silencio sin él |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | prueba `lit` `registro.cpp` |
 | Evidencia | `registro.cpp` en verde |
 
@@ -198,7 +198,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | sólo la corrida con el checker da sus avisos; el resto de la configuración es idéntico |
 | Excepciones | nombre de checker mal escrito: `clang` informa el error |
 | Prioridad | Alta |
-| Objetivo | OE2, OE3 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | condiciones `Reference` y `Experimental` del experimento (RF-13) |
 | Evidencia | `meta.condiciones` de `test/experimento/metricas.json`: difieren sólo en el checker |
 
@@ -212,7 +212,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | un registro por unidad: avisos, tiempo y código de salida |
 | Excepciones | una unidad que no compila se registra como fallo, no como «sin avisos» |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `bench/codigo_real.py` sobre ninja, leveldb, yaml-cpp y RocksDB |
 | Evidencia | 781 unidades, 0 caídas de `clang`, 0 avisos falsos confirmados (`test/codigo_real/avisos.json`) |
 
@@ -226,7 +226,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | lo que depende del estado da aviso posible sólo con `Possibly`; los confirmados no cambian |
 | Excepciones | valor no reconocido: se usa `Silent` |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `lit` `garantias.cpp`; condiciones `Experimental-Silent` y `Experimental-Possibly` |
 | Evidencia | 102/102 casos `POLICY` con aviso posible en `Possibly`, 0/102 en `Silent` |
 
@@ -240,7 +240,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | aviso si la mutación lo invalida según la norma |
 | Excepciones | iterador de origen desconocido: no se sigue (no se inventa un contenedor) |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `lit` `iteradores.cpp` (20 funciones) |
 | Evidencia | `iteradores.cpp` en verde; banco: 128/128 UB de iterador |
 
@@ -254,7 +254,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | aviso si la mutación invalida la referencia según la norma |
 | Excepciones | ninguna propia |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `lit` `referencias.cpp` (20 funciones); banco |
 | Evidencia | 214/214 UB con referencia o puntero (CSA solo: 0 sobre el handle sostenido) |
 
@@ -268,7 +268,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | ningún aviso |
 | Excepciones | — |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | casos `SAFE` del banco; `lit` |
 | Evidencia | 0 avisos en 306 casos `SAFE`, incluidos 12 de iterador devuelto |
 
@@ -282,7 +282,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | cada handle queda válido, inválido o no resuelto |
 | Excepciones | posición desconocida: el handle queda no resuelto, nunca válido por omisión |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | gtest `Banco.ElVeredictoDelNucleoEsLaEtiqueta`; experimento |
 | Evidencia | el núcleo coincide con la norma celda por celda; 342/342 UB detectados |
 
@@ -296,7 +296,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | aviso posible (con `Possibly`) o ningún aviso (con la garantía) |
 | Excepciones | `shrink_to_fit` nunca se garantiza |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `lit` `garantias.cpp`; casos con `reserve` del banco |
 | Evidencia | 0 avisos en 54 casos con `reserve`; gtests de crédito |
 
@@ -310,7 +310,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | sin aviso tras la llamada; aviso si el handle ya era inválido |
 | Excepciones | — |
 | Prioridad | Media |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `lit` `garantias.cpp` (`opaque`, `escaped_after_invalid`) |
 | Evidencia | en verde; evitó falsos positivos en RocksDB |
 
@@ -324,7 +324,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | un aviso por handle y camino |
 | Excepciones | — |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `expected-warning` en las pruebas `lit` |
 | Evidencia | 30 avisos comprobados palabra por palabra en `lit` |
 
@@ -338,7 +338,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | la ruta *obtención → mutación → uso* visible en la salida |
 | Excepciones | un handle copiado muestra la nota de la copia, no la de la obtención original |
 | Prioridad | Media |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `lit` `rutas.cpp` con `-analyzer-output=text` y `expected-note` |
 | Evidencia | 9 notas comprobadas en `rutas.cpp` |
 
@@ -366,7 +366,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | conteos TP/FP/FN/TN, posibles e incidentes por contenedor, operación, categoría y forma |
 | Excepciones | denominador 0: métrica indefinida, no 0 % |
 | Prioridad | Alta |
-| Objetivo | OE3 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | `python3 bench/pruebas_evaluacion.py` |
 | Evidencia | 11 leyes de la evaluación en verde |
 
@@ -380,7 +380,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | `test/corpus.cpp`, `test/corpus_truth.json` y los resultados de la validación |
 | Excepciones | una ejecución contradice la etiqueta: el banco no se publica |
 | Prioridad | Alta |
-| Objetivo | OE1 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | las dos órdenes |
 | Evidencia | 750 casos; 852 ejecuciones, 0 contradicciones |
 
@@ -394,7 +394,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | `libContainerInvalidation.so` y las pruebas en verde |
 | Excepciones | una prueba falla: la orden termina con error |
 | Prioridad | Alta |
-| Objetivo | OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | la orden |
 | Evidencia | 40 gtests y 5 archivos `lit` en verde; `calidad` en verde |
 
@@ -408,7 +408,7 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 | Postcondición | checker y etiquetas dicen lo mismo |
 | Excepciones | falta la cláusula o el efecto no es válido: no se genera la tabla |
 | Prioridad | Media |
-| Objetivo | OE1, OE2 |
+| Objetivo | OE1, OE3 |
 | Cómo se demuestra | gtests `Norma.*` y comprobaciones de `gen_tabla.py` |
 | Evidencia | `Norma.LaTablaEsTotal`, `Norma.InvalidarODependerCitaSuClausula` en verde |
 
@@ -416,20 +416,20 @@ especificaron y se verificaron antes que el servicio, con el banco de casos.
 
 | Requisito | Objetivo | Caso de uso | Componente | Evidencia |
 |---|---|---|---|---|
-| RF-S01 | OE2 | CU-S01, CU-S02 | `sistema/paquetes/contextos/identidad`, `adaptadores/cripto`, `adaptadores/http` | `identidad.test.ts`, `api.test.ts` |
-| RF-S02 | OE2 | CU-S03 | `contextos/repositorios` | `repositorios.test.ts`, `api.test.ts` |
-| RF-S03 | OE2 | CU-S04, CU-S05 | `contextos/revisiones`, `producto`, `adaptadores/github`, `adaptadores/analizador` | `casos.test.ts`, `clang.test.ts`, demostración |
-| RF-S04 | OE2 | CU-S06 | `producto`, `adaptadores/http` | `api.test.ts` |
-| RF-S05 | OE2 | CU-S07 | `contextos/revisiones` | `revisiones.test.ts`, `casos.test.ts` |
-| RF-01, RF-02 | OE2 | CU-S04 | `plugin/registro` | `registro.cpp`; condiciones del experimento |
-| RF-03 | OE2 | verificación | `bench/codigo_real.py` | 781 unidades, 0 avisos falsos confirmados |
-| RF-04 | OE2 | CU-S03, CU-S04 | `plugin/registro`, `plugin/dominio` | `garantias.cpp`; 102/102 `POLICY` |
-| RF-05 a RF-07 | OE2 | CU-S04 | `plugin/acl`, `plugin/checker` | `iteradores.cpp`, `referencias.cpp`; 0 FP |
-| RF-08 a RF-10 | OE2 | CU-S04 | `plugin/dominio` | gtests; 342/342 UB |
-| RF-11, RF-12 | OE2 | CU-S04, CU-S06 | `plugin/checker/Messages.cpp` | `lit`; SARIF |
+| RF-S01 | OE1, OE4 | CU-S01, CU-S02 | `sistema/paquetes/contextos/identidad`, `adaptadores/cripto`, `adaptadores/http` | `identidad.test.ts`, `api.test.ts` |
+| RF-S02 | OE1, OE4 | CU-S03 | `contextos/repositorios` | `repositorios.test.ts`, `api.test.ts` |
+| RF-S03 | OE1, OE4 | CU-S04, CU-S05 | `contextos/revisiones`, `producto`, `adaptadores/github`, `adaptadores/analizador` | `casos.test.ts`, `clang.test.ts`, demostración |
+| RF-S04 | OE1, OE4 | CU-S06 | `producto`, `adaptadores/http` | `api.test.ts` |
+| RF-S05 | OE1, OE4 | CU-S07 | `contextos/revisiones` | `revisiones.test.ts`, `casos.test.ts` |
+| RF-01, RF-02 | OE1, OE3 | CU-S04 | `plugin/registro` | `registro.cpp`; condiciones del experimento |
+| RF-03 | OE1, OE3 | verificación | `bench/codigo_real.py` | 781 unidades, 0 avisos falsos confirmados |
+| RF-04 | OE1, OE3 | CU-S03, CU-S04 | `plugin/registro`, `plugin/dominio` | `garantias.cpp`; 102/102 `POLICY` |
+| RF-05 a RF-07 | OE1, OE3 | CU-S04 | `plugin/acl`, `plugin/checker` | `iteradores.cpp`, `referencias.cpp`; 0 FP |
+| RF-08 a RF-10 | OE1, OE3 | CU-S04 | `plugin/dominio` | gtests; 342/342 UB |
+| RF-11, RF-12 | OE1, OE3 | CU-S04, CU-S06 | `plugin/checker/Messages.cpp` | `lit`; SARIF |
 | RF-13, RF-14 | OE1, OE3 | verificación | `bench/experimento.py` | `metricas.json`; 11 leyes |
-| RF-15 | OE1 | verificación | `bench/gen_corpus.py`, `bench/etiquetar.py` | 852 ejecuciones, 0 contradicciones |
-| RF-16, RF-17 | OE2 | verificación | `plugin/CMakeLists.txt`, `norma/` | gtests, `lit` |
+| RF-15 | OE1, OE3 | verificación | `bench/gen_corpus.py`, `bench/etiquetar.py` | 852 ejecuciones, 0 contradicciones |
+| RF-16, RF-17 | OE1, OE3 | verificación | `plugin/CMakeLists.txt`, `norma/` | gtests, `lit` |
 
 ## Reglas de negocio
 

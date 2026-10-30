@@ -1,0 +1,21 @@
+@startuml
+!include ../../../libro/diagramas/_estilo.iuml
+node "Computadora personal\nIntel Core i7-13620H, 16 GB, Ubuntu 24.04" as pc {
+  node "Contenedor Docker\nimagen checker:llvm21 (Ubuntu 24.04)" as img {
+    component "clang++ 21.1.8\nClang Static Analyzer" as cl
+    component "libContainerInvalidation.so" as so
+    artifact "libstdc++ 13.3.0" as std
+    component "Arnés Python 3.12" as ar
+    component "GoogleTest y lit" as gt
+  }
+  folder "Repositorio git\nnorma/, plugin/, bench/, test/" as repo
+}
+node "GitHub" as gh {
+  component "GitHub Actions\nconstruye la imagen desde el\nmismo Dockerfile y prueba" as ci
+}
+repo -- img : volumen /work
+ar --> cl : un proceso por caso
+cl --> so : carga (opción -load)
+cl --> std : cabeceras
+repo --> gh : git push
+@enduml

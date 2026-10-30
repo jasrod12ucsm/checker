@@ -1,6 +1,10 @@
 # Referencias
 
+Agencia Peruana de Noticias Andina. (2023, 8 de junio). *¿Cuánto ganan en promedio los ingenieros en Perú?* Andina. https://andina.pe/agencia/noticia-cuanto-ganan-promedio-los-ingenieros-peru-943086.aspx
+
 Balogh, Á. (2018). *Finding iterator-related errors with the Clang Static Analyzer* [Presentación]. EuroLLVM 2018, Bristol, Reino Unido. https://llvm.org/devmtg/2018-04/slides/Balogh-Finding%20Iterator-related%20Errors%20with%20Clang%20Static%20Analyzer.pdf
+
+Banco Central de Reserva del Perú. (2026). *Tipo de cambio interbancario, venta (serie PD04638PD)* [Conjunto de datos]. Recuperado el 28 de octubre de 2026 de https://estadisticas.bcrp.gob.pe/estadisticas/series/diarias/resultados/PD04638PD/html/2026-10-12/2026-10-21/
 
 Barth, A. (2011). *HTTP state management mechanism* (RFC 6265). Internet Engineering Task Force. https://doi.org/10.17487/RFC6265
 
@@ -10,7 +14,15 @@ Christakis, M. y Bird, C. (2016). What developers want and need from program ana
 
 Cockburn, A. (2005). *Hexagonal architecture*. Recuperado el 27 de octubre de 2026 de https://alistair.cockburn.us/hexagonal-architecture/
 
+Congreso de la República del Perú. (1997, 17 de mayo). *Ley N.º 26790, Ley de Modernización de la Seguridad Social en Salud*. Diario Oficial El Peruano.
+
+Congreso de la República del Perú. (2002, 25 de mayo). *Ley N.º 27735, Ley que regula el otorgamiento de las gratificaciones para los trabajadores del régimen de la actividad privada por Fiestas Patrias y Navidad*. Diario Oficial El Peruano.
+
 Congreso de la República del Perú. (2011, 3 de julio). *Ley N.º 29733, Ley de Protección de Datos Personales*. Diario Oficial El Peruano.
+
+Congreso de la República del Perú. (2015, 24 de junio). *Ley N.º 30334, Ley que establece medidas para dinamizar la economía en el año 2015*. Diario Oficial El Peruano.
+
+DigitalOcean. (2026). *Droplet pricing*. Recuperado el 28 de octubre de 2026 de https://www.digitalocean.com/pricing/droplets
 
 Evans, E. (2003). *Domain-driven design: Tackling complexity in the heart of software*. Addison-Wesley.
 
@@ -18,17 +30,21 @@ Fielding, R. T. (2000). *Architectural styles and the design of network-based so
 
 Fielding, R., Nottingham, M. y Reschke, J. (Eds.). (2022). *HTTP semantics* (RFC 9110). Internet Engineering Task Force. https://doi.org/10.17487/RFC9110
 
+GitHub. (2025, 4 de marzo). *Introducing GitHub Secret Protection and GitHub Code Security* [Registro de cambios]. https://github.blog/changelog/2025-03-04-introducing-github-secret-protection-and-github-code-security/
+
 GitHub. (2026a). *Validating webhook deliveries*. GitHub Docs. Recuperado el 27 de octubre de 2026 de https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries
 
 GitHub. (2026b). *About protected branches*. GitHub Docs. Recuperado el 27 de octubre de 2026 de https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches
+
+GitHub. (2026c, 20 de julio). *GitHub Code Quality is now generally available* [Registro de cambios]. https://github.blog/changelog/2026-07-20-github-code-quality-is-now-generally-available
 
 Guo, Z., Tan, T., Liu, S., Liu, X., Lai, W., Yang, Y., Li, Y., Chen, L., Dong, W. y Zhou, Y. (2023). Mitigating false positive static analysis warnings: Progress, challenges, and opportunities. *IEEE Transactions on Software Engineering, 49*(12), 5154–5188. https://doi.org/10.1109/TSE.2023.3329667
 
 Higgs, K. (2020, 9 de octubre). *Detecting iterator invalidation with CodeQL* [Entrada de blog]. Trail of Bits Blog. https://blog.trailofbits.com/2020/10/09/detecting-iterator-invalidation-with-codeql/
 
-International Organization for Standardization. (2017). *ISO/IEC 14882:2017 — Programming languages — C++* (borrador de trabajo N4659). ISO/IEC JTC1/SC22/WG21. https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf
-
 International Organization for Standardization e International Electrotechnical Commission. (2011). *Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — System and software quality models* (ISO/IEC 25010:2011).
+
+International Organization for Standardization. (2017). *ISO/IEC 14882:2017 — Programming languages — C++* (borrador de trabajo N4659). ISO/IEC JTC1/SC22/WG21. https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf
 
 Kashyap, V., Ruchti, J., Kot, L., Turetsky, E., Swords, R., Pan, S. A., Henry, J., Melski, D. y Schulte, E. (2019). Automated customized bug-benchmark generation. En *2019 IEEE 19th International Working Conference on Source Code Analysis and Manipulation (SCAM)* (pp. 103–114). IEEE. https://doi.org/10.1109/SCAM.2019.00020
 
@@ -47,6 +63,10 @@ LLVM Project. (2026b). *LLVM coding standards*. LLVM documentation. Recuperado e
 LLVM Project. (2026c). *Checker developer manual*. Clang Static Analyzer. Recuperado el 27 de octubre de 2026 de https://clang-analyzer.llvm.org/checker_dev_manual.html
 
 LLVM Project. (s. f.). *AddressSanitizer*. Clang documentation. Recuperado el 27 de octubre de 2026 de https://clang.llvm.org/docs/AddressSanitizer.html
+
+Ministerio de Economía y Finanzas. (2019). *Anexo N.º 11: Parámetros de evaluación social* (Directiva N.º 001-2019-EF/63.01). https://www.mef.gob.pe/contenidos/inv_publica/anexos/anexo11_directiva001_2019EF6301.pdf
+
+Ministerio de Trabajo y Promoción Social. (1997, 27 de febrero). *Decreto Supremo N.º 001-97-TR, Texto Único Ordenado de la Ley de Compensación por Tiempo de Servicios*. Diario Oficial El Peruano.
 
 Nielsen, J. (1993). *Usability engineering*. Academic Press.
 
@@ -68,7 +88,13 @@ Software Engineering Institute. (2024). *CTR51-CPP. Use valid references, pointe
 
 Sommerville, I. (2020). *Engineering software products: An introduction to modern software engineering*. Pearson.
 
+Stack Overflow. (2024). *2024 Developer Survey: Technology*. Recuperado el 28 de octubre de 2026 de https://survey.stackoverflow.co/2024/technology
+
+Superintendencia de Banca, Seguros y AFP. (2026). *Tasas de interés activas de mercado: TAMN al 9 de julio de 2026*. Recuperado el 28 de octubre de 2026 de https://www.sbs.gob.pe/app/pp/EstadisticasSAEEPortal/Paginas/TIActivaMercado.aspx?tip=B
+
 Sutter, H. (2019). *Lifetime safety: Preventing common dangling* (Documento P1179R1). ISO/IEC JTC1/SC22/WG21. https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1179r1.pdf
+
+Tassey, G. (2002). *The economic impacts of inadequate infrastructure for software testing* (Planning Report 02-3). National Institute of Standards and Technology. https://www.nist.gov/document/report02-3pdf
 
 Teodorescu, V.-A. y Lucanu, D. (2024). Static analysis framework for detecting use-after-free bugs in C++. En M. Marin y L. Leuștean (Eds.), *Proceedings of the 8th Symposium on Working Formal Methods (FROM 2024)*, EPTCS 410 (pp. 99–115). https://doi.org/10.4204/EPTCS.410.7
 
