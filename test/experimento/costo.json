@@ -1,0 +1,21 @@
+{
+ "base": "Reference",
+ "con": "Experimental-Possibly",
+ "casos": 750,
+ "diferencias_no_nulas": 732,
+ "mediana_base_s": 0.65,
+ "mediana_con_s": 0.652,
+ "mediana_diferencia_s": 0.0005000000000000004,
+ "wilcoxon": {
+  "W": 130312.5,
+  "z": -0.6686872880416489,
+  "p": 0.5036949781632905,
+  "r": 0.024715393346865712,
+  "metodo": "aproximación normal, ceros excluidos"
+ },
+ "shapiro_diferencias": {
+  "W": 0.8255111296287339,
+  "p": 8.706965248830378e-28
+ },
+ "scipy": "1.18.1"
+}

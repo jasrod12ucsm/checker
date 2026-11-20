@@ -1,4 +1,4 @@
-"""Genera el Word del proyecto sobre la V2 de la universidad: portada, resumen, índices, los capítulos 1 a 8, el glosario y las referencias salen del libro (libro/informe, libro/diseno/cap4 a cap6, libro/construccion, libro/pruebas).
+"""Genera el Word del proyecto sobre la V2 de la universidad: portada, resumen, índices, los capítulos 1 a 8, las conclusiones, las recomendaciones, el glosario, las referencias y los apéndices salen del libro (libro/informe, libro/diseno/cap4 a cap6, libro/construccion, libro/pruebas).
 De la V2 quedan solo el formato, la portada institucional y los títulos de capítulo."""
 import json, os, re, struct, sys, shutil
 sys.path.insert(0, os.path.dirname(__file__))
@@ -432,8 +432,18 @@ c8 = Cap(8); x8 = [heading("Ttulo1", "Capítulo 8 Pruebas del software", "<w:pag
 x8.append(convert(rd("pruebas/index.md"), c8, None))
 for f, t in [("8-1-entorno", "8.1 Entorno de ejecución de las pruebas"), ("8-2-funcionales", "8.2 Pruebas funcionales"),
              ("8-3-casos-de-prueba", "8.3 Casos de prueba"), ("8-4-no-funcionales", "8.4 Pruebas no funcionales"),
-             ("8-5-despliegue", "8.5 Estrategia de despliegue")]:
+             ("8-5-despliegue", "8.5 Estrategia de despliegue"), ("8-6-documentacion", "8.6 Documentación"),
+             ("8-7-soporte", "8.7 Soporte y mantenimiento")]:
     x8.append(convert(rd(f"pruebas/{f}.md"), c8, t))
+
+# ---------------------------------------------------------------- conclusiones, recomendaciones y apéndices
+def sin_h1(md): return re.sub(r"^# .*\n", "", md, count=1)
+xcr = [heading("Ttulo1", "Conclusiones", "<w:pageBreakBefore/>"), convert(sin_h1(rd("informe/conclusiones.md")), Cap(None), None),
+       heading("Ttulo1", "Recomendaciones", "<w:pageBreakBefore/>"), convert(sin_h1(rd("informe/recomendaciones.md")), Cap(None), None)]
+xap = [heading("Ttulo1", "Apéndices", "<w:pageBreakBefore/>")]
+for letra, sec in zip("ABC", re.split(r"^## ", rd("informe/apendices.md"), flags=re.M)[1:]):
+    titulo, _, cuerpo = sec.partition("\n")
+    xap += [heading("Ttulo2", titulo.strip()), convert(cuerpo, Cap(letra), None)]
 
 # ---------------------------------------------------------------- ensamblar
 doc = os.path.join(U, "word", "document.xml")
@@ -458,8 +468,8 @@ P[irs + 1] = con_texto(P[irs + 1], runs(res)); P[irs + 2] = con_texto(P[irs + 2]
 abs_, key = bloque("Abstract").split("\n\n")
 P[iab + 1] = con_texto(P[iab + 1], runs(abs_)); P[iab + 2] = con_texto(P[iab + 2], runs(key))
 
-cuerpo = ([P[i1], x1, P[i2], x2, P[i3], x3, P[i4], "".join(x4), P[i5], "".join(x5), P[i6], "".join(x6), "".join(x7), "".join(x8),
-           P[ig], xg, P[ir]] + [referencia(r) for r in REFS])
+cuerpo = ([P[i1], x1, P[i2], x2, P[i3], x3, P[i4], "".join(x4), P[i5], "".join(x5), P[i6], "".join(x6), "".join(x7), "".join(x8), "".join(xcr),
+           P[ig], xg, P[ir]] + [referencia(r) for r in REFS] + ["".join(xap)])
 assert "sectPr" in P[-1]
 
 # índices: el general (Ttulo1 a Ttulo3), el de tablas y el de figuras, como campos TOC de Word.

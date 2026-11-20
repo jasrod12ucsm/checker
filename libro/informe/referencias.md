@@ -2,6 +2,8 @@
 
 Agencia Peruana de Noticias Andina. (2023, 8 de junio). *¿Cuánto ganan en promedio los ingenieros en Perú?* Andina. https://andina.pe/agencia/noticia-cuanto-ganan-promedio-los-ingenieros-peru-943086.aspx
 
+Axelos. (2019). *ITIL Foundation: ITIL 4 edition*. TSO (The Stationery Office).
+
 Balogh, Á. (2018). *Finding iterator-related errors with the Clang Static Analyzer* [Presentación]. EuroLLVM 2018, Bristol, Reino Unido. https://llvm.org/devmtg/2018-04/slides/Balogh-Finding%20Iterator-related%20Errors%20with%20Clang%20Static%20Analyzer.pdf
 
 Banco Central de Reserva del Perú. (2026). *Tipo de cambio interbancario, venta (serie PD04638PD)* [Conjunto de datos]. Recuperado el 28 de octubre de 2026 de https://estadisticas.bcrp.gob.pe/estadisticas/series/diarias/resultados/PD04638PD/html/2026-10-12/2026-10-21/
@@ -45,6 +47,10 @@ Higgs, K. (2020, 9 de octubre). *Detecting iterator invalidation with CodeQL* [E
 International Organization for Standardization e International Electrotechnical Commission. (2011). *Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — System and software quality models* (ISO/IEC 25010:2011).
 
 International Organization for Standardization. (2017). *ISO/IEC 14882:2017 — Programming languages — C++* (borrador de trabajo N4659). ISO/IEC JTC1/SC22/WG21. https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf
+
+International Organization for Standardization, International Electrotechnical Commission e Institute of Electrical and Electronics Engineers. (2022a). *Software engineering — Software life cycle processes — Maintenance* (ISO/IEC/IEEE 14764:2022).
+
+International Organization for Standardization, International Electrotechnical Commission e Institute of Electrical and Electronics Engineers. (2022b). *Systems and software engineering — Design and development of information for users* (ISO/IEC/IEEE 26514:2022).
 
 Kashyap, V., Ruchti, J., Kot, L., Turetsky, E., Swords, R., Pan, S. A., Henry, J., Melski, D. y Schulte, E. (2019). Automated customized bug-benchmark generation. En *2019 IEEE 19th International Working Conference on Source Code Analysis and Manipulation (SCAM)* (pp. 103–114). IEEE. https://doi.org/10.1109/SCAM.2019.00020
 

@@ -43,6 +43,7 @@ TTULO4 = ('<w:style w:type="paragraph" w:styleId="Ttulo4"><w:name w:val="heading
            '<w:i/><w:iCs/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr></w:style>')
 
 
+def H1(t): return ("h", 1, t)
 def H2(t): return ("h", 2, t)
 def H3(t): return ("h", 3, t)
 def H4(t): return ("h", 4, t)
@@ -95,7 +96,8 @@ class Doc:
                         f'<w:ind w:firstLine="{first}"/><w:jc w:val="both"/></w:pPr>{self.runs(texto)}</w:p>')
 
     def heading(self, nivel: int, texto: str):
-        return self.xml(f'<w:p><w:pPr><w:pStyle w:val="Ttulo{nivel}"/></w:pPr>'
+        salto = "<w:pageBreakBefore/>" if nivel == 1 else ""
+        return self.xml(f'<w:p><w:pPr><w:pStyle w:val="Ttulo{nivel}"/>{salto}</w:pPr>'
                         f'<w:r><w:rPr><w:lang w:val="es-PE"/></w:rPr><w:t>{esc(texto)}</w:t></w:r></w:p>')
 
     def caption(self, tipo: str, id_: str, titulo: str):
@@ -368,6 +370,7 @@ def localizar(lista: list[dict], pags: list[str]) -> None:
 def construir(origen: Path, salida: Path, pagina_de: dict[str, int] | None) -> tuple[dict, list[str]]:
     import contenido_cap1a3 as c1
     import contenido_cap4 as c4
+    import contenido_cap5 as c5
     with tempfile.TemporaryDirectory() as td:
         raiz = Path(td) / "u"
         with zipfile.ZipFile(origen) as z:
@@ -383,6 +386,10 @@ def construir(origen: Path, salida: Path, pagina_de: dict[str, int] | None) -> t
         ancla = doc.els[359]
         for e in reversed(doc.bloque(c4_items)):
             ancla.addnext(e)
+        # capítulo V, conclusiones y recomendaciones: antes del CRONOGRAMA
+        crono = next(e for e in doc.body if e.tag == q("p") and "".join(e.itertext()).strip() == "CRONOGRAMA")
+        for e in doc.bloque(c5.capitulo(P, H1, H2, H3, T, F)):
+            crono.addprevious(e)
         c1.temario(doc, c4_items)
         items = numerar(doc)
 

@@ -2,12 +2,14 @@
 # Genera los dos Word del artículo desde los .tex, en formato de congreso IEEE.
 #   articulo.docx                     el artículo completo
 #   articulo_intro_metodologia.docx   solo Introducción y Metodología
+#   articulo_titulo_introduccion.docx solo título, autores e Introducción
 # Requiere docker (texlive), poppler-utils, python3 con Pillow y node con el paquete docx 9.
 set -e
 cd "$(dirname "$0")"
 mkdir -p build/fig
 [ -d node_modules/docx ] || npm install --no-save docx@9 >/dev/null
 (cd .. && python3 version_corta.py && python3 refs.py articulo_intro_metodologia.tex articulo_intro_metodologia.tex --solo-citadas)
+(cd .. && python3 version_titulo_intro.py && python3 refs.py articulo_titulo_introduccion.tex articulo_titulo_introduccion.tex --solo-citadas)
 # Figura y ecuaciones como imágenes de 600 ppp, en Times y con el mismo código TikZ del .tex.
 python3 - <<'PY'
 import re
@@ -40,3 +42,5 @@ python3 tex2json.py ../articulo.tex build/articulo.json
 python3 tex2json.py ../articulo_intro_metodologia.tex build/corto.json
 node build.js build/articulo.json build/fig articulo.docx
 node build.js build/corto.json build/fig articulo_intro_metodologia.docx
+python3 tex2json.py ../articulo_titulo_introduccion.tex build/titulo_intro.json
+node build.js build/titulo_intro.json build/fig articulo_titulo_introduccion.docx

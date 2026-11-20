@@ -85,15 +85,28 @@ contenido del libro: `libro/informe` (portada, capítulos 1 a 3, glosario y refe
 `libro/diagramas/png` y los *mockups* de `libro/mockups`. Luego convierte el documento a PDF
 con LibreOffice y `bench/informe/paginas.py` lee en qué página cayó cada título, tabla y
 figura; la segunda pasada vuelve a generar el Word con esos números en el índice general, el
-índice de tablas y el índice de figuras. El sistema Centinela C++ es el centro del documento y
+índice de tablas y el índice de figuras. Después del capítulo 8 (que incluye 8.6 Documentación y 8.7
+Soporte y mantenimiento) van las conclusiones (`libro/informe/conclusiones.md`), las recomendaciones
+(`recomendaciones.md`), el glosario, las referencias y los apéndices (`apendices.md`: cronograma,
+estándares y reproducción), como pide la guía de la Práctica 12. El sistema Centinela C++ es el centro del documento y
 el checker es su motor. Es una herramienta de los autores: quien no tenga la V2 no la
 necesita para usar el sistema ni el checker.
+
+El manual de instalación y uso que se entrega en PDF junto al informe se arma con las páginas del
+libro ya construidas (presentación del sistema, puesta en marcha con GitHub, panel, API y guía del
+checker); necesita Google Chrome o Chromium:
+
+```bash
+python3 bench/gen_book.py && mdbook build corpus_book
+python3 bench/informe/manual.py ~/Downloads/Centinela_Manual_Instalacion_y_Uso.pdf
+```
 
 ## El plan de tesis
 
 ```bash
 bench/tesis/render.sh                 # bench/tesis/fig/*.puml → fig/png; necesita Java y plantuml.jar
-python3 bench/tesis/generar_tesis.py ~/Downloads/Plan_de_Tesis_Cap1_V3.docx ~/Downloads/Plan_de_Tesis_Cap1_V5.docx
+python3 bench/tesis/graficos.py       # figuras f5-*.png del capítulo V y test/experimento/costo.json; necesita matplotlib y scipy
+python3 bench/tesis/generar_tesis.py ~/Downloads/Plan_de_Tesis_Cap1_V3.docx ~/Downloads/Plan_de_Tesis_Cap1_V6.docx
 ```
 
 La tesis trata solo del checker: no menciona Centinela C++ ni la revisión de *commits*
@@ -103,7 +116,16 @@ capítulos I a III y ordena el capítulo III según la rúbrica de los capítulo
 (`bench/tesis/contenido_cap1a3.py`). Después renumera tablas y figuras y arma los índices con las
 páginas que da LibreOffice. Los comentarios de revisión del documento se conservan. Las figuras de
 la tesis están en `bench/tesis/fig/` y no son las del libro: estas últimas nombran el servicio. Los
-valores obtenidos no van en el capítulo IV, sino en el V.
+valores obtenidos no van en el capítulo IV, sino en el V. El capítulo V (5.1 a 5.8), las
+conclusiones y las recomendaciones salen de `bench/tesis/contenido_cap5.py` y se insertan antes del
+cronograma. Las secciones 5.1 a 5.5 siguen los objetivos específicos OE1 a OE5, y la 5.6 presenta
+el código real como complemento. Las conclusiones van una por objetivo, más una del objetivo
+general. Cada cifra sale de un archivo de `test/`, que se nombra en la nota de su tabla. Las figuras del capítulo V las genera `bench/tesis/graficos.py` con matplotlib, en estilo APA:
+sin título dentro de la imagen, ejes con su unidad, decimales con coma y la paleta validada para
+daltonismo, con tramas para leerse en blanco y negro. El script comprueba con `assert` que cada
+valor coincida con el que publica la tesis, y calcula la prueba de Wilcoxon y la de Shapiro-Wilk
+del tiempo por caso. El análisis inferencial es no paramétrico: McNemar exacta, bootstrap y Wilcoxon,
+justificados en 3.4.4.
 
 El capítulo III queda con 3.1 Alcances y limitaciones, 3.2 Enfoque, tipo y nivel, 3.3 Universo,
 población y muestra, 3.4 Metodología, técnicas e instrumentos (3.4.1 a 3.4.5) y 3.5 Consideraciones
@@ -164,8 +186,19 @@ cd articulo
 python3 refs.py articulo.tex articulo.tex          # referencias en orden de cita, formato IEEE
 docker run --rm -u $(id -u):$(id -g) -v $PWD:/w -w /w texlive/texlive:latest-medium \
   sh -c 'pdflatex articulo.tex && pdflatex articulo.tex'
-./word/generar.sh                                  # articulo.docx y articulo_intro_metodologia.docx
+./word/generar.sh                                  # articulo.docx, articulo_intro_metodologia.docx y articulo_titulo_introduccion.docx
 ```
+
+`version_titulo_intro.py` saca la versión con solo el título, los autores y la Introducción (con sus
+referencias renumeradas), que se entregó como primer avance del artículo; se compila igual con
+`articulo_titulo_introduccion.tex`.
 
 Ver [Artículo: estructura y fuentes](../articulo/index.md) para las
 decisiones de formato.
+
+`articulo/paper_centinela.tex` es el artículo del proyecto completo, el
+checker y el servicio Centinela C++, en el mismo formato de congreso IEEE.
+Sus cifras salen de `articulo.tex`, de `test/experimento/contraste.json`
+(McNemar y *bootstrap*) y del capítulo 8 (pruebas del servicio). Se compila
+igual, con `paper_centinela.tex` en lugar de `articulo.tex`; sus referencias
+están escritas en el propio archivo, en el orden de la primera cita.

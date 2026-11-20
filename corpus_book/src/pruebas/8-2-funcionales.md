@@ -150,3 +150,14 @@ el estado `failure`. Si eso no pasa, no se corre nada más.
 panel a mano, sin guion. Así aparecieron, antes de esta corrida, las celdas
 de la tabla que partían el código del commit y las insignias en dos líneas, y
 el correo largo que desbordaba el menú lateral; se corrigieron en el CSS.
+
+La prueba con GitHub real recorrió el flujo completo fuera del entorno
+simulado, el 10 de noviembre de 2026. El servicio corrió en la imagen
+`centinela` en la máquina anfitriona y se expuso con un túnel HTTPS; el
+repositorio público `rodriguezwilbert613/centinela-demo` tenía el *webhook*
+apuntando a esa URL. El *pull request* n.º 6, «Agrega una caché de nombres»,
+introdujo dos usos de handles invalidados. Centinela publicó una revisión
+con un aviso confirmado y uno posible en sus líneas, y el estado
+`centinela/invalidacion` en `failure`, que impidió la integración. Después
+del commit «Corrige los handles invalidados de la caché», el estado pasó a
+`success` y el *pull request* se integró.

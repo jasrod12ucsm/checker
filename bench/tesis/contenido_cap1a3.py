@@ -71,7 +71,7 @@ def aplicar(doc, P, H2, H3, H4, F, T, L):
     c(273, "los registros originales", "los registros de ejecución")
     c(358, "los registros originales", "los registros de ejecución")
     c(354, "Los cálculos se realizaron con scripts en Python sobre los registros SARIF originales, de modo que cualquier tabla del capítulo de resultados puede regenerarse a partir de los datos crudos.",
-      "Los cálculos se realizaron con dos scripts en Python, bench/experimento.py y bench/analisis_estadistico.py, a partir de los registros de ejecución y de cotejo, de modo que cualquier tabla del capítulo de resultados puede regenerarse desde esos datos. El segundo script exporta los resultados a una hoja de cálculo.")
+      "Los cálculos se realizaron con scripts en Python a partir de los registros de ejecución y de cotejo: bench/experimento.py calcula los conteos y las métricas; bench/analisis_estadistico.py, el contraste de McNemar y el intervalo bootstrap, y exporta los resultados a una hoja de cálculo; y bench/tesis/graficos.py, la comparación del tiempo y las figuras del capítulo V. Así, cualquier tabla o figura del capítulo de resultados puede regenerarse desde esos datos.")
 
     # ── números de tabla ──
     for i, id_ in ((72, "var"), (107, "consistencia"), (113, "operacionalizacion"), (221, "pares"), (258, "contraste"), (484, "cronograma")):
@@ -490,6 +490,18 @@ def aplicar(doc, P, H2, H3, H4, F, T, L):
     ])
     doc.tras(353, [
         P("La prueba de McNemar supone resultados dicotómicos pareados, condición que cumple el diseño porque cada caso se analiza en una invocación propia bajo cada condición, y no requiere normalidad. Como los casos no se extrajeron al azar, el valor p no se generaliza a otros programas. La lectura de los resultados sigue esta regla: un ΔF1 positivo favorece a C, el contraste UB indica si cambió la exhaustividad, el contraste SAFE si cambiaron las falsas alarmas, y H~0~ se decide con la regla descrita arriba."),
+        P("El análisis inferencial fue no paramétrico. Las pruebas paramétricas, como la t de Student y el análisis de varianza (ANOVA), comparan medias de una variable continua y suponen que esta sigue una distribución normal (Hernández-Sampieri y Mendoza, 2018). En el contraste principal, el resultado de cada caso es dicotómico, acierto o error, y no una medida continua; además, las condiciones B y C se aplicaron a los mismos casos, de modo que las muestras son relacionadas y no independientes. Por eso no se usaron la t de Student ni el ANOVA, y tampoco la prueba chi-cuadrado de independencia, que supone muestras independientes. La prueba de McNemar es la que corresponde a una variable dicotómica medida dos veces sobre las mismas unidades, y se usó en su versión exacta, basada en la distribución binomial, porque no hubo pares discordantes a favor de B. Como F1 no es una media y no tiene una distribución muestral conocida, su intervalo se estimó por remuestreo bootstrap, que tampoco supone una distribución. La {T:pruebas-estad} resume la elección."),
+        T("pruebas-estad", "Pruebas estadísticas consideradas y razón de su uso o descarte", [2100, 3500, 3400], [
+            ["Prueba", "Qué supone", "Decisión en esta investigación"],
+            ["t de Student para muestras relacionadas", "Variable continua con diferencias de distribución normal", "Descartada para el contraste principal: el resultado por caso es dicotómico. Para el tiempo, descartada porque las diferencias no fueron normales"],
+            ["ANOVA", "Medias de tres o más grupos independientes con distribución normal", "Descartada: no hay medias que comparar y las condiciones se aplican a los mismos casos"],
+            ["Chi-cuadrado de independencia", "Variables nominales en muestras independientes", "Descartada: las condiciones B y C se aplican a los mismos casos"],
+            ["McNemar exacta", "Variable dicotómica en dos mediciones sobre las mismas unidades", "Usada: contraste de B y C en los casos UB y en los SAFE"],
+            ["Bootstrap por percentiles", "Casos intercambiables dentro de cada etiqueta; ninguna distribución teórica", "Usada: intervalo de confianza del 95 % de ΔF1"],
+            ["Shapiro-Wilk", "Contrasta si una variable sigue una distribución normal", "Usada: normalidad de las diferencias de tiempo por caso"],
+            ["Wilcoxon de rangos con signo", "Variable al menos ordinal en dos mediciones sobre las mismas unidades", "Usada: tiempo por caso de B frente a C-Possibly"],
+        ]),
+        P("El tiempo de análisis por caso sí es una variable continua y pareada. Se comprobó primero su normalidad con la prueba de Shapiro-Wilk sobre las diferencias por caso; como la normalidad se rechazó, se comparó con la prueba de Wilcoxon de rangos con signo y su tamaño del efecto r. Esta comparación se agregó después del plan inicial, como complemento de la mediana y del umbral del 10 %, y tampoco interviene en la decisión sobre H~0~. Las pruebas de Shapiro-Wilk y de Wilcoxon se calcularon con SciPy 1.18.1 en el script bench/tesis/graficos.py, que también genera las figuras del capítulo V."),
     ])
     # orden final
     a = tramo(276, 320)

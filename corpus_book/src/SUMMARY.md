@@ -83,8 +83,13 @@
   - [8.3 Casos de prueba](pruebas/8-3-casos-de-prueba.md)
   - [8.4 Pruebas no funcionales](pruebas/8-4-no-funcionales.md)
   - [8.5 Estrategia de despliegue](pruebas/8-5-despliegue.md)
+  - [8.6 Documentación](pruebas/8-6-documentacion.md)
+  - [8.7 Soporte y mantenimiento](pruebas/8-7-soporte.md)
+- [Conclusiones](informe/conclusiones.md)
+- [Recomendaciones](informe/recomendaciones.md)
 - [Glosario](informe/glosario.md)
 - [Referencias](informe/referencias.md)
+- [Apéndices](informe/apendices.md)
 
 # Artículo
 

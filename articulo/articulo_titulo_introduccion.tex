@@ -1,0 +1,84 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nolayout,es-tabla,es-nodecimaldot,es-noshorthands]{babel}
+\usepackage[nocompress]{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{stfloats}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-\do.\do_\do?\do=\do\&\do\%}
+
+% Nombres de los componentes en español con la forma de IEEE.
+\addto\captionsspanish{%
+  \renewcommand{\figurename}{Fig.}%
+  \renewcommand{\tablename}{TABLA}%
+  \renewcommand{\abstractname}{Resumen}%
+  \renewcommand{\refname}{Referencias}%
+}
+\renewcommand{\IEEEkeywordsname}{Palabras clave}
+\newcommand{\code}[1]{\texttt{#1}}
+\urldef{\urlbalogh}\url{https://llvm.org/devmtg/2018-04/slides/Balogh-Finding%20Iterator-related%20Errors%20with%20Clang%20Static%20Analyzer.pdf}
+
+\begin{document}
+
+\title{Detección de iteradores, referencias y punteros invalidados en contenedores de C++ con un checker para Clang Static Analyzer derivado de la norma}
+
+\author{\IEEEauthorblockN{Jason Sebastián Rodríguez Chávez}
+\IEEEauthorblockA{\textit{Escuela Profesional de Ingeniería de Sistemas} \\
+\textit{Universidad Católica de Santa María}\\
+Arequipa, Perú}
+\and
+\IEEEauthorblockN{Mayerly Katrina Aranibar Zegovia}
+\IEEEauthorblockA{\textit{Escuela Profesional de Ingeniería de Sistemas} \\
+\textit{Universidad Católica de Santa María}\\
+Arequipa, Perú}
+}
+
+\maketitle
+
+\section{Introducción}
+
+En C++, un iterador, una referencia o un puntero que designa un elemento de un contenedor deja de ser utilizable cuando ciertas operaciones modifican el contenedor. La norma del lenguaje especifica, operación por operación, qué identificadores quedan invalidados \cite{iso17}, y usar uno invalidado es comportamiento indefinido (\textit{undefined behavior}, UB). La regla CTR51-CPP del estándar de codificación segura CERT del Software Engineering Institute (SEI) prohíbe expresamente ese uso \cite{cert}. El defecto es difícil de ver en una revisión: el programa suele funcionar mientras la memoria del elemento no se reutilice, y falla después, lejos de la causa.
+
+La dificultad no está en la idea, sino en el detalle de las reglas. Un \code{push\_back} sobre \code{std::vector} invalida todo solo si se agota la capacidad; el mismo \code{push\_back} sobre \code{std::list} no invalida nada; \code{erase} sobre un \code{vector} invalida el elemento borrado y los posteriores, pero conserva los anteriores; y una inserción en el frente de un \code{std::deque} invalida los iteradores pero conserva las referencias. Decidir la validez exige saber a qué contenedor pertenece cada identificador, qué categoría tiene y dónde está su elemento respecto del punto de la mutación. Ese seguimiento es indecidible en general \cite{landi92}, \cite{ramalingam94}, de modo que toda herramienta práctica aproxima \cite{livshits15}. La forma de aproximar importa: los desarrolladores abandonan los analizadores que producen falsas alarmas \cite{christakis16}, \cite{guo23}.
+
+Clang Static Analyzer (CSA) explora los caminos de ejecución de cada función mediante ejecución simbólica \cite{king76} y admite extensiones, llamadas \textit{checkers} (término que se conserva en inglés), que observan los eventos de cada camino \cite{csadev}. Sus checkers de iteradores, todavía experimentales, siguen iteradores pero no referencias ni punteros a elementos \cite{csadoc}, \cite{balogh18}. Otras herramientas tratan como siempre invalidante una inserción que solo invalida al agotarse la capacidad \cite{saxena26}, \cite{infer}, \cite{cppcheck}, o se limitan a \code{std::vector} \cite{infer}, \cite{liu25}. Además, la evaluación más cercana usa un banco construido a mano \cite{liu25}, y los bancos generados para evaluar analizadores obtienen sus etiquetas de los defectos inyectados o de la comparación entre analizadores, no de la norma del lenguaje \cite{kashyap19}, \cite{klinger19}.
+
+El objetivo de este trabajo es diseñar, implementar y evaluar un checker para CSA que modele las reglas de invalidación de iteradores, referencias y punteros en contenedores seleccionados de la biblioteca estándar, y comparar su precisión, exhaustividad y medida F1 con la de la configuración de referencia del analizador. Los aportes son:
+\begin{itemize}
+\item un modelo de invalidación que consulta las reglas de C++17 escritas como datos, con su cláusula, según el contenedor, la operación, la categoría del identificador y la posición relativa del elemento;
+\item el checker \code{ucsm.ContainerInvalidation}, que se carga como \textit{plugin} en CSA, cubre diez contenedores y distingue avisos confirmados de avisos posibles, y reconoce las garantías que da el código;
+\item un banco de 750 casos etiquetados a partir de la misma norma, validado con dos instrumentos dinámicos, y un protocolo que atribuye cada aviso a su sitio y separa los incidentes;
+\item una evaluación comparativa en el banco y en cuatro proyectos de código abierto.
+\end{itemize}
+
+La Sección~II revisa los trabajos relacionados. La Sección~III describe el procedimiento, el desarrollo del checker y el diseño experimental. La Sección~IV presenta los resultados, la Sección~V los discute y la Sección~VI concluye.
+
+\begin{thebibliography}{00}
+\bibitem{iso17} \textit{Programming Languages---C++}, ISO/IEC Standard 14882:2017, Int. Org. Standardization, Geneva, Switzerland, Dec. 2017.
+\bibitem{cert} Software Eng. Inst. ``CTR51-CPP. Use valid references, pointers, and iterators to reference elements of a container.'' SEI CERT C++ Coding Standard. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://wiki.sei.cmu.edu/confluence/spaces/cplusplus/pages/88046457/CTR51-CPP.+Use+valid+references+pointers+and+iterators+to+reference+elements+of+a+container}
+\bibitem{landi92} W. Landi, ``Undecidability of static analysis,'' \textit{ACM Lett. Program. Lang. Syst.}, vol. 1, no. 4, pp. 323--337, Dec. 1992, doi: 10.1145/161494.161501.
+\bibitem{ramalingam94} G. Ramalingam, ``The undecidability of aliasing,'' \textit{ACM Trans. Program. Lang. Syst.}, vol. 16, no. 5, pp. 1467--1471, Sep. 1994, doi: 10.1145/186025.186041.
+\bibitem{livshits15} B. Livshits \textit{et al.}, ``In defense of soundiness: A manifesto,'' \textit{Commun. ACM}, vol. 58, no. 2, pp. 44--46, Feb. 2015, doi: 10.1145/2644805.
+\bibitem{christakis16} M. Christakis and C. Bird, ``What developers want and need from program analysis: An empirical study,'' in \textit{Proc. 31st IEEE/ACM Int. Conf. Automated Softw. Eng. (ASE)}, Singapore, Sep. 2016, pp. 332--343, doi: 10.1145/2970276.2970347.
+\bibitem{guo23} Z. Guo \textit{et al.}, ``Mitigating false positive static analysis warnings: Progress, challenges, and opportunities,'' \textit{IEEE Trans. Softw. Eng.}, vol. 49, no. 12, pp. 5154--5188, Dec. 2023, doi: 10.1109/TSE.2023.3329667.
+\bibitem{king76} J. C. King, ``Symbolic execution and program testing,'' \textit{Commun. ACM}, vol. 19, no. 7, pp. 385--394, Jul. 1976, doi: 10.1145/360248.360252.
+\bibitem{csadev} LLVM Project. ``Checker developer manual.'' Clang Static Analyzer. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://clang-analyzer.llvm.org/checker_dev_manual.html}
+\bibitem{csadoc} LLVM Project. ``Available checkers.'' Clang Static Analyzer Documentation. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://clang.llvm.org/docs/analyzer/checkers.html}
+\bibitem{balogh18} \'{A}. Balogh. (Apr. 2018). \textit{Finding iterator-related errors with Clang Static Analyzer}. Presented at EuroLLVM 2018, Bristol, U.K. [Online]. Available: \urlbalogh
+\bibitem{saxena26} U. Saxena. \textit{[LifetimeSafety] Detect Use-After-Invalidation for STL Containers}. (Feb. 6, 2026). GitHub: llvm/llvm-project, Pull Request 179093, commit 21f3875. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://github.com/llvm/llvm-project/pull/179093}
+\bibitem{infer} Meta Platforms. ``List of all issue types.'' Infer. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://fbinfer.com/docs/all-issue-types/}
+\bibitem{cppcheck} Cppcheck Team. \textit{Cppcheck: lib/checkstl.cpp}. (Sep. 19, 2026). GitHub: danmar/cppcheck. (v2.22.0). Accessed: Oct. 20, 2026. [Online]. Available: \url{https://github.com/danmar/cppcheck/blob/2.22.0/lib/checkstl.cpp}
+\bibitem{liu25} S. Liu, L. Chen, G. Fan, B. Yin, C. Huang, and J. Wang, ``Detecting vector container errors in C++ programs via abstract interpretation,'' in \textit{Proc. 26th Int. Conf. Formal Eng. Methods (ICFEM)}, in Lecture Notes Comput. Sci., vol. 16229, Hangzhou, China, Nov. 2025, pp. 117--133, doi: 10.1007/978-981-95-4213-0\_7.
+\bibitem{kashyap19} V. Kashyap \textit{et al.}, ``Automated customized bug-benchmark generation,'' in \textit{Proc. IEEE 19th Int. Work. Conf. Source Code Anal. Manipulation (SCAM)}, Cleveland, OH, USA, Sep. 2019, pp. 103--114, doi: 10.1109/SCAM.2019.00020.
+\bibitem{klinger19} C. Klinger, M. Christakis, and V. W\"{u}stholz, ``Differentially testing soundness and precision of program analyzers,'' in \textit{Proc. 28th ACM SIGSOFT Int. Symp. Softw. Testing Anal. (ISSTA)}, Beijing, China, Jul. 2019, pp. 239--250, doi: 10.1145/3293882.3330553.
+\end{thebibliography}
+
+\end{document}

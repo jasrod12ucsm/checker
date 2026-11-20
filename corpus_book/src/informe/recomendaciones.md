@@ -1,0 +1,9 @@
+# Recomendaciones
+
+1. Aplicar la prueba de usabilidad con usuarios reales que describe 8.4.5. Son cinco desarrolladores de C++, seis tareas y el cuestionario SUS, con una meta de 68 o más puntos. Así quedarían medidas la satisfacción y la memorización, que hoy no lo están.
+2. Medir el motor sobre defectos reales y no solo sobre los sembrados, revisando *commits* históricos de proyectos de C++ que corrigieron un uso de un iterador invalidado. Así se obtendría una tasa de detección fuera del banco.
+3. Analizar cada archivo con la base de compilación del proyecto (`compile_commands.json`) cuando el repositorio la tenga. Así se reduciría el número de archivos que hoy se informan como no analizados por las rutas de inclusión heurísticas (1.5.5).
+4. Antes de atender a varias organizaciones en una misma instalación, reemplazar SQLite por una base que se comparta entre réplicas. Eso habilitaría el despliegue progresivo y el *canary* por repositorio que 8.5 deja para el futuro. En ese momento conviene llevar a esa base el contador de intentos fallidos de ingreso, que hoy está en memoria.
+5. Registrar la integración como GitHub App en lugar de usar un token personal de grano fino. Así cada organización instalaría el servicio con permisos acotados a sus repositorios, sin que un usuario tenga que generar y guardar un token.
+6. Ampliar la norma como datos a C++20 y C++23 y a `std::basic_string`, cuyos iteradores y referencias también se invalidan y que hoy está fuera del alcance, siguiendo la regla de gestión de cambios: cada regla nueva con su cláusula, sus casos en una nueva versión del banco y las cuatro condiciones repetidas.
+7. Medir la adopción con organizaciones piloto antes de invertir en la comercialización, porque el capítulo 3 muestra que el VAN depende principalmente del número de organizaciones suscritas.

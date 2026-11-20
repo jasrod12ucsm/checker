@@ -9,7 +9,7 @@ leer (`httpOnly`).
 ```bash
 cd sistema
 npm run panel                  # compila el panel en frontend/dist
-npm test -w @centinela/panel   # sus 97 pruebas
+npm test -w @centinela/panel   # sus pruebas
 docker compose up sistema-demo # el panel con un análisis real en http://localhost:8080
 ```
 

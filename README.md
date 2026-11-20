@@ -9,7 +9,7 @@ la primera cuenta administra), roles, panel y API.
 ```bash
 docker compose build sistema
 docker compose up sistema-demo              # demostración con un GitHub simulado: http://localhost:8080
-docker compose run --rm sistema-pruebas     # 140 pruebas, con clang y el checker reales
+docker compose run --rm sistema-pruebas     # 279 pruebas (servicio y panel), con clang y el checker reales
 ```
 
 Para usarlo con GitHub de verdad: `sistema/.env.ejemplo` y el libro

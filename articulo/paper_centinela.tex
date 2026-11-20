@@ -1,0 +1,301 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nolayout,es-tabla,es-nodecimaldot,es-noshorthands]{babel}
+\usepackage[nocompress]{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{stfloats}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-\do.\do_\do?\do=\do\&\do\%}
+
+\addto\captionsspanish{%
+  \renewcommand{\figurename}{Fig.}%
+  \renewcommand{\tablename}{TABLA}%
+  \renewcommand{\abstractname}{Resumen}%
+  \renewcommand{\refname}{Referencias}%
+}
+\renewcommand{\IEEEkeywordsname}{Palabras clave}
+\newcommand{\code}[1]{\texttt{#1}}
+\urldef{\urlbalogh}\url{https://llvm.org/devmtg/2018-04/slides/Balogh-Finding%20Iterator-related%20Errors%20with%20Clang%20Static%20Analyzer.pdf}
+
+\begin{document}
+
+\title{Centinela C++: revisión automática de \textit{pull requests} con un checker de Clang Static Analyzer para iteradores, referencias y punteros invalidados}
+
+\author{\IEEEauthorblockN{Jason Sebastián Rodríguez Chávez}
+\IEEEauthorblockA{\textit{Escuela Profesional de Ingeniería de Sistemas} \\
+\textit{Universidad Católica de Santa María}\\
+Arequipa, Perú}
+\and
+\IEEEauthorblockN{Mayerly Katrina Aranibar Zegovia}
+\IEEEauthorblockA{\textit{Escuela Profesional de Ingeniería de Sistemas} \\
+\textit{Universidad Católica de Santa María}\\
+Arequipa, Perú}
+}
+
+\maketitle
+
+\begin{abstract}
+Usar un iterador, una referencia o un puntero a un elemento de un contenedor de la biblioteca estándar de C++ después de una operación que lo invalida es comportamiento indefinido, y el defecto compila sin aviso. Este artículo presenta Centinela C++, un servicio web que revisa cada \textit{pull request} de un repositorio de GitHub con un checker propio para Clang Static Analyzer (CSA), comenta en la línea de cada uso inválido con la ruta que lo explica y puede bloquear la integración hasta que se corrija. El checker aplica las reglas de invalidación de C++17, escritas como datos con su cláusula, sobre la ejecución simbólica de CSA, y separa el uso inválido confirmado del que depende de la capacidad o del factor de carga. En un banco de 750 casos etiquetados desde la norma y contrastados con dos instrumentos dinámicos en 852 ejecuciones, CSA detecta 80 de 342 usos inválidos y, con el checker, se detectan los 342, sin falsas alarmas en 306 casos seguros y con un sobrecosto mediano de tiempo de 0.3 por ciento. En 781 unidades de traducción de cuatro proyectos de código abierto no hubo avisos confirmados. El servicio pasó sus 279 pruebas automatizadas, 41 comprobaciones de seguridad y 11 recorridos de extremo a extremo en cuatro motores de navegador; respondió una ráfaga de 50 \textit{webhooks} en 77 ms y publicó las 50 revisiones en 9 s.
+\end{abstract}
+
+\begin{IEEEkeywords}
+análisis estático, C++, Clang Static Analyzer, integración continua, invalidación de iteradores, revisión de código
+\end{IEEEkeywords}
+
+\section{Introducción}
+
+En C++, un iterador, una referencia o un puntero que designa un elemento de un contenedor deja de ser utilizable cuando ciertas operaciones modifican el contenedor. La norma especifica, operación por operación, qué identificadores quedan invalidados \cite{iso17}, y usar uno invalidado es comportamiento indefinido (\textit{undefined behavior}, UB). La regla CTR51-CPP del estándar de codificación segura CERT prohíbe ese uso \cite{cert}. El defecto es difícil de ver en una revisión: el programa suele funcionar mientras la memoria del elemento no se reutilice, y falla después, lejos de la causa.
+
+La dificultad está en el detalle de las reglas. Un \code{push\_back} sobre \code{std::vector} invalida todo solo si se agota la capacidad; el mismo \code{push\_back} sobre \code{std::list} no invalida nada; y \code{erase} sobre un \code{vector} invalida el elemento borrado y los posteriores, pero conserva los anteriores. Decidir la validez exige saber a qué contenedor pertenece cada identificador, qué categoría tiene y dónde está su elemento respecto del punto de la mutación. Ese seguimiento es indecidible en general \cite{landi92}, \cite{ramalingam94}, de modo que toda herramienta práctica aproxima \cite{livshits15}.
+
+Detectar el defecto no basta. Los desarrolladores quieren recibir los avisos de un analizador dentro de su flujo habitual y abandonan los que producen falsas alarmas \cite{christakis16}, \cite{guo23}; en Google y en Meta, los avisos se atienden cuando aparecen durante la revisión del cambio, antes de integrarlo \cite{sadowski18}, \cite{distefano19}. Un checker que el equipo debe instalar y ejecutar por su cuenta llega tarde o no llega.
+
+El objetivo de este trabajo es construir y evaluar un servicio que revise cada cambio con un análisis de invalidación fiel a la norma. El trabajo tiene dos partes. La primera es \code{ucsm.ContainerInvalidation}, un checker para Clang Static Analyzer (CSA) que aplica las reglas de invalidación de C++17 a iteradores, referencias y punteros en diez contenedores. La segunda es Centinela C++, un servicio que ejecuta ese checker sobre cada \textit{pull request} (PR) de GitHub, publica los hallazgos como comentarios en las líneas afectadas y fija un estado del commit que, con la protección de rama, impide integrar el cambio. Los aportes son:
+\begin{itemize}
+\item un modelo de invalidación que consulta las reglas de C++17 escritas como datos, con su cláusula, y que distingue el uso inválido confirmado del que depende del estado del programa;
+\item el checker, cargado como \textit{plugin} en CSA sin modificar LLVM, y su evaluación sobre un banco de 750 casos derivado de la norma y validado dinámicamente, y sobre cuatro proyectos de código abierto;
+\item el servicio Centinela C++, que integra el checker en la revisión de PR, con autenticación, roles, clasificación de hallazgos y un panel web;
+\item la verificación del servicio con pruebas funcionales, de extremo a extremo, de carga, estrés, volumen, accesibilidad y seguridad.
+\end{itemize}
+
+La Sección~II revisa los trabajos relacionados. La Sección~III describe el checker y la Sección~IV el servicio. La Sección~V presenta el método de evaluación, la Sección~VI los resultados, la Sección~VII los discute y la Sección~VIII concluye.
+
+\section{Trabajos relacionados}
+
+Los checkers experimentales de CSA para iteradores, entre ellos \code{InvalidatedIterator}, asocian cada iterador a su contenedor y lo marcan como inválido ante ciertas operaciones \cite{csadoc}, \cite{balogh18}; están desactivados por omisión y no siguen referencias ni punteros a elementos. El análisis de tiempos de vida de Clang incorporó en 2026 la detección de usos tras una invalidación de contenedores, pero cualquier llamada de una lista de métodos invalida todos los préstamos del contenedor, sin considerar la capacidad ni la posición \cite{saxena26}. Infer informa \code{VECTOR\_INVALIDATION} solo para \code{std::vector} y trata \code{push\_back} como siempre invalidante \cite{infer}; IKOS4VecErr modela el tamaño de \code{std::vector} con interpretación abstracta \cite{liu25}; Cppcheck decide con dos atributos por clase de contenedor \cite{cppcheck}. Los instrumentos dinámicos, como el modo de depuración de libstdc++ \cite{libstdcxx} y AddressSanitizer \cite{asan}, solo observan la ejecución que ocurrió. La Tabla~\ref{tab:comparacion} resume las diferencias; sus filas provienen de la documentación o del código de cada herramienta.
+
+En la integración, Tricorder mostró en Google que los analizadores se usan cuando sus resultados aparecen en la revisión de código y el revisor puede marcar los inútiles \cite{sadowski15}, y Infer se despliega en Meta como comentarios sobre cada cambio \cite{distefano19}. GitHub ofrece análisis de código dentro de su plataforma \cite{ghcodesec}, y Centinela sigue el mismo principio con un análisis específico de invalidación. Ninguna de las herramientas de la Tabla~\ref{tab:comparacion} combina las tres propiedades que exige la norma: regla según contenedor, categoría y posición; seguimiento de referencias y punteros; y tratamiento separado de lo que depende del estado. Tampoco se encontró una que las lleve a la revisión de PR.
+
+\begin{table*}[!t]
+\caption{Herramientas que detectan invalidación de identificadores en contenedores de C++}
+\label{tab:comparacion}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{2.7cm} >{\raggedright\arraybackslash}p{4.6cm}@{}}
+\hline
+\textbf{Herramienta} & \textbf{Técnica} & \textbf{Identificadores} & \textbf{Contenedores} & \textbf{Invalidación que depende del estado}\\
+\hline
+CSA, \code{InvalidatedIterator} \cite{csadoc} & ejecución simbólica & iteradores & los modelados por CSA & no se distingue\\
+Clang, tiempos de vida \cite{saxena26} & flujo de datos intraprocedural & referencias e iteradores & sin \code{list} ni \code{forward\_list} & siempre invalida\\
+Infer \cite{infer} & análisis interprocedural & direcciones de elementos & \code{vector} & siempre invalida, incluso con \code{reserve}\\
+IKOS4VecErr \cite{liu25} & interpretación abstracta & iteradores & \code{vector} & modela el tamaño\\
+Cppcheck \cite{cppcheck} & flujo de valores & los tres & dos atributos por clase & siempre invalida\\
+Este trabajo & ejecución simbólica (CSA) & los tres & diez & aviso posible y garantías del código\\
+\hline
+\end{tabular}
+\end{table*}
+
+\section{El checker}
+
+\subsection{La norma como datos}
+Las reglas provienen de las cláusulas de modificadores de contenedores del borrador N4659 \cite{n4659}, equivalente a C++17. El alcance comprende \code{vector}, \code{deque}, \code{list}, \code{forward\_list}, \code{set}, \code{multiset}, \code{map}, \code{multimap}, \code{unordered\_set} y \code{unordered\_map}, y tres categorías de identificador: iterador, referencia y puntero. Una mutación $m$ es una terna (contenedor, operación, punto), donde el punto indica si actúa en el frente, el final, el interior, todo el contenedor o una clave. La norma se escribió como una función
+\begin{equation}
+N(m,k,r) \in \{\textsc{Preserva},\ \textsc{Invalida},\ \textsc{Depende}(c)\}
+\label{eq:norma}
+\end{equation}
+donde $k$ es la categoría, $r \in \{$antes, mismo, después, cualquiera$\}$ es la relación del elemento con el punto y $c$ es la condición de la que depende el efecto: capacidad agotada o redistribución de cubetas (\textit{rehash}). Cada regla cita su cláusula; por ejemplo, \code{vector::clear} invalida toda referencia según \code{[sequence.reqmts]}, y \code{vector::push\_back} la invalida solo con capacidad agotada según \code{[vector.modifiers]}. Un generador verifica las leyes de la tabla, como que toda regla tenga cláusula y todo efecto dependiente tenga condición, y produce el código C++ que compila el checker.
+
+\subsection{Modelo de invalidación}
+CSA explora los caminos de ejecución de cada función mediante ejecución simbólica \cite{king76}: los valores desconocidos se representan con símbolos y cada bifurcación produce caminos separados, cada uno con su propio estado. Un checker observa los eventos de cada camino y guarda información en ese estado \cite{csadev}. En cada camino, el checker representa un identificador como una tupla $h=(\gamma,k,p,v)$ con su contenedor $\gamma$, su categoría $k$, la posición $p$ de su elemento y su validez $v$, que pertenece a la cadena
+\begin{equation}
+\textsc{Válido} \sqsubseteq \textsc{NoResuelto} \sqsubseteq \textsc{Inválido}
+\label{eq:cadena}
+\end{equation}
+y solo puede subir. Cuando una mutación con punto $q$ actúa sobre $\gamma$, el checker calcula el conjunto $R$ de relaciones compatibles con $p$ y $q$; si todas dan el mismo efecto $e$,
+\begin{equation}
+v' =
+\begin{cases}
+v & e=\textsc{Preserva},\\
+\textsc{Inválido} & e=\textsc{Invalida},\\
+v & e=\textsc{Depende}(c),\ \kappa \geq 1,\\
+v \sqcup \textsc{NoResuelto} & e=\textsc{Depende}(c),\ \kappa = 0,
+\end{cases}
+\label{eq:aplicar}
+\end{equation}
+y, si discrepan, $v'=v \sqcup \textsc{NoResuelto}$. Aquí $\kappa$ es el crédito de inserciones garantizadas: el checker no inventa la capacidad, que CSA no representa, sino que registra la garantía que da el código, de modo que \code{c.reserve(c.size()+n)} fija $\kappa=n$ y cada inserción consume una unidad.
+
+Al usar un identificador, el veredicto depende de su validez. \textsc{Válido} no produce aviso. \textsc{Inválido} produce un aviso confirmado con la ruta completa: obtención, mutación que invalidó y uso. \textsc{NoResuelto} produce un aviso posible solo si la opción \code{PolicyMode} vale \code{Possibly}, y el aviso nombra la garantía que falta; con \code{Silent}, el valor por omisión, no avisa. Si el contenedor se pasa a código cuyo cuerpo no se analiza, los identificadores válidos o no resueltos dejan de seguirse; uno inválido se conserva, porque ninguna llamada lo revive.
+
+\subsection{Implementación}
+El checker es una biblioteca dinámica que \code{clang} carga con \code{-Xclang -load}, sin modificar LLVM \cite{lattner04}. Tiene un núcleo puro con la tabla normativa y las decisiones de (\ref{eq:aplicar}), que no depende de Clang y se verifica con pruebas unitarias de sus leyes; una capa que reconoce en las llamadas de CSA las obtenciones, mutaciones y usos; y los manejadores de eventos, que cargan el estado del camino, invocan al núcleo y registran el resultado con notas de ruta. La construcción usa LLVM 21.1.8 dentro de una imagen de contenedor reproducible.
+
+\section{El servicio Centinela C++}
+
+\subsection{Requisitos}
+Centinela atiende a un equipo que desarrolla en C++ y usa GitHub. Sus cinco requisitos funcionales son: registrarse, autenticarse y controlar el acceso; conectar repositorios; revisar cada PR; consultar revisiones; y clasificar hallazgos. La organización lo despliega con Docker y no trae usuarios predefinidos: la primera persona que se registra queda como administradora y aprueba a las siguientes con el rol de administrador o de desarrollador. Al conectar un repositorio, el administrador elige su política, \code{Silent} o \code{Possibly}, y si un hallazgo bloquea la integración.
+
+\begin{figure*}[!t]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  caja/.style={draw, rounded corners=1.5pt, align=left, inner sep=3pt, text width=#1},
+  flecha/.style={-{Latex[length=1.8mm]}, thick},
+  node distance=4mm and 7mm]
+\node[caja=3.75cm, fill=black!8] (gh) {%
+\textbf{GitHub}\\[1pt]
+PR abierto o actualizado\\
+protección de rama: exige el estado \code{centinela/invalidacion}};
+\node[caja=3.6cm, right=10mm of gh] (rec) {%
+\textbf{(1) Recibir}\\[1pt]
+\code{POST /webhooks/github}\\
+verifica la firma HMAC-SHA256\\
+registra revisión y trabajo en una transacción\\
+responde 202};
+\node[caja=3.6cm, right=of rec] (ana) {%
+\textbf{(2) Analizar}\\[1pt]
+descarga los archivos C++ cambiados\\
+\code{clang --analyze} con el checker y la política del repositorio, en paralelo\\
+lee los avisos en SARIF};
+\node[caja=3.6cm, right=of ana] (pub) {%
+\textbf{(3) Publicar}\\[1pt]
+revisión con un comentario por hallazgo\\
+estado del commit: \code{success} o \code{failure}};
+\node[caja=7.9cm, fill=black!3, below=6mm of $(rec.south)!0.5!(ana.south)$] (panel) {%
+\textbf{Panel web y API}: revisiones y su ruta, clasificación de hallazgos (confirmado o falso positivo), repositorios, usuarios y roles. Base SQLite.};
+\draw[flecha] (gh.east) -- node[above, font=\scriptsize]{\textit{webhook}} (rec.west);
+\draw[flecha] (rec) -- node[above, font=\scriptsize]{cola} (ana);
+\draw[flecha] (ana) -- (pub);
+\draw[flecha] (pub.north) -- ++(0,4mm) -| node[pos=0.25, above, font=\scriptsize]{API REST con token: revisión y estado} (gh.north);
+\draw[flecha, dashed] (ana.south) -- (ana.south |- panel.north);
+\draw[flecha, dashed] (rec.south) -- (rec.south |- panel.north);
+\end{tikzpicture}
+\caption{Flujo de una revisión en Centinela C++. GitHub avisa del PR con un \textit{webhook} firmado (1); el servicio analiza en segundo plano los archivos cambiados con \code{clang} y el checker (2) y devuelve a GitHub una revisión con comentarios en línea y el estado del commit (3). El panel muestra y clasifica lo mismo.}
+\label{fig:flujo}
+\end{figure*}
+
+\subsection{Flujo de una revisión}
+La Fig.~\ref{fig:flujo} muestra el flujo. Cuando un PR se abre, se reabre o recibe commits, GitHub envía un \textit{webhook} HTTP al servicio. La conexión no es persistente: cada evento es una solicitud independiente, autenticada por un código de autenticación de mensajes basado en \textit{hash} (HMAC-SHA256) \cite{rfc2104} del cuerpo con el secreto que Centinela generó al conectar el repositorio \cite{ghwebhook}. El servicio recalcula la firma, la compara en tiempo constante, registra la revisión y su trabajo en una sola transacción y responde 202 sin esperar el análisis; un \textit{webhook} repetido no duplica la revisión.
+
+Un trabajador toma la revisión de la cola, publica el estado \code{pending}, descarga los archivos C++ cambiados por la interfaz de programación (API) REST de GitHub y ejecuta \code{clang --analyze} sobre cada uno con el checker y la política del repositorio, cuatro a la vez por omisión y con un tiempo límite por archivo. Lee los avisos en el formato \textit{Static Analysis Results Interchange Format} (SARIF) \cite{sarif}, descarta los que el equipo clasificó antes como falsos positivos y publica una revisión con un comentario en la línea de cada hallazgo, que incluye la ruta obtención, mutación y uso. Por último fija el estado del commit; si el repositorio bloquea la integración y hay hallazgos, el estado es \code{failure}, y la protección de rama impide integrar el PR \cite{ghprotected}. Cuando el autor corrige el código y sube un commit, el ciclo se repite y el estado pasa a \code{success}.
+
+\subsection{Arquitectura y seguridad}
+El servicio está escrito en TypeScript sobre Node.js, con un paquete por capa: núcleo con tipos compartidos; contextos de identidad, repositorios y revisiones con sus decisiones puras; casos de uso que cargan, deciden y aplican efectos; y adaptadores para HTTP, SQLite, GitHub, criptografía y \code{clang}. Una prueba de arquitectura lee las importaciones y falla si una capa importa lo que no debe. Las entradas se validan con esquemas en la frontera del protocolo HTTP y en cada fila leída de la base. Las claves se guardan con scrypt \cite{rfc7914}, la sesión viaja en una cookie \code{HttpOnly} y \code{SameSite=Strict}, el ingreso se bloquea tras diez fallos seguidos y toda respuesta lleva una política de contenido que solo admite recursos del propio servicio. El panel es una aplicación React servida por el mismo proceso.
+
+\section{Método de evaluación}
+
+\subsection{El checker}
+Cada caso del banco es una función que obtiene un identificador, ejecuta una mutación y usa el identificador. El banco combina 57 pares contenedor y operación, tres categorías de identificador y cuatro formas sintácticas (recta, con guarda contra \code{end()}, con la mutación en otra función y en bucle), lo que da 684 casos, más 66 casos de buen uso con garantía. Cada caso se etiqueta desde (\ref{eq:norma}): \code{UB} si la mutación siempre invalida el identificador usado, \code{SAFE} si nunca lo invalida y \code{POLICY} si depende de la capacidad o del factor de carga. El banco tiene 342 casos \code{UB}, 306 \code{SAFE} y 102 \code{POLICY}.
+
+Las etiquetas se contrastaron con el modo de depuración de libstdc++ \cite{libstdcxx} y AddressSanitizer \cite{asan}. Cada caso se ejecutó en un proceso aislado, y los \code{POLICY} dos veces, una forzando la condición que invalida y otra impidiéndola. Una detección en un caso \code{SAFE} se considera una contradicción que detiene la publicación del banco.
+
+Se compararon cuatro condiciones con el mismo banco, Clang 21.1.8, libstdc++ 13.3 y \code{-std=c++17}: la referencia activa los checkers \code{core}, \code{cplusplus} y los cinco experimentales de iteradores y contenedores de CSA; dos condiciones añaden el checker con \code{Silent} o \code{Possibly}; y una cuarta carga solo el checker, para aislar su aporte. Un aviso cuenta solo si se atribuye al sitio de uso que el caso declara, y una caída o un tiempo agotado se registran como incidentes. Sobre los casos \code{UB} y \code{SAFE}, un aviso confirmado es un verdadero positivo (VP) en un caso \code{UB} y un falso positivo (FP) en uno \code{SAFE}; la ausencia de aviso en un caso \code{UB} es un falso negativo (FN). Se calculan
+\begin{equation}
+P=\frac{\mathit{VP}}{\mathit{VP}+\mathit{FP}},\quad R=\frac{\mathit{VP}}{\mathit{VP}+\mathit{FN}},\quad F_1=\frac{2PR}{P+R}.
+\label{eq:metricas}
+\end{equation}
+Los casos \code{POLICY} se informan aparte, porque en ellos la respuesta adecuada depende de la política. La diferencia entre la referencia y el checker con \code{Silent} se contrasta con la prueba exacta de McNemar, por separado en los casos \code{UB} y \code{SAFE}, porque las dos condiciones se aplican a los mismos casos, y la diferencia de $F_1$ se acompaña de un intervalo de confianza del 95 por ciento con 10\,000 réplicas \textit{bootstrap}. Además, el checker se ejecutó con \code{Possibly} sobre todas las unidades de traducción de ninja, leveldb, yaml-cpp y RocksDB, y sobre ocho defectos y dos usos correctos sembrados en esos proyectos.
+
+\subsection{El servicio}
+Las pruebas funcionales verifican cada requisito por la API y por el panel contra el servicio real, con \code{clang} y el checker reales y GitHub simulado por HTTP. Los recorridos de extremo a extremo los ejecuta Playwright en cuatro motores de navegador. Las pruebas no funcionales siguen las características de ISO/IEC 25010 \cite{iso25010}: carga con 20 conexiones sostenidas por ruta y 1\,000 revisiones guardadas, con el criterio de un percentil 99 menor que 200 ms y ninguna respuesta de error; estrés con 10 a 1\,600 conexiones y una ráfaga de 50 PR analizados de verdad; volumen con hasta 20\,000 revisiones y 100\,500 hallazgos; accesibilidad con axe-core sobre las reglas WCAG 2.1 AA \cite{wcag21}; y 41 comprobaciones de seguridad que atacan al servicio en marcha. El flujo completo se verificó también con un repositorio real de GitHub.
+
+\section{Resultados}
+
+\subsection{El checker}
+La transcripción de la norma produjo 101 mutaciones y 348 reglas. El núcleo tiene 40 pruebas unitarias, que cubren el 92.5 por ciento de sus líneas. La validación dinámica del banco sumó 852 ejecuciones sin contradicciones, después de corregir 27 etiquetas cuya regla de etiquetado no seguía la norma. Las cuatro condiciones completaron los 750 casos sin incidentes; la Tabla~\ref{tab:resultados} presenta las métricas. En los 342 casos \code{UB}, los 262 casos discordantes favorecen al checker y ninguno a la referencia (McNemar exacta, $p = 2.7\times 10^{-79}$); en los 306 casos \code{SAFE} no hay casos discordantes. La diferencia de $F_1$ es 0.62, con un intervalo de confianza del 95 por ciento de 0.56 a 0.68.
+
+\begin{table}[!t]
+\caption{Resultados del checker en el banco de 750 casos}
+\label{tab:resultados}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}l r r r r r r r@{}}
+\hline
+\textbf{Condición} & \textbf{VP} & \textbf{FP} & \textbf{FN} & $\boldsymbol{P}$ & $\boldsymbol{R}$ & $\boldsymbol{F_1}$ & \textbf{\code{POLICY}}\\
+\hline
+Referencia (CSA) & 80 & 0 & 262 & 1.00 & 0.23 & 0.38 & 0/102\\
+Checker, \code{Silent} & 342 & 0 & 0 & 1.00 & 1.00 & 1.00 & 0/102\\
+Checker, \code{Possibly} & 342 & 0 & 0 & 1.00 & 1.00 & 1.00 & 102/102\\
+Solo checker, \code{Possibly} & 342 & 0 & 0 & 1.00 & 1.00 & 1.00 & 102/102\\
+\hline
+\multicolumn{8}{@{}p{0.95\columnwidth}@{}}{\scriptsize La columna \code{POLICY} cuenta casos con aviso posible. Los verdaderos negativos son 306 en todas las condiciones.}
+\end{tabular}
+\end{table}
+
+Sobre el identificador que el caso retiene, CSA detecta 48 de 128 iteradores y ninguno de los 200 casos con referencia o puntero; con el checker, la detección es completa en las tres categorías y en las cuatro formas. Ninguno de los 66 casos de buen uso con garantía produjo avisos. La mediana del tiempo por caso pasó de 0.650 s a 0.652 s con el checker, un 0.3 por ciento más, y la memoria residente máxima, de 119.1 MB a 119.9 MB.
+
+En código real se analizaron 781 unidades de traducción: 29 de ninja, 39 de leveldb, 31 de yaml-cpp y 682 de RocksDB, sin caídas de \code{clang}. No hubo avisos confirmados. Hubo un aviso posible en ninja que, tras revisarlo, es un falso positivo: el analizador explora una inserción que no puede ocurrir, porque el checker no modela el contenido del contenedor. Los ocho defectos sembrados recibieron el aviso esperado, siete confirmados y uno posible, y los dos usos correctos sembrados no recibieron ninguno.
+
+\subsection{El servicio}
+Las 279 pruebas automatizadas (unitarias, de integración y funcionales), 155 del servicio y 124 del panel, pasaron, y los 11 recorridos de extremo a extremo pasaron en Chrome, Chromium, Firefox y WebKit. La Tabla~\ref{tab:servicio} resume las pruebas no funcionales.
+
+\begin{table}[!t]
+\caption{Pruebas no funcionales del servicio}
+\label{tab:servicio}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.2cm} >{\raggedright\arraybackslash}p{5.9cm}@{}}
+\hline
+\textbf{Prueba} & \textbf{Resultado}\\
+\hline
+Carga & ruta más lenta, la lista de 200 revisiones: 823 solicitudes/s, p99 de 45 ms, 0 errores\\
+Estrés & saturación en unas 930 solicitudes/s; con 1\,600 conexiones, 14.4 \% sin respuesta en 10 s y sin caída\\
+Ráfaga de 50 PR & 50 \textit{webhooks} respondidos en 77 ms; 50 revisiones publicadas en 9 s, 0 fallidas\\
+Volumen & con 20\,000 revisiones, lista con p99 de 22 ms, igual que con 1\,000\\
+Tamaño del PR & 40 archivos y 80 hallazgos publicados en 1.7 s\\
+Accesibilidad & 0 violaciones WCAG 2.1 AA en 7 pantallas y dos temas\\
+Seguridad & 41 de 41 comprobaciones\\
+\hline
+\end{tabular}
+\end{table}
+
+En el repositorio real de GitHub, un PR con dos defectos recibió un aviso confirmado y uno posible en sus líneas, y el estado \code{failure} impidió integrarlo; después del commit que los corrigió, el estado pasó a \code{success} y el PR se integró. Tres pruebas encontraron defectos que se corrigieron antes de la corrida final. La prueba de volumen mostró que, con 20\,000 revisiones, la lista bajaba a 55 solicitudes por segundo con un percentil 99 de 344 ms, porque la consulta ordenaba la tabla entera; un índice por fecha la devolvió a 889 solicitudes por segundo. La auditoría de accesibilidad encontró 10 violaciones de contraste y de enlaces distinguidos solo por el color. La prueba de seguridad mostró que las respuestas no llevaban cabeceras de seguridad.
+
+\section{Discusión}
+
+La diferencia entre el checker y la referencia se concentra en lo que CSA no modela: referencias y punteros a elementos, y la forma recta, en la que el iterador nunca se compara con un límite. El checker no sustituye la ejecución simbólica de CSA, sino que la usa, y hereda sus límites: dos de los defectos sembrados solo se detectaron cuando el analizador volvió a analizar como raíz funciones que ya había expandido en línea.
+
+El aviso posible responde a la falta de información sin decidir por el equipo. Una herramienta que invalida siempre avisaría en los casos de buen uso con \code{reserve}, y una que no distingue el estado callaría en los casos \code{POLICY}; esta afirmación se deduce de la documentación de esas herramientas y medirla requiere ejecutarlas sobre el banco. En Centinela la política es una propiedad del repositorio, de modo que cada equipo elige si ve esos avisos.
+
+La ausencia de avisos confirmados en los cuatro proyectos mide que el checker escala a código de producción y no produce falsas alarmas confirmadas en código correcto; no mide su exhaustividad en software real, porque esas versiones publicadas ya pasaron por años de pruebas. El servicio se dirige al punto donde el defecto todavía existe: el cambio que aún no se integra.
+
+Las amenazas a la validez son cuatro. El checker y las etiquetas derivan de la misma norma, de modo que el resultado en el banco mide la fidelidad de la implementación a la norma escrita; lo mitigan los dos oráculos dinámicos y la evaluación en código real. El banco es sintético y los defectos sembrados los escribieron los autores, así que no dan una tasa de detección en software real. El servicio analiza cada archivo sin la configuración de compilación del proyecto, atiende a una sola organización y solo a GitHub, y su satisfacción de uso no se midió con personas. Los resultados valen para C++17, diez contenedores, libstdc++ 13 y el análisis dentro de cada unidad de traducción.
+
+\section{Conclusiones}
+
+Se presentó Centinela C++, un servicio que lleva a la revisión de cada PR un checker para CSA que aplica las reglas de invalidación de C++17 escritas como datos y separa la invalidación confirmada de la que depende del estado. En un banco de 750 casos derivado de la norma y validado dinámicamente, el checker elevó la exhaustividad de 0.23 a 1.00 sin falsos positivos y con un sobrecosto mediano de tiempo de 0.3 por ciento, y en 781 unidades de traducción de código real no produjo avisos confirmados. El servicio comenta cada hallazgo en su línea, bloquea la integración hasta que se corrige y cumplió sus pruebas funcionales, de rendimiento, accesibilidad y seguridad. El trabajo futuro comprende ejecutar el checker sobre commits históricos que corrigieron defectos de invalidación, comparar Infer y Cppcheck sobre el mismo banco, usar la base de compilación del proyecto en el servicio y medir su uso con desarrolladores.
+
+\IEEEtriggeratref{20}
+\begin{thebibliography}{00}
+\bibitem{iso17} \textit{Programming Languages---C++}, ISO/IEC Standard 14882:2017, Int. Org. Standardization, Geneva, Switzerland, Dec. 2017.
+\bibitem{cert} Software Eng. Inst. ``CTR51-CPP. Use valid references, pointers, and iterators to reference elements of a container.'' SEI CERT C++ Coding Standard. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://wiki.sei.cmu.edu/confluence/spaces/cplusplus/pages/88046457/CTR51-CPP.+Use+valid+references+pointers+and+iterators+to+reference+elements+of+a+container}
+\bibitem{landi92} W. Landi, ``Undecidability of static analysis,'' \textit{ACM Lett. Program. Lang. Syst.}, vol. 1, no. 4, pp. 323--337, Dec. 1992, doi: 10.1145/161494.161501.
+\bibitem{ramalingam94} G. Ramalingam, ``The undecidability of aliasing,'' \textit{ACM Trans. Program. Lang. Syst.}, vol. 16, no. 5, pp. 1467--1471, Sep. 1994, doi: 10.1145/186025.186041.
+\bibitem{livshits15} B. Livshits \textit{et al.}, ``In defense of soundiness: A manifesto,'' \textit{Commun. ACM}, vol. 58, no. 2, pp. 44--46, Feb. 2015, doi: 10.1145/2644805.
+\bibitem{christakis16} M. Christakis and C. Bird, ``What developers want and need from program analysis: An empirical study,'' in \textit{Proc. 31st IEEE/ACM Int. Conf. Automated Softw. Eng. (ASE)}, Singapore, Sep. 2016, pp. 332--343, doi: 10.1145/2970276.2970347.
+\bibitem{guo23} Z. Guo \textit{et al.}, ``Mitigating false positive static analysis warnings: Progress, challenges, and opportunities,'' \textit{IEEE Trans. Softw. Eng.}, vol. 49, no. 12, pp. 5154--5188, Dec. 2023, doi: 10.1109/TSE.2023.3329667.
+\bibitem{sadowski18} C. Sadowski, E. Aftandilian, A. Eagle, L. Miller-Cushon, and C. Jaspan, ``Lessons from building static analysis tools at Google,'' \textit{Commun. ACM}, vol. 61, no. 4, pp. 58--66, Apr. 2018, doi: 10.1145/3188720.
+\bibitem{distefano19} D. Distefano, M. Fähndrich, F. Logozzo, and P. W. O'Hearn, ``Scaling static analyses at Facebook,'' \textit{Commun. ACM}, vol. 62, no. 8, pp. 62--70, Aug. 2019, doi: 10.1145/3338112.
+\bibitem{csadoc} LLVM Project. ``Available checkers.'' Clang Static Analyzer Documentation. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://clang.llvm.org/docs/analyzer/checkers.html}
+\bibitem{balogh18} \'{A}. Balogh. (Apr. 2018). \textit{Finding iterator-related errors with Clang Static Analyzer}. Presented at EuroLLVM 2018, Bristol, U.K. [Online]. Available: \urlbalogh
+\bibitem{saxena26} U. Saxena. \textit{[LifetimeSafety] Detect Use-After-Invalidation for STL Containers}. (Feb. 6, 2026). GitHub: llvm/llvm-project, Pull Request 179093. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://github.com/llvm/llvm-project/pull/179093}
+\bibitem{infer} Meta Platforms. ``List of all issue types.'' Infer. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://fbinfer.com/docs/all-issue-types/}
+\bibitem{liu25} S. Liu, L. Chen, G. Fan, B. Yin, C. Huang, and J. Wang, ``Detecting vector container errors in C++ programs via abstract interpretation,'' in \textit{Proc. 26th Int. Conf. Formal Eng. Methods (ICFEM)}, in Lecture Notes Comput. Sci., vol. 16229, Hangzhou, China, Nov. 2025, pp. 117--133, doi: 10.1007/978-981-95-4213-0\_7.
+\bibitem{cppcheck} Cppcheck Team. \textit{Cppcheck: lib/checkstl.cpp}. (Sep. 19, 2026). GitHub: danmar/cppcheck. (v2.22.0). Accessed: Oct. 20, 2026. [Online]. Available: \url{https://github.com/danmar/cppcheck/blob/2.22.0/lib/checkstl.cpp}
+\bibitem{libstdcxx} GNU Project. ``Chapter 18. Debug mode.'' The GNU C++ Library Manual. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://gcc.gnu.org/onlinedocs/libstdc++/manual/debug_mode.html}
+\bibitem{asan} LLVM Project. ``AddressSanitizer.'' Clang Documentation. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://clang.llvm.org/docs/AddressSanitizer.html}
+\bibitem{sadowski15} C. Sadowski, J. van Gogh, C. Jaspan, E. Söderberg, and C. Winter, ``Tricorder: Building a program analysis ecosystem,'' in \textit{Proc. 37th IEEE/ACM Int. Conf. Softw. Eng. (ICSE)}, Florence, Italy, May 2015, pp. 598--608, doi: 10.1109/ICSE.2015.76.
+\bibitem{ghcodesec} GitHub. ``Introducing GitHub Secret Protection and GitHub Code Security.'' GitHub Changelog, Mar. 4, 2025. [Online]. Available: \url{https://github.blog/changelog/2025-03-04-introducing-github-secret-protection-and-github-code-security/}
+\bibitem{n4659} R. Smith, ``Working draft, standard for programming language C++,'' ISO/IEC JTC1/SC22/WG21, Geneva, Switzerland, Rep. N4659, Mar. 21, 2017. [Online]. Available: \url{https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf}
+\bibitem{king76} J. C. King, ``Symbolic execution and program testing,'' \textit{Commun. ACM}, vol. 19, no. 7, pp. 385--394, Jul. 1976, doi: 10.1145/360248.360252.
+\bibitem{csadev} LLVM Project. ``Checker developer manual.'' Clang Static Analyzer. Accessed: Oct. 20, 2026. [Online]. Available: \url{https://clang-analyzer.llvm.org/checker_dev_manual.html}
+\bibitem{lattner04} C. Lattner and V. Adve, ``LLVM: A compilation framework for lifelong program analysis \& transformation,'' in \textit{Proc. Int. Symp. Code Gener. Optim. (CGO)}, San Jose, CA, USA, Mar. 2004, pp. 75--86, doi: 10.1109/CGO.2004.1281665.
+\bibitem{rfc2104} H. Krawczyk, M. Bellare, and R. Canetti, ``HMAC: Keyed-hashing for message authentication,'' Internet Eng. Task Force, RFC 2104, Feb. 1997, doi: 10.17487/RFC2104.
+\bibitem{ghwebhook} GitHub. ``Validating webhook deliveries.'' GitHub Docs. Accessed: Oct. 27, 2026. [Online]. Available: \url{https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries}
+\bibitem{sarif} \textit{Static Analysis Results Interchange Format (SARIF) Version 2.1.0}, OASIS Standard sarif-v2.1.0-os, Mar. 27, 2020. [Online]. Available: \url{https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/sarif-v2.1.0-os.html}
+\bibitem{ghprotected} GitHub. ``About protected branches.'' GitHub Docs. Accessed: Oct. 27, 2026. [Online]. Available: \url{https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches}
+\bibitem{rfc7914} C. Percival and S. Josefsson, ``The scrypt password-based key derivation function,'' Internet Eng. Task Force, RFC 7914, Aug. 2016, doi: 10.17487/RFC7914.
+\bibitem{iso25010} \textit{Systems and Software Engineering---Systems and Software Quality Requirements and Evaluation (SQuaRE)---System and Software Quality Models}, ISO/IEC Standard 25010:2011, 2011.
+\bibitem{wcag21} World Wide Web Consortium. ``Web Content Accessibility Guidelines (WCAG) 2.1.'' W3C Recommendation, 2018. [Online]. Available: \url{https://www.w3.org/TR/WCAG21/}
+\end{thebibliography}
+
+\end{document}
