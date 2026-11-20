@@ -74,7 +74,7 @@ No necesita Graphviz.
 ## El Word del proyecto
 
 ```bash
-bench/informe/generar.sh ~/Downloads/Proyecto_Fin_de_Carrera_V2.docx ~/Downloads/Proyecto_Fin_de_Carrera_V6.docx
+bench/informe/generar.sh bench/informe/base/Proyecto_Fin_de_Carrera_V2.docx Proyecto_Fin_de_Carrera.docx
 ```
 
 `generar.sh` arma el Word del proyecto en dos pasadas. La primera ejecuta
@@ -106,8 +106,12 @@ python3 bench/informe/manual.py ~/Downloads/Centinela_Manual_Instalacion_y_Uso.p
 ```bash
 bench/tesis/render.sh                 # bench/tesis/fig/*.puml → fig/png; necesita Java y plantuml.jar
 python3 bench/tesis/graficos.py       # figuras f5-*.png del capítulo V y test/experimento/costo.json; necesita matplotlib y scipy
-python3 bench/tesis/generar_tesis.py ~/Downloads/Plan_de_Tesis_Cap1_V3.docx ~/Downloads/Plan_de_Tesis_Cap1_V6.docx
+python3 bench/tesis/generar_tesis.py bench/tesis/base/Plan_de_Tesis_Cap1_V3.docx Plan_de_Tesis.docx
 ```
+
+Los documentos de partida están en el repositorio: `bench/tesis/base/Plan_de_Tesis_Cap1_V3.docx`
+para la tesis y `bench/informe/base/Proyecto_Fin_de_Carrera_V2.docx` para el proyecto. Los
+generadores no los modifican: trabajan sobre una copia y escriben el resultado en la ruta de salida.
 
 La tesis trata solo del checker: no menciona Centinela C++ ni la revisión de *commits*
 históricos. `generar_tesis.py` no toca el documento de origen. Sobre una copia cambia el título,
